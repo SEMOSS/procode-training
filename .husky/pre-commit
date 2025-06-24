@@ -1,1 +1,3 @@
+echo "Formatting and linting code"
 pnpm fix
+echo "Committing changes"
