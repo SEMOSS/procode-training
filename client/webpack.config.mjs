@@ -6,12 +6,12 @@ import WebpackBar from 'webpackbar';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+config({ path: './.env' });
 const isProduction = process.env.NODE_ENV == 'production';
-
 if (!isProduction) {
     config({ path: './.env.local' });
 }
-config({ path: './.env' });
+
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ENDPOINT = process.env.ENDPOINT;
@@ -48,7 +48,6 @@ export default {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'TQMC',
             scriptLoading: 'module',
             template: './src/template.html',
         }),
