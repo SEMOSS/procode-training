@@ -1,12 +1,14 @@
 {
-    "private": true,
-    "scripts": {
-        "fix": "prettier . --write && eslint --fix"
-    },
-    "devDependencies": {
-        "eslint": "^9.28.0",
-        "eslint-config-prettier": "^10.1.5",
-        "prettier": "^3.5.3",
-        "typescript-eslint": "^8.33.1"
-    }
+  "private": true,
+  "scripts": {
+    "fix": "prettier . --write && eslint --fix",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "eslint": "^9.28.0",
+    "eslint-config-prettier": "^10.1.5",
+    "husky": "^9.1.7",
+    "prettier": "^3.5.3",
+    "typescript-eslint": "^8.33.1"
+  }
 }
