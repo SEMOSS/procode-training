@@ -11,7 +11,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export const App = () => {
-    const test = 5;
     return (
         <InsightProvider>
             <div>Hello world!</div>
