@@ -1,8 +1,8 @@
-import { useAppContext } from "./contexts"
+import { useAppContext } from './contexts';
 
 export const Tmp = () => {
     const { runPixel } = useAppContext();
-    runPixel("hi");
+    runPixel('hi');
 
-    return <div>Hello world</div>
-}
+    return <div>Hello world</div>;
+};

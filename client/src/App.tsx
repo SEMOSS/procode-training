@@ -1,6 +1,6 @@
 import { Env } from '@semoss/sdk';
 import { InsightProvider } from '@semoss/sdk-react';
-import { AppContextProvider } from "./contexts";
+import { AppContextProvider } from './contexts';
 import { Tmp } from './tmp';
 
 if (process.env.NODE_ENV !== 'production') {
