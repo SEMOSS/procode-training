@@ -1,0 +1,11 @@
+# Dependency directories
+node_modules/
+client/node_modules/
+
+# Build directories
+portals/
+classes/
+
+# Local configuration files
+*.local
+java/project.properties
