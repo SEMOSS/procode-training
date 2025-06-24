@@ -1,6 +1,6 @@
-import { useAppContext } from './contexts';
+import { useAppContext } from '@/contexts';
 
-export const Tmp = () => {
+export const PageA = () => {
     const { onePlusTwo } = useAppContext();
 
     return <div>{`1 + 2 = ${onePlusTwo}`}</div>;

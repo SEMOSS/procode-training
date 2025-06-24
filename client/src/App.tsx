@@ -1,7 +1,7 @@
 import { Env } from '@semoss/sdk';
 import { InsightProvider } from '@semoss/sdk-react';
 import { AppContextProvider } from './contexts';
-import { Tmp } from './tmp';
+import { Router } from './pages';
 
 if (process.env.NODE_ENV !== 'production') {
     Env.update({
@@ -16,7 +16,7 @@ export const App = () => {
     return (
         <InsightProvider>
             <AppContextProvider>
-                <Tmp />
+                <Router />
             </AppContextProvider>
         </InsightProvider>
     );
