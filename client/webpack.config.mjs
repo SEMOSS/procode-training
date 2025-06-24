@@ -1,7 +1,6 @@
 import webpack from 'webpack';
 import { resolve } from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { config } from 'dotenv';
 import WebpackBar from 'webpackbar';
 import path from 'path';
@@ -60,10 +59,6 @@ export default {
         new webpack.DefinePlugin({
             'process.env': JSON.stringify(process.env),
         }),
-        new MiniCssExtractPlugin({
-            filename: '[name].css',
-            chunkFilename: '[id].css',
-        }),
         new WebpackBar(),
     ],
     module: {
@@ -75,19 +70,6 @@ export default {
             {
                 test: /\.tsx?$/,
                 use: 'ts-loader',
-            },
-            {
-                test: /\.css$/,
-                use: [
-                    'style-loader',
-                    {
-                        loader: MiniCssExtractPlugin.loader,
-                        options: {
-                            esModule: false,
-                        },
-                    },
-                    'css-loader',
-                ],
             },
 
             // Add your rules for custom modules here
