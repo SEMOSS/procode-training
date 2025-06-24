@@ -1,8 +1,7 @@
 import { useAppContext } from './contexts';
 
 export const Tmp = () => {
-    const { runPixel } = useAppContext();
-    runPixel('hi');
+    const { onePlusTwo } = useAppContext();
 
-    return <div>Hello world</div>;
+    return <div>{`1 + 2 = ${onePlusTwo}`}</div>;
 };
