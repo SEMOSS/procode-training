@@ -1,23 +1,23 @@
 {
-  "private": true,
-  "scripts": {
-    "build": "webpack --mode=production --node-env=production",
-    "dev": "webpack serve"
-  },
-  "dependencies": {
-    "dayjs": "^1.11.13",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^7.6.2"
-  },
-  "devDependencies": {
-    "dotenv": "^16.5.0",
-    "html-webpack-plugin": "^5.6.3",
-    "ts-loader": "^9.5.2",
-    "typescript": "^5.8.3",
-    "webpack": "^5.99.9",
-    "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.2",
-    "webpackbar": "^7.0.0"
-  }
+    "private": true,
+    "scripts": {
+        "build": "webpack --mode=production --node-env=production",
+        "dev": "webpack serve"
+    },
+    "dependencies": {
+        "dayjs": "^1.11.13",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "react-router-dom": "^7.6.2"
+    },
+    "devDependencies": {
+        "dotenv": "^16.5.0",
+        "html-webpack-plugin": "^5.6.3",
+        "ts-loader": "^9.5.2",
+        "typescript": "^5.8.3",
+        "webpack": "^5.99.9",
+        "webpack-cli": "^6.0.1",
+        "webpack-dev-server": "^5.2.2",
+        "webpackbar": "^7.0.0"
+    }
 }

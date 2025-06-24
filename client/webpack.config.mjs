@@ -1,15 +1,15 @@
-import webpack from "webpack";
-import { resolve } from "path";
-import HtmlWebpackPlugin from "html-webpack-plugin";
-import { config } from "dotenv";
-import WebpackBar from "webpackbar";
-import path from "path";
-import { fileURLToPath } from "url";
+import webpack from 'webpack';
+import { resolve } from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { config } from 'dotenv';
+import WebpackBar from 'webpackbar';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-config({ path: "./.env" });
-const isProduction = process.env.NODE_ENV == "production";
+config({ path: './.env' });
+const isProduction = process.env.NODE_ENV == 'production';
 if (!isProduction) {
-  config({ path: "./.env.local" });
+    config({ path: './.env.local' });
 }
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -17,67 +17,67 @@ const ENDPOINT = process.env.ENDPOINT;
 const MODULE = process.env.MODULE;
 
 export default {
-  entry: "./src/main.tsx",
-  mode: isProduction ? "production" : "development",
-  performance: {
-    hints: false,
-  },
-  output: {
-    path: resolve(__dirname, "../portals"),
-    filename: "[name].[contenthash].js",
-    clean: true,
-  },
-  devServer: {
-    host: "localhost",
-    hot: true,
-    port: "3001",
-    proxy: [
-      {
-        context: MODULE,
-        target: ENDPOINT,
-        changeOrigin: true,
-        secure: false,
-        preserveHeaderKeyCase: true,
-      },
-    ],
-    historyApiFallback: true,
-    client: {
-      overlay: false,
+    entry: './src/main.tsx',
+    mode: isProduction ? 'production' : 'development',
+    performance: {
+        hints: false,
     },
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      scriptLoading: "module",
-      template: "./src/template.html",
-    }),
-    new webpack.ProvidePlugin({
-      React: "react",
-      ReactDOM: "react-dom",
-    }),
-    new webpack.DefinePlugin({
-      "process.env": JSON.stringify(process.env),
-    }),
-    new WebpackBar(),
-  ],
-  module: {
-    rules: [
-      {
-        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-        type: "asset",
-      },
-      {
-        test: /\.tsx?$/,
-        use: "ts-loader",
-      },
+    output: {
+        path: resolve(__dirname, '../portals'),
+        filename: '[name].[contenthash].js',
+        clean: true,
+    },
+    devServer: {
+        host: 'localhost',
+        hot: true,
+        port: '3001',
+        proxy: [
+            {
+                context: MODULE,
+                target: ENDPOINT,
+                changeOrigin: true,
+                secure: false,
+                preserveHeaderKeyCase: true,
+            },
+        ],
+        historyApiFallback: true,
+        client: {
+            overlay: false,
+        },
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            scriptLoading: 'module',
+            template: './src/template.html',
+        }),
+        new webpack.ProvidePlugin({
+            React: 'react',
+            ReactDOM: 'react-dom',
+        }),
+        new webpack.DefinePlugin({
+            'process.env': JSON.stringify(process.env),
+        }),
+        new WebpackBar(),
+    ],
+    module: {
+        rules: [
+            {
+                test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+                type: 'asset',
+            },
+            {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+            },
 
-      // Add your rules for custom modules here
-      // Learn more about loaders from https://webpack.js.org/loaders/
-    ],
-  },
-  resolve: {
-    extensions: [".tsx", ".ts", ".js"],
-    alias: {
-      "@": resolve(__dirname, "./src"),
+            // Add your rules for custom modules here
+            // Learn more about loaders from https://webpack.js.org/loaders/
+        ],
     },
-  },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js'],
+        alias: {
+            '@': resolve(__dirname, './src'),
+        },
+    },
 };
