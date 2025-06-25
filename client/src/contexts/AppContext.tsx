@@ -27,7 +27,7 @@ export const useAppContext = () => {
 };
 
 export const AppContextProvider = ({ children }: PropsWithChildren) => {
-    const { isReady, actions } = useInsight();
+    const { actions, isReady } = useInsight();
 
     /**
      * State

@@ -9,3 +9,4 @@ classes/
 # Local configuration files
 *.local
 java/project.properties
+.admin/
