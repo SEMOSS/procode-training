@@ -2,6 +2,8 @@ import { Env } from '@semoss/sdk';
 import { InsightProvider } from '@semoss/sdk-react';
 import { AppContextProvider } from './contexts';
 import { Router } from './pages';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { THEME } from './theme';
 
 Env.update({
     MODULE: process.env.MODULE || '',
@@ -21,8 +23,13 @@ export const App = () => {
         <InsightProvider>
             {/* The AppContextProvider stores data specific to the current app, and runPixel */}
             <AppContextProvider>
-                {/* The Router decides which page to render based on the url */}
-                <Router />
+                {/* The ThemeProvider and CssBaseline add MUI to provide styling */}
+                <ThemeProvider theme={THEME}>
+                    <CssBaseline />
+
+                    {/* The Router decides which page to render based on the url */}
+                    <Router />
+                </ThemeProvider>
             </AppContextProvider>
         </InsightProvider>
     );

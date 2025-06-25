@@ -14,9 +14,9 @@ export const AuthorizedLayout = () => {
     if (!isAuthorized) return <Navigate to={ROUTE_PATH_LOGIN_PAGE} />;
 
     return (
-        <div>
+        <>
             <MainNavigation />
             <Outlet />
-        </div>
+        </>
     );
 };

@@ -6,6 +6,9 @@
         "fix": "pnpm --dir ../ fix"
     },
     "dependencies": {
+        "@emotion/react": "^11.14.0",
+        "@emotion/styled": "^11.14.0",
+        "@mui/material": "^7.1.2",
         "@semoss/sdk": "1.0.0-beta.28",
         "@semoss/sdk-react": "1.0.0-beta.20",
         "dayjs": "^1.11.13",
