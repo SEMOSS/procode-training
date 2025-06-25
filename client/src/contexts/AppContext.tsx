@@ -1,3 +1,4 @@
+import { useLoadingState } from '@/hooks';
 import { useInsight } from '@semoss/sdk-react';
 import {
     createContext,
@@ -10,12 +11,18 @@ import {
 
 export interface AppContextType {
     runPixel: <T = unknown>(pixelString: string) => Promise<T>;
+    isAppDataLoading: boolean;
     onePlusTwo: number;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-export const useAppContext = () => {
+/**
+ * Custom hook to get the stored app data and runPixel.
+ *
+ * @returns {AppContextType} - The data
+ */
+export const useAppContext = (): AppContextType => {
     const context = useContext(AppContext);
     if (!context) {
         throw new Error(
@@ -26,12 +33,20 @@ export const useAppContext = () => {
     return context;
 };
 
+/**
+ * Stores data accessible to the entire app. Must be used within an InsightProvider.
+ *
+ * @param {ReactNode} props.children The children who will have access to the app data.
+ * @component
+ */
 export const AppContextProvider = ({ children }: PropsWithChildren) => {
+    // Get the current state of the current insight
     const { actions, isReady } = useInsight();
 
     /**
      * State
      */
+    const [isAppDataLoading, setIsAppDataLoading] = useLoadingState(true);
     const [onePlusTwo, setOnePlusTwo] = useState<number>();
 
     /**
@@ -50,15 +65,19 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
      */
     useEffect(() => {
         if (isReady) {
+            // If the insight is ready, then load the app data
             (async () => {
+                const loadingKey = setIsAppDataLoading(true);
                 const response = await runPixel<number>('1 + 2');
-                setOnePlusTwo(response);
+                setIsAppDataLoading(false, loadingKey, () =>
+                    setOnePlusTwo(response),
+                );
             })();
         }
     }, [isReady, runPixel, setOnePlusTwo]);
 
     return (
-        <AppContext.Provider value={{ runPixel, onePlusTwo }}>
+        <AppContext.Provider value={{ runPixel, onePlusTwo, isAppDataLoading }}>
             {children}
         </AppContext.Provider>
     );

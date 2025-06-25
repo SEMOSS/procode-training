@@ -6,24 +6,28 @@ import WebpackBar from 'webpackbar';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+// Load the .env variables
 config({ path: './.env' });
 const isProduction = process.env.NODE_ENV == 'production';
+
+// If the mode is not production, load the .env.local variables too
 if (!isProduction) {
     config({ path: './.env.local' });
 }
 
+// Store some information that will be re-used in variables
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ENDPOINT = process.env.ENDPOINT;
 const MODULE = process.env.MODULE;
 
 export default {
-    entry: './src/main.tsx',
+    entry: './src/main.tsx', // This is where the react app starts
     mode: isProduction ? 'production' : 'development',
     performance: {
         hints: false,
     },
     output: {
-        path: resolve(__dirname, '../portals'),
+        path: resolve(__dirname, '../portals'), // This is where the compiled file will be placed
         filename: '[name].[contenthash].js',
         clean: true,
     },

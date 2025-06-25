@@ -3,19 +3,25 @@ import { InsightProvider } from '@semoss/sdk-react';
 import { AppContextProvider } from './contexts';
 import { Router } from './pages';
 
-if (process.env.NODE_ENV !== 'production') {
-    Env.update({
-        MODULE: process.env.MODULE || '',
-        ACCESS_KEY: process.env.ACCESS_KEY || '',
-        SECRET_KEY: process.env.SECRET_KEY || '',
-        APP: process.env.APP || '',
-    });
-}
+Env.update({
+    MODULE: process.env.MODULE || '',
+    ACCESS_KEY: process.env.ACCESS_KEY, // undefined in production
+    SECRET_KEY: process.env.SECRET_KEY, // undefined in production
+    APP: process.env.APP || '',
+});
 
+/**
+ * Renders the SEMOSS React app.
+ *
+ * @component
+ */
 export const App = () => {
     return (
+        // The InsightProvider starts a new Insight and sets the context to the current project
         <InsightProvider>
+            {/* The AppContextProvider stores data specific to the current app, and runPixel */}
             <AppContextProvider>
+                {/* The Router decides which page to render based on the url */}
                 <Router />
             </AppContextProvider>
         </InsightProvider>

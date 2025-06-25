@@ -2,7 +2,8 @@
     "private": true,
     "scripts": {
         "build": "webpack --mode=production --node-env=production",
-        "dev": "webpack serve"
+        "dev": "webpack serve",
+        "fix": "pnpm --dir ../ fix"
     },
     "dependencies": {
         "@semoss/sdk": "1.0.0-beta.28",
