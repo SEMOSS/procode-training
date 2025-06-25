@@ -1,6 +1,11 @@
 import { useAppContext } from '@/contexts';
 import { usePixel } from '@/hooks';
 
+/**
+ * Renders a temporary test page.
+ *
+ * @component
+ */
 export const PageA = () => {
     const { runPixel } = useAppContext();
 

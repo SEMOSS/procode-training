@@ -12,9 +12,15 @@ type toggleLoadingType = ((loading?: true) => number) &
 export const useLoadingState = (
     initialValue: boolean = false,
 ): [boolean, toggleLoadingType, () => void] => {
+    /**
+     * State / Refs
+     */
     const [isLoading, setIsLoading] = useState<boolean>(initialValue);
     const loadingStateRef = useRef<number>(0); // Stores the id of the most recent call
 
+    /**
+     * Functions
+     */
     const toggleLoading = useCallback(
         (
             loading: boolean = true,
