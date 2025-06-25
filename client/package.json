@@ -23,11 +23,5 @@
         "webpack-cli": "^6.0.1",
         "webpack-dev-server": "^5.2.2",
         "webpackbar": "^7.0.0"
-    },
-    "lint-staged": {
-        "**/*.{js,jsx,ts,tsx,json,html,css}": [
-            "prettier --write",
-            "eslint"
-        ]
     }
 }
