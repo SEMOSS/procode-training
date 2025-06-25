@@ -1,4 +1,7 @@
+import { useLoadingState } from '@/hooks';
+import { Button, Stack, TextField } from '@mui/material';
 import { useInsight } from '@semoss/sdk-react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { Navigate } from 'react-router';
 
 /**
@@ -7,9 +10,96 @@ import { Navigate } from 'react-router';
  * @component
  */
 export const LoginPage = () => {
-    const { isAuthorized } = useInsight();
+    const { isAuthorized, actions } = useInsight();
+    if (isAuthorized) return <Navigate to="/" />; // If already authorized, proceed to home page
 
-    if (isAuthorized) return <Navigate to="/" />;
+    /**
+     * State / Refs
+     */
+    const [username, setUsername] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [isLoginLoading, setIsLoginLoading] = useLoadingState(false);
+    const [showError, setShowError] = useState<boolean>(false); // State to show the user that there was an error with their login
+    const passwordInputRef = useRef<HTMLInputElement>(null); // A ref to store the password input, so that pressing Enter in the username box will focus it
 
-    return <div>Login page</div>;
+    /**
+     * Functions
+     */
+    const passwordLogin = async () => {
+        const loadingKey = setIsLoginLoading(true);
+        try {
+            // Attempt to log in
+            await actions.login({
+                type: 'native',
+                username,
+                password,
+            });
+        } catch {
+            // actions.login throws an error if the request was bad, so tell the user and take them back to pw
+            setShowError(true);
+            passwordInputRef.current?.focus();
+        } finally {
+            setIsLoginLoading(false, loadingKey);
+        }
+    };
+
+    // When the user begins typing, clear out the errors
+    const updateState = (
+        state: 'username' | 'password',
+        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ) => {
+        setShowError(false);
+        (state === 'username' ? setUsername : setPassword)(event.target.value);
+    };
+
+    /**
+     * Constants
+     */
+    const isLoginReady = username && password && !showError;
+
+    return (
+        <Stack spacing={2}>
+            <TextField
+                label="Username"
+                value={username}
+                onChange={(event) => updateState('username', event)}
+                error={showError}
+                required
+                disabled={isLoginLoading}
+                onKeyDown={(event) => {
+                    if (event.key === 'Enter' && username) {
+                        // If the user hits enter, take them to the password box
+                        passwordInputRef.current?.focus();
+                    }
+                }}
+            />
+            <TextField
+                label="Password"
+                value={password}
+                onChange={(event) => updateState('password', event)}
+                error={showError}
+                required
+                helperText={
+                    showError ? 'Username and password do not match' : ' '
+                }
+                disabled={isLoginLoading}
+                type="password"
+                onKeyDown={(event) => {
+                    if (event.key === 'Enter' && isLoginReady) {
+                        // If the user hits Enter, have them attempt to log in
+                        passwordLogin();
+                    }
+                }}
+                inputRef={passwordInputRef}
+            />
+            <Button
+                variant="contained"
+                onClick={passwordLogin}
+                disabled={!isLoginReady}
+                loading={isLoginLoading}
+            >
+                Log in
+            </Button>
+        </Stack>
+    );
 };
