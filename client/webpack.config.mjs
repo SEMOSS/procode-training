@@ -51,6 +51,7 @@ export default {
     },
     plugins: [
         new HtmlWebpackPlugin({
+            favicon: './src/assets/favicon.svg',
             scriptLoading: 'module',
             template: './src/template.html',
         }),

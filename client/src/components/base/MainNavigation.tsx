@@ -2,6 +2,7 @@ import { Button, Stack, styled, Typography, useTheme } from '@mui/material';
 import { SemossBlueLogo } from '@/assets';
 import { useNavigate } from 'react-router';
 import { ROUTE_PATH_PAGE_A } from '@/pages/routes.constants';
+import { useInsight } from '@semoss/sdk-react';
 
 // A Stack with a different-colored background
 const StyledStack = styled(Stack)(({ theme }) => ({
@@ -30,11 +31,12 @@ const navigationButtons: {
 ];
 
 /**
- * The main navigation bar allowing users to move between pages.
+ * The main navigation bar allowing users to move between pages, if they are authorized.
  *
  * @component
  */
 export const MainNavigation = () => {
+    const { isAuthorized } = useInsight(); // Read whether the user is authorized
     const { spacing } = useTheme();
     const navigate = useNavigate();
 
@@ -50,7 +52,8 @@ export const MainNavigation = () => {
                 direction="row"
                 alignItems="center"
                 spacing={2}
-                onClick={() => navigate('/')}
+                // Only let them navigate when authorized
+                onClick={isAuthorized ? () => navigate('/') : undefined}
             >
                 <img
                     src={SemossBlueLogo}
@@ -62,16 +65,17 @@ export const MainNavigation = () => {
                 </Typography>
             </CursorStack>
 
-            {/* Display the navigation buttons */}
-            {navigationButtons.map((page) => (
-                <Button
-                    key={page.path}
-                    onClick={() => navigate(page.path)}
-                    color="inherit"
-                >
-                    {page.text}
-                </Button>
-            ))}
+            {/* Display the navigation buttons when authorized */}
+            {isAuthorized &&
+                navigationButtons.map((page) => (
+                    <Button
+                        key={page.path}
+                        onClick={() => navigate(page.path)}
+                        color="inherit"
+                    >
+                        {page.text}
+                    </Button>
+                ))}
         </StyledStack>
     );
 };
