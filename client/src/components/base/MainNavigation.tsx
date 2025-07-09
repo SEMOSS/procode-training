@@ -36,7 +36,7 @@ const navigationButtons: {
  * @component
  */
 export const MainNavigation = () => {
-    const { isAuthorized } = useInsight(); // Read whether the user is authorized
+    const { isAuthorized } = useInsight(); // Read whether the user is authorized, so that buttons only work if they are
     const { spacing } = useTheme();
     const navigate = useNavigate();
 

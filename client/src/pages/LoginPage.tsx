@@ -2,7 +2,7 @@ import { useLoadingState } from '@/hooks';
 import { Button, Stack, TextField } from '@mui/material';
 import { useInsight } from '@semoss/sdk-react';
 import { ChangeEvent, useRef, useState } from 'react';
-import { Navigate } from 'react-router';
+import { Navigate, useLocation } from 'react-router';
 
 /**
  * Renders a the login page if the user is not already logged in, otherwise sends them to the home page.
@@ -11,7 +11,10 @@ import { Navigate } from 'react-router';
  */
 export const LoginPage = () => {
     const { isAuthorized, actions } = useInsight();
-    if (isAuthorized) return <Navigate to="/" />; // If already authorized, proceed to home page
+    const { state } = useLocation(); // If the user was routed here, then there may be information about where they were trying to go
+
+    // If the user is already authorized, we can route them off of this page. If the user was routed here, attempt to send them back to their target
+    if (isAuthorized) return <Navigate to={state ?? '/'} />;
 
     /**
      * State / Refs
