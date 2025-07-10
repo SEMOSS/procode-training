@@ -64,15 +64,19 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
      * Effects
      */
     useEffect(() => {
+        const loadAppData = async () => {
+            const loadingKey = setIsAppDataLoading(true);
+
+            const response = await runPixel<number>('1 + 2');
+
+            setIsAppDataLoading(false, loadingKey, () =>
+                setOnePlusTwo(response),
+            );
+        };
+
         if (isReady) {
             // If the insight is ready, then load the app data
-            (async () => {
-                const loadingKey = setIsAppDataLoading(true);
-                const response = await runPixel<number>('1 + 2');
-                setIsAppDataLoading(false, loadingKey, () =>
-                    setOnePlusTwo(response),
-                );
-            })();
+            loadAppData();
         }
     }, [isReady, runPixel, setOnePlusTwo]);
 
