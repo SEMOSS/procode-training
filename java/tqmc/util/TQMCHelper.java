@@ -87,7 +87,6 @@ import tqmc.domain.soc.SocCaseType;
 import tqmc.domain.soc.SocNurseReview;
 import tqmc.domain.soc.SocWorkflow;
 import tqmc.domain.user.TQMCUserInfo;
-import tqmc.reactors.soc.GetSocRecordReactor;
 
 public class TQMCHelper {
 
@@ -5116,111 +5115,6 @@ public class TQMCHelper {
       }
     }
     return output;
-  }
-
-  public static NounMetadata getSocRecordHelper(Connection con, String queriedRecord)
-      throws SQLException {
-    Map<String, Object> output = new HashMap<>();
-
-    try (PreparedStatement recordStatement =
-            con.prepareStatement(GetSocRecordReactor.SOC_RECORD_QUERY);
-        PreparedStatement mtfStatement = con.prepareStatement(GetSocRecordReactor.MTF_QUERY);
-        PreparedStatement providerStatement =
-            con.prepareStatement(GetSocRecordReactor.PROVIDER_QUERY);
-        PreparedStatement dueDateStatement =
-            con.prepareStatement(GetSocRecordReactor.DUE_DATE_QUERY); ) {
-
-      recordStatement.setString(1, queriedRecord);
-      mtfStatement.setString(1, queriedRecord);
-      providerStatement.setString(1, queriedRecord);
-      dueDateStatement.setString(1, queriedRecord);
-
-      if (recordStatement.execute()) {
-        ResultSet recordResults = recordStatement.getResultSet();
-
-        // add query results to map
-        while (recordResults.next()) {
-          String recordId = recordResults.getString("RECORD_ID");
-          output.put("record_id", recordId);
-          output.put(
-              "updated_at",
-              ConversionUtils.getLocalDateTimeStringFromTimestamp(
-                  recordResults.getTimestamp("UPDATED_AT")));
-          output.put("alias_record_id", recordResults.getString("ALIAS_RECORD_ID"));
-          output.put("patient_last_name", recordResults.getString("PATIENT_LAST_NAME"));
-          output.put("patient_first_name", recordResults.getString("PATIENT_FIRST_NAME"));
-          output.put("nurse_due_date_review", recordResults.getString("DUE_DATE_REVIEW"));
-          output.put("nurse_due_date_dha", recordResults.getString("DUE_DATE_DHA"));
-
-          // execute MTF query
-          List<String> mtfs = new ArrayList<>();
-          if (mtfStatement.execute()) {
-            ResultSet mtfResults = mtfStatement.getResultSet();
-
-            // add results to list
-            while (mtfResults.next()) {
-              mtfs.add(mtfResults.getString("DMIS_ID"));
-            }
-          }
-          output.put("mtf_list", mtfs);
-
-          // execute providers query
-          List<Map<String, Object>> providers = new ArrayList<>();
-          if (providerStatement.execute()) {
-            ResultSet providerResults = providerStatement.getResultSet();
-
-            // add results to list
-            while (providerResults.next()) {
-              HashMap<String, Object> currProvider = new HashMap<String, Object>();
-              currProvider.put(
-                  "case_provider_evaluation_id",
-                  providerResults.getString("CASE_PROVIDER_EVALUATION_ID"));
-              currProvider.put("provider_name", providerResults.getString("PROVIDER_NAME"));
-              currProvider.put(
-                  "case_assigned", Boolean.valueOf(providerResults.getBoolean("CASE_ASSIGNED")));
-              currProvider.put("specialty_id", providerResults.getString("SPECIALTY_ID"));
-              providers.add(currProvider);
-            }
-          }
-          output.put("providers", providers);
-          output.put("has_assigned_cases", hasAssignedCases(con, recordId, ProductTables.SOC));
-          if (dueDateStatement.execute()) {
-            ResultSet dueDateResults = dueDateStatement.getResultSet();
-            Map<String, Object> dueDateMap = new HashMap<>();
-            while (dueDateResults.next()) {
-              String specialtyId = dueDateResults.getString("specialty_id");
-              String dueDateReview =
-                  ConversionUtils.getLocalDateStringFromDate(
-                      dueDateResults.getDate("due_date_review"));
-              String dueDateDHA =
-                  ConversionUtils.getLocalDateStringFromDate(
-                      dueDateResults.getDate("due_date_dha"));
-              String providerCount = dueDateResults.getString("provider_count").toString();
-
-              Map<String, String> specialtyIdMap = new HashMap<>();
-              specialtyIdMap.put("specialty_id", specialtyId);
-              specialtyIdMap.put("due_date_review", dueDateReview);
-              specialtyIdMap.put("due_date_dha", dueDateDHA);
-              specialtyIdMap.put("provider_count", providerCount);
-
-              dueDateMap.put(specialtyId, specialtyIdMap);
-            }
-            output.put("due_date_map", dueDateMap);
-          }
-        }
-      }
-    }
-
-    // check that record being queried exists
-    if (output.isEmpty()) {
-      throw new TQMCException(ErrorCode.NOT_FOUND, "Record not found");
-    }
-
-    List<RecordFile> recordFiles = getRecordFiles(con, ProductTables.SOC, queriedRecord);
-    output.put(
-        "files", recordFiles.parallelStream().map(e -> e.toMap()).collect(Collectors.toList()));
-
-    return new NounMetadata(output, PixelDataType.MAP);
   }
 
   public static boolean canStartGttCase(Connection con, GttWorkflow wf) throws SQLException {

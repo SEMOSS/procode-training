@@ -9,7 +9,6 @@ import prerna.sablecc2.om.nounmeta.NounMetadata;
 import tqmc.domain.base.ErrorCode;
 import tqmc.domain.base.TQMCException;
 import tqmc.reactors.AbstractTQMCReactor;
-import tqmc.reactors.mn.GetMnAppealTypesReactor;
 import tqmc.reactors.user.GetTqmcUserInfoReactor;
 import tqmc.util.TQMCConstants;
 
@@ -29,14 +28,12 @@ public class GetTqmcLoadupInfoReactor extends AbstractTQMCReactor {
     GetSpecialtyMapReactor getSpecialtyMapReactor = new GetSpecialtyMapReactor();
     GetMTFsReactor getMTFsReactor = new GetMTFsReactor();
     GetTqmcVersionReactor getTqmcVersionReactor = new GetTqmcVersionReactor();
-    GetMnAppealTypesReactor getMnAppealTypesReactor = new GetMnAppealTypesReactor();
     tqmcUserInfoReactor.setInsight(this.insight);
     tqmcMaintenanceReactor.setInsight(this.insight);
     getActiveProductsReactor.setInsight(this.insight);
     getSpecialtyMapReactor.setInsight(this.insight);
     getMTFsReactor.setInsight(this.insight);
     getTqmcVersionReactor.setInsight(this.insight);
-    getMnAppealTypesReactor.setInsight(this.insight);
     try {
       output.put("GetTqmcMaintenance", tqmcMaintenanceReactor.execute().getValue());
       output.put("GetTqmcUserInfo", tqmcUserInfoReactor.execute().getValue());
@@ -44,9 +41,6 @@ public class GetTqmcLoadupInfoReactor extends AbstractTQMCReactor {
       output.put("GetSpecialtyMap", getSpecialtyMapReactor.execute().getValue());
       output.put("GetMTFs", getMTFsReactor.execute().getValue());
       output.put("GetTqmcVersion", getTqmcVersionReactor.execute().getValue());
-      if (hasProductPermission(TQMCConstants.MN)) {
-        output.put("GetMnAppealTypes", getMnAppealTypesReactor.execute().getValue());
-      }
     } catch (Exception e) {
       throw new TQMCException(ErrorCode.INTERNAL_SERVER_ERROR, e);
     }
