@@ -51,7 +51,6 @@ import prerna.util.Utility;
 import tqmc.domain.base.ErrorCode;
 import tqmc.domain.base.RecordFile;
 import tqmc.domain.base.TQMCException;
-import tqmc.domain.user.TQMCUserInfo;
 
 /*
 
@@ -139,39 +138,6 @@ public class FileUtils {
 
   private String getRecordPath(String productLine, String recordId) {
     return "tqmc_files/" + productLine + "/" + recordId;
-  }
-
-  public void downloadFileFromRecord(
-      Insight insight,
-      String productLine,
-      String recordId,
-      String recordFileId,
-      String fileName,
-      TQMCUserInfo requestingUser) {
-    if (insight.getExportInsightFiles().containsKey(recordFileId)) {
-      LOGGER.info("File download for {}:{} already exists", productLine, recordFileId);
-      return;
-    }
-
-    String path = getRecordPath(productLine, recordId) + "/" + recordFileId;
-
-    String assetDirectory =
-        AssetUtility.getRootFolderPath(insight, AssetUtility.INSIGHT_SPACE_KEY, true);
-
-    String downloadedFilePath;
-    if (isProject) {
-      downloadedFilePath =
-          downloadFileFromProject(path, assetDirectory, fileName, requestingUser.getNpi());
-    } else {
-      downloadedFilePath =
-          downloadFileFromStorage(path, assetDirectory, fileName, requestingUser.getNpi());
-    }
-
-    InsightFile insightFile = new InsightFile();
-    insightFile.setFileKey(recordFileId);
-    insightFile.setFilePath(Utility.normalizePath(downloadedFilePath));
-    insightFile.setDeleteOnInsightClose(true);
-    insight.addExportFile(recordFileId, insightFile);
   }
 
   public void uploadFilesToRecord(

@@ -69,11 +69,6 @@ import tqmc.domain.base.RecordFile;
 import tqmc.domain.base.Sort;
 import tqmc.domain.base.TQMCException;
 import tqmc.domain.mapper.CustomMapper;
-import tqmc.domain.qu.dp.DpCase;
-import tqmc.domain.qu.dp.DpWorkflow;
-import tqmc.domain.qu.mcsc.McscCase;
-import tqmc.domain.qu.mcsc.McscWorkflow;
-import tqmc.domain.user.TQMCUserInfo;
 
 public class TQMCHelper {
 
@@ -716,125 +711,6 @@ public class TQMCHelper {
     }
   }
 
-  public static TQMCUserInfo getTQMCUserInfo(Connection con, String userId) throws SQLException {
-    TQMCUserInfo tui = null;
-
-    try (PreparedStatement ps =
-        con.prepareStatement(
-            "WITH UserProducts AS "
-                + "(SELECT tu.USER_ID, STRING_AGG(tp.PRODUCT_ID, '||') "
-                + "AS product_ids FROM TQMC_USER tu "
-                + "LEFT OUTER JOIN TQMC_USER_PRODUCT tup ON tup.USER_ID = tu.USER_ID "
-                + "LEFT OUTER JOIN TQMC_PRODUCT tp ON tp.PRODUCT_ID = tup.PRODUCT_ID AND tp.IS_ACTIVE = 1 "
-                + "WHERE tu.USER_ID = ? GROUP BY tu.USER_ID) "
-                + "SELECT tu.USER_ID, tu.IS_ACTIVE, tu.ROLE, tu.EMAIL, tu.FIRST_NAME, tu.LAST_NAME, "
-                + "tu.PHONE, tu.NPI, tu.CREATED_AT, tu.UPDATED_AT, up.product_ids, "
-                + "tus.specialty_id "
-                + "FROM TQMC_USER tu LEFT OUTER JOIN UserProducts up "
-                + "ON up.USER_ID = tu.USER_ID "
-                + "LEFT OUTER JOIN TQMC_USER_SPECIALTY tus "
-                + "ON tus.user_id = tu.USER_ID "
-                + "WHERE tu.USER_ID = ?")) {
-      ps.setString(1, userId);
-      ps.setString(2, userId);
-      if (ps.execute()) {
-        ResultSet rs = ps.getResultSet();
-
-        if (rs.next()) {
-          tui = new TQMCUserInfo();
-
-          tui.setUserId(rs.getString("USER_ID"));
-          tui.setIsActive(rs.getInt("IS_ACTIVE") == 1);
-          tui.setRole(rs.getString("ROLE"));
-          tui.setEmail(rs.getString("EMAIL"));
-          tui.setFirstName(rs.getString("FIRST_NAME"));
-          tui.setLastName(rs.getString("LAST_NAME"));
-          tui.setPhone(rs.getString("PHONE"));
-          tui.setNpi(rs.getString("NPI"));
-          tui.setCreatedAt(
-              ConversionUtils.getLocalDateTimeFromTimestamp(rs.getTimestamp("CREATED_AT")));
-          tui.setUpdatedAt(
-              ConversionUtils.getLocalDateTimeFromTimestamp(rs.getTimestamp("UPDATED_AT")));
-
-          String productIds = rs.getString("product_ids");
-          if (productIds != null) {
-            for (String productId : productIds.split("\\|\\|")) {
-              tui.getProducts().add(productId);
-            }
-          }
-          String specialtyId = rs.getString("specialty_id");
-
-          if (specialtyId != null) {
-            tui.getSpecialtyIds().add(specialtyId);
-          }
-        }
-
-        while (rs.next()) {
-          String specialtyId = rs.getString("specialty_id");
-          if (specialtyId != null) {
-            tui.getSpecialtyIds().add(specialtyId);
-          }
-        }
-      }
-    }
-    return tui;
-  }
-
-  public static void createTQMCUser(Connection con, TQMCUserInfo tqmcUserInfo) throws SQLException {
-    try (PreparedStatement ps =
-        con.prepareStatement(
-            "INSERT INTO TQMC_USER "
-                + "(CREATED_AT, NPI, EMAIL, FIRST_NAME, IS_ACTIVE, LAST_NAME, PHONE, \"ROLE\", UPDATED_AT, USER_ID) "
-                + "VALUES (?,?,?,?,?, ?,?,?,?,?)")) {
-      int parameterIndex = 1;
-      ps.setObject(parameterIndex++, tqmcUserInfo.getCreatedAt());
-      ps.setString(parameterIndex++, tqmcUserInfo.getNpi());
-      ps.setString(parameterIndex++, tqmcUserInfo.getEmail());
-      ps.setString(parameterIndex++, tqmcUserInfo.getFirstName());
-      ps.setInt(parameterIndex++, 1);
-      ps.setString(parameterIndex++, tqmcUserInfo.getLastName());
-      ps.setString(parameterIndex++, tqmcUserInfo.getPhone());
-      ps.setString(parameterIndex++, tqmcUserInfo.getRole());
-      ps.setObject(parameterIndex++, tqmcUserInfo.getUpdatedAt());
-      ps.setString(parameterIndex++, tqmcUserInfo.getUserId());
-      ps.execute();
-    }
-
-    if (tqmcUserInfo.getSpecialtyIds() != null && !tqmcUserInfo.getSpecialtyIds().isEmpty()) {
-      try (PreparedStatement ps =
-          con.prepareStatement(
-              "INSERT INTO TQMC_USER_SPECIALTY "
-                  + "(SPECIALTY_ID, USER_ID, USER_SPECIALTY_ID) "
-                  + "VALUES (?,?,?)")) {
-        for (String specialtyId : tqmcUserInfo.getSpecialtyIds()) {
-          int parameterIndex = 1;
-          ps.setString(parameterIndex++, specialtyId);
-          ps.setString(parameterIndex++, tqmcUserInfo.getUserId());
-          ps.setString(parameterIndex++, UUID.randomUUID().toString());
-          ps.addBatch();
-        }
-        ps.executeBatch();
-      }
-    }
-
-    if (tqmcUserInfo.getProducts() != null && !tqmcUserInfo.getProducts().isEmpty()) {
-      try (PreparedStatement ps =
-          con.prepareStatement(
-              "INSERT INTO TQMC_USER_PRODUCT "
-                  + "(PRODUCT_ID, USER_ID, USER_PRODUCT_ID) "
-                  + "VALUES (?,?,?)")) {
-        for (String productId : tqmcUserInfo.getProducts()) {
-          int parameterIndex = 1;
-          ps.setString(parameterIndex++, productId);
-          ps.setString(parameterIndex++, tqmcUserInfo.getUserId());
-          ps.setString(parameterIndex++, UUID.randomUUID().toString());
-          ps.addBatch();
-        }
-        ps.executeBatch();
-      }
-    }
-  }
-
   public static void createRecordFiles(
       Connection con, ProductTables product, List<RecordFile> recordFiles) throws SQLException {
     if (product == null || recordFiles == null || recordFiles.isEmpty()) {
@@ -1337,64 +1213,6 @@ public class TQMCHelper {
     return result;
   }
 
-  public static McscCase getMcscCase(Connection con, String caseId) throws SQLException {
-    McscCase result = null;
-
-    try (PreparedStatement ps =
-        con.prepareStatement(
-            "SELECT mc.ASSIGNED_AT, mc.CREATED_AT, mc.UPDATED_AT, mc.DELETED_AT, mc.RECORD_ID, mc.USER_ID, qr.REQUESTED_AT, qr.RECEIVED_AT, mc.REOPENING_REASON FROM MCSC_CASE mc INNER JOIN QU_RECORD qr ON qr.RECORD_ID = mc.RECORD_ID WHERE mc.CASE_ID = ?")) {
-      ps.setString(1, caseId);
-      if (ps.execute()) {
-        ResultSet rs = ps.getResultSet();
-        if (rs.next()) {
-          result =
-              new McscCase(
-                  caseId,
-                  ConversionUtils.getLocalDateTimeFromTimestamp(rs.getTimestamp("ASSIGNED_AT")),
-                  ConversionUtils.getLocalDateTimeFromTimestamp(rs.getTimestamp("CREATED_AT")),
-                  ConversionUtils.getLocalDateTimeFromTimestamp(rs.getTimestamp("UPDATED_AT")),
-                  ConversionUtils.getLocalDateTimeFromTimestamp(rs.getTimestamp("DELETED_AT")),
-                  rs.getString("RECORD_ID"),
-                  rs.getString("USER_ID"),
-                  ConversionUtils.getLocalDateTimeFromTimestamp(rs.getTimestamp("REQUESTED_AT")),
-                  ConversionUtils.getLocalDateTimeFromTimestamp(rs.getTimestamp("RECEIVED_AT")),
-                  rs.getString("REOPENING_REASON"));
-        }
-      }
-    }
-
-    return result;
-  }
-
-  public static DpCase getDpCase(Connection con, String caseId) throws SQLException {
-    DpCase result = null;
-
-    try (PreparedStatement ps =
-        con.prepareStatement(
-            "SELECT dp.ASSIGNED_AT, dp.CREATED_AT, dp.UPDATED_AT, dp.DELETED_AT, dp.RECORD_ID, dp.USER_ID, qr.REQUESTED_AT, qr.RECEIVED_AT, dp.REOPENING_REASON FROM DP_CASE dp INNER JOIN QU_RECORD qr ON qr.RECORD_ID = dp.RECORD_ID WHERE dp.CASE_ID = ?")) {
-      ps.setString(1, caseId);
-      if (ps.execute()) {
-        ResultSet rs = ps.getResultSet();
-        if (rs.next()) {
-          result =
-              new DpCase(
-                  caseId,
-                  ConversionUtils.getLocalDateTimeFromTimestamp(rs.getTimestamp("ASSIGNED_AT")),
-                  ConversionUtils.getLocalDateTimeFromTimestamp(rs.getTimestamp("CREATED_AT")),
-                  ConversionUtils.getLocalDateTimeFromTimestamp(rs.getTimestamp("UPDATED_AT")),
-                  ConversionUtils.getLocalDateTimeFromTimestamp(rs.getTimestamp("DELETED_AT")),
-                  rs.getString("RECORD_ID"),
-                  rs.getString("USER_ID"),
-                  ConversionUtils.getLocalDateTimeFromTimestamp(rs.getTimestamp("REQUESTED_AT")),
-                  ConversionUtils.getLocalDateTimeFromTimestamp(rs.getTimestamp("RECEIVED_AT")),
-                  rs.getString("REOPENING_REASON"));
-        }
-      }
-    }
-
-    return result;
-  }
-
   public static void sendMNAssignmentEmail(
       String caseAssignmentType,
       String mnCaseType,
@@ -1517,67 +1335,6 @@ public class TQMCHelper {
     } catch (Exception e) {
       throw new TQMCException(
           ErrorCode.INTERNAL_SERVER_ERROR, "Failed to send email to " + to + " with cc " + cc, e);
-    }
-  }
-
-  public static void createNewMcscWorkflowEntry(Connection con, McscWorkflow w)
-      throws SQLException {
-    if (w == null) {
-      return;
-    }
-    try (PreparedStatement ps =
-        con.prepareStatement(
-            "UPDATE MCSC_WORKFLOW SET IS_LATEST = 0 " + "WHERE CASE_ID = ? AND IS_LATEST = 1")) {
-      ps.setString(1, w.getCaseId());
-      ps.execute();
-    }
-
-    try (PreparedStatement ps =
-        con.prepareStatement(
-            "INSERT INTO MCSC_WORKFLOW (CASE_ID, GUID, IS_LATEST, "
-                + "RECIPIENT_USER_ID, SENDING_USER_ID, SMSS_TIMESTAMP, STEP_STATUS, "
-                + "WORKFLOW_NOTES) "
-                + "VALUES (?,?,?,?,?, ?,?,?)")) {
-      int parameterIndex = 1;
-      ps.setString(parameterIndex++, w.getCaseId());
-      ps.setString(parameterIndex++, w.getGuid());
-      ps.setInt(parameterIndex++, Boolean.TRUE == w.getIsLatest() ? 1 : 0);
-      ps.setString(parameterIndex++, w.getRecipientUserId());
-      ps.setString(parameterIndex++, w.getSendingUserId());
-      ps.setObject(parameterIndex++, w.getSmssTimestamp());
-      ps.setString(parameterIndex++, w.getStepStatus());
-      ps.setString(parameterIndex++, w.getWorkflowNotes());
-      ps.execute();
-    }
-  }
-
-  public static void createNewDpWorkflowEntry(Connection con, DpWorkflow w) throws SQLException {
-    if (w == null) {
-      return;
-    }
-    try (PreparedStatement ps =
-        con.prepareStatement(
-            "UPDATE DP_WORKFLOW SET IS_LATEST = 0 " + "WHERE CASE_ID = ? AND IS_LATEST = 1")) {
-      ps.setString(1, w.getCaseId());
-      ps.execute();
-    }
-
-    try (PreparedStatement ps =
-        con.prepareStatement(
-            "INSERT INTO DP_WORKFLOW (CASE_ID, GUID, IS_LATEST, "
-                + "RECIPIENT_USER_ID, SENDING_USER_ID, SMSS_TIMESTAMP, STEP_STATUS, "
-                + "WORKFLOW_NOTES) "
-                + "VALUES (?,?,?,?,?, ?,?,?)")) {
-      int parameterIndex = 1;
-      ps.setString(parameterIndex++, w.getCaseId());
-      ps.setString(parameterIndex++, w.getGuid());
-      ps.setInt(parameterIndex++, Boolean.TRUE == w.getIsLatest() ? 1 : 0);
-      ps.setString(parameterIndex++, w.getRecipientUserId());
-      ps.setString(parameterIndex++, w.getSendingUserId());
-      ps.setObject(parameterIndex++, w.getSmssTimestamp());
-      ps.setString(parameterIndex++, w.getStepStatus());
-      ps.setString(parameterIndex++, w.getWorkflowNotes());
-      ps.execute();
     }
   }
 
@@ -2630,61 +2387,6 @@ public class TQMCHelper {
     }
   }
 
-  public static void checkReassignGttPermissions(
-      Connection con, String caseId, String caseType, String assigneeUserId) throws SQLException {
-
-    // Check if the new Assignee is a existing user
-    TQMCUserInfo newAssignee = TQMCHelper.getTQMCUserInfo(con, assigneeUserId);
-    if (newAssignee == null) {
-      throw new TQMCException(ErrorCode.NOT_FOUND, "User not found");
-    }
-
-    // Check if the new Assignee has the GTT product
-    if (!newAssignee.getProducts().contains(TQMCConstants.GTT)) {
-      throw new TQMCException(ErrorCode.BAD_REQUEST, "New assignee must have GTT access");
-    }
-
-    // Check if a valid case type is passed in
-    // Only Physician and Abstraction cases can be reassigned
-    if (!TQMCConstants.GTT_CASE_TYPE_ABSTRACTOR.equals(caseType)
-        && !TQMCConstants.GTT_CASE_TYPE_PHYSICIAN.equals(caseType)) {
-      throw new TQMCException(ErrorCode.BAD_REQUEST, "Invalid Case Type");
-    }
-
-    // If the case type is abstractor, checks to see the new assignee has the
-    // abstractor role or is
-    // a management lead
-    if (TQMCConstants.GTT_CASE_TYPE_ABSTRACTOR.equals(caseType)
-        && (!TQMCConstants.ABSTRACTOR.equals(newAssignee.getRole())
-            && !TQMCConstants.MANAGEMENT_LEAD.equals(newAssignee.getRole()))) {
-      throw new TQMCException(
-          ErrorCode.BAD_REQUEST, "User does not have the correct role for this case");
-    }
-    // If the case type is physician, checks to see the new assignee has the
-    // physician role
-    if (TQMCConstants.GTT_CASE_TYPE_PHYSICIAN.equals(caseType)
-        && !TQMCConstants.PHYSICIAN.equals(newAssignee.getRole())) {
-      throw new TQMCException(
-          ErrorCode.BAD_REQUEST, "User does not have the correct role for this case");
-    }
-
-    // Check to make sure the Case ID passed in matches the case type
-    String checkCaseType = TQMCHelper.getCaseType(con, caseId);
-    if (checkCaseType == null) {
-      throw new TQMCException(ErrorCode.BAD_REQUEST, "Case Not Found");
-    }
-    if (!caseType.equals(checkCaseType)) {
-      throw new TQMCException(ErrorCode.BAD_REQUEST, "Case Type does not match the given Case ID");
-    }
-
-    // check if user is already on record
-    if (TQMCHelper.isAssignedOnConsensusCase(con, caseId, assigneeUserId)) {
-      throw new TQMCException(
-          ErrorCode.BAD_REQUEST,
-          "Unable to reassign user to this case as they are already the second abstractor");
-    }
-  }
-
   public static Set<String> getActiveProductIds(Connection con) throws SQLException {
     Set<String> result = new HashSet<>();
     try (PreparedStatement ps =
@@ -3034,67 +2736,6 @@ public class TQMCHelper {
     resetCaseValues(con, caseId, TQMCConstants.GTT_CASE_TYPE_ABSTRACTOR);
   }
 
-  public static DpWorkflow getLatestDpWorkflow(Connection con, String caseId) throws SQLException {
-    DpWorkflow latestDpWorkflow = new DpWorkflow();
-    try (PreparedStatement ps =
-        con.prepareStatement(
-            "Select wf.*, reopening_reason FROM (SELECT guid, case_id, is_latest, recipient_user_id, sending_user_id, step_status, workflow_notes, smss_timestamp FROM Dp_Workflow WHERE case_id = ? AND is_latest = 1) as wf LEFT OUTER JOIN Dp_case c ON c.case_id = wf.case_id")) {
-      ps.setString(1, caseId);
-      if (ps.execute()) {
-        ResultSet rs = ps.getResultSet();
-        if (rs.next()) {
-          latestDpWorkflow.setGuid(rs.getString("guid"));
-          latestDpWorkflow.setCaseId(rs.getString("case_id"));
-          latestDpWorkflow.setIsLatest(rs.getInt("is_latest") == 1);
-          latestDpWorkflow.setRecipientUserId(rs.getString("recipient_user_id"));
-          latestDpWorkflow.setSendingUserId(rs.getString("sending_user_id"));
-          latestDpWorkflow.setStepStatus(rs.getString("step_status"));
-          latestDpWorkflow.setWorkflowNotes(rs.getString("workflow_notes"));
-          latestDpWorkflow.setSmssTimestamp(
-              ConversionUtils.getLocalDateTimeFromTimestamp(rs.getTimestamp("smss_timestamp")));
-          latestDpWorkflow.setReopenReason(rs.getString("reopening_reason"));
-        }
-      }
-    }
-
-    if (latestDpWorkflow.getGuid() == null) {
-      throw new TQMCException(ErrorCode.NOT_FOUND);
-    }
-
-    return latestDpWorkflow;
-  }
-
-  public static McscWorkflow getLatestMcscWorkflow(Connection con, String caseId)
-      throws SQLException {
-    McscWorkflow latestMcscWorkflow = new McscWorkflow();
-    try (PreparedStatement ps =
-        con.prepareStatement(
-            "Select wf.*, reopening_reason FROM (SELECT guid, case_id, is_latest, recipient_user_id, sending_user_id, step_status, workflow_notes, smss_timestamp FROM Mcsc_Workflow WHERE case_id = ? AND is_latest = 1) as wf LEFT OUTER JOIN mcsc_case c ON c.case_id = wf.case_id")) {
-      ps.setString(1, caseId);
-      if (ps.execute()) {
-        ResultSet rs = ps.getResultSet();
-        if (rs.next()) {
-          latestMcscWorkflow.setGuid(rs.getString("guid"));
-          latestMcscWorkflow.setCaseId(rs.getString("case_id"));
-          latestMcscWorkflow.setIsLatest(rs.getInt("is_latest") == 1);
-          latestMcscWorkflow.setRecipientUserId(rs.getString("recipient_user_id"));
-          latestMcscWorkflow.setSendingUserId(rs.getString("sending_user_id"));
-          latestMcscWorkflow.setStepStatus(rs.getString("step_status"));
-          latestMcscWorkflow.setWorkflowNotes(rs.getString("workflow_notes"));
-          latestMcscWorkflow.setSmssTimestamp(
-              ConversionUtils.getLocalDateTimeFromTimestamp(rs.getTimestamp("smss_timestamp")));
-          latestMcscWorkflow.setReopenReason(rs.getString("reopening_reason"));
-        }
-      }
-    }
-
-    if (latestMcscWorkflow.getGuid() == null) {
-      throw new TQMCException(ErrorCode.NOT_FOUND);
-    }
-
-    return latestMcscWorkflow;
-  }
-
   public static String getMnCaseIdForRecord(Connection con, String recordId) throws SQLException {
     String caseId = null;
     try (PreparedStatement ps =
@@ -3116,77 +2757,6 @@ public class TQMCHelper {
 
   public static String appendSubmissionSuffix(String caseId, String guid) {
     return caseId + "-" + guid;
-  }
-
-  public static void updateMcscWorkflow(Connection con, McscWorkflow mcscWorkflow)
-      throws SQLException {
-    updateMcscWorkflow(con, mcscWorkflow, false);
-  }
-
-  public static void updateMcscWorkflow(
-      Connection con, McscWorkflow mcscWorkflow, boolean skipIsLatestUpdate) throws SQLException {
-
-    if (!skipIsLatestUpdate) {
-      try (PreparedStatement ps =
-          con.prepareStatement(
-              "UPDATE "
-                  + "MCSC_WORKFLOW"
-                  + " SET is_latest = 0 WHERE case_id = ? AND is_latest = 1")) {
-        ps.setString(1, mcscWorkflow.getCaseId());
-        ps.execute();
-      }
-    }
-
-    try (PreparedStatement ps =
-        con.prepareStatement(
-            "INSERT INTO "
-                + "MCSC_WORKFLOW"
-                + " (case_id, guid, is_latest, recipient_user_id, sending_user_id, smss_timestamp, step_status, workflow_notes) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
-      int parameterIndex = 1;
-      ps.setString(parameterIndex++, mcscWorkflow.getCaseId());
-      ps.setString(parameterIndex++, mcscWorkflow.getGuid());
-      ps.setBoolean(parameterIndex++, mcscWorkflow.getIsLatest());
-      ps.setString(parameterIndex++, mcscWorkflow.getRecipientUserId());
-      ps.setString(parameterIndex++, mcscWorkflow.getSendingUserId());
-      ps.setObject(parameterIndex++, mcscWorkflow.getSmssTimestamp());
-      ps.setString(parameterIndex++, mcscWorkflow.getStepStatus());
-      ps.setString(parameterIndex++, mcscWorkflow.getWorkflowNotes());
-      ps.execute();
-    }
-  }
-
-  public static void updateDpWorkflow(Connection con, DpWorkflow dpWorkflow) throws SQLException {
-    updateDpWorkflow(con, dpWorkflow, false);
-  }
-
-  public static void updateDpWorkflow(
-      Connection con, DpWorkflow dpWorkflow, boolean skipIsLatestUpdate) throws SQLException {
-
-    if (!skipIsLatestUpdate) {
-      try (PreparedStatement ps =
-          con.prepareStatement(
-              "UPDATE DP_WORKFLOW SET is_latest = 0 WHERE case_id = ? AND is_latest = 1")) {
-        ps.setString(1, dpWorkflow.getCaseId());
-        ps.execute();
-      }
-    }
-
-    try (PreparedStatement ps =
-        con.prepareStatement(
-            "INSERT INTO DP_WORKFLOW (case_id, guid, is_latest, recipient_user_id, sending_user_id, smss_timestamp, step_status, workflow_notes) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
-      int parameterIndex = 1;
-      ps.setString(parameterIndex++, dpWorkflow.getCaseId());
-      ps.setString(parameterIndex++, dpWorkflow.getGuid());
-      ps.setBoolean(parameterIndex++, dpWorkflow.getIsLatest());
-      ps.setString(parameterIndex++, dpWorkflow.getRecipientUserId());
-      ps.setString(parameterIndex++, dpWorkflow.getSendingUserId());
-      ps.setObject(parameterIndex++, dpWorkflow.getSmssTimestamp());
-      ps.setString(parameterIndex++, dpWorkflow.getStepStatus());
-      ps.setString(parameterIndex++, dpWorkflow.getWorkflowNotes());
-      ps.execute();
-    }
   }
 
   public static String generateWorkflowNote(String oldStep, String newStep, String userId) {
@@ -3288,57 +2858,6 @@ public class TQMCHelper {
       }
       ps.executeBatch();
     }
-  }
-
-  // need to update as more products get added
-  public static Set<CaseDetails> getProductCaseAssignments(Connection con, TQMCUserInfo u)
-      throws SQLException {
-
-    Set<CaseDetails> caseDetails = new HashSet<>();
-
-    if (u.getProducts().isEmpty()) {
-      return caseDetails;
-    }
-
-    String QUERY = "SELECT case_id, specialty_id, product, case_type, has_files FROM (";
-
-    Set<String> products = u.getProducts();
-    int i = 0;
-    for (String product : products) {
-      String queryTable = addProductToCaseQuery(product.toLowerCase());
-      if (queryTable.length() > 0) {
-        QUERY += queryTable;
-        QUERY += " UNION ALL ";
-        i++;
-      }
-    }
-
-    QUERY = QUERY.substring(0, QUERY.length() - 10);
-
-    QUERY += ") AS combined_results";
-
-    try (PreparedStatement ps = con.prepareStatement(QUERY)) {
-      int parameterIndex = 1;
-      while (parameterIndex <= i) {
-        ps.setString(parameterIndex++, u.getUserId());
-      }
-
-      if (ps.execute()) {
-        ResultSet rs = ps.getResultSet();
-        while (rs.next()) {
-          CaseDetails d = new CaseDetails();
-          d.setCaseId(rs.getString("case_id"));
-          d.setSpecialtyId(rs.getString("specialty_id"));
-          d.setProduct(rs.getString("product"));
-          d.setCaseType(rs.getString("case_type"));
-          d.setHasFiles(rs.getInt("has_files") == 1);
-          d.setRecipientUserId(u.getUserId());
-          caseDetails.add(d);
-        }
-      }
-    }
-
-    return caseDetails;
   }
 
   private static String addProductToCaseQuery(String product) {
@@ -3754,26 +3273,6 @@ public class TQMCHelper {
       }
     }
     return (recentUpdate.equals(ConversionUtils.getLocalDateTimeString(record.getUpdatedAt())));
-  }
-
-  public static List<TQMCUserInfo> getAllUsers(Connection con) throws SQLException {
-    List<TQMCUserInfo> result = new ArrayList<>();
-    try (PreparedStatement ps =
-        con.prepareStatement(
-            "select user_id, first_name, last_name, role from TQMC_USER where user_id != 'system' order by last_name")) {
-      if (ps.execute()) {
-        ResultSet rs = ps.getResultSet();
-        while (rs.next()) {
-          TQMCUserInfo user = new TQMCUserInfo();
-          user.setUserId(rs.getString("user_id"));
-          user.setFirstName(rs.getString("first_name"));
-          user.setLastName(rs.getString("last_name"));
-          user.setRole(rs.getString("role"));
-          result.add(user);
-        }
-      }
-    }
-    return result;
   }
 
   public static Map<String, Set<String>> getConsensusMap(

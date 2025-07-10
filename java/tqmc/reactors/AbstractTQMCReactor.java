@@ -27,7 +27,6 @@ import prerna.util.Utility;
 import prerna.util.sql.RdbmsTypeEnum;
 import tqmc.domain.base.ErrorCode;
 import tqmc.domain.base.TQMCException;
-import tqmc.domain.user.TQMCUserInfo;
 import tqmc.util.ConversionUtils;
 import tqmc.util.TQMCConstants;
 import tqmc.util.TQMCHelper;
@@ -52,8 +51,6 @@ public abstract class AbstractTQMCReactor extends AbstractReactor {
   protected String tqmcUserRole = null;
   protected Set<String> tqmcUserProducts = new HashSet<>();
 
-  protected TQMCUserInfo tqmcUserInfo;
-
   @Override
   public NounMetadata execute() {
     try {
@@ -67,8 +64,6 @@ public abstract class AbstractTQMCReactor extends AbstractReactor {
       Connection con = null;
       try {
         con = engine.makeConnection();
-
-        loadUserInfo(con);
 
         if (isReadOnly()) {
           result = doExecute(con);
@@ -166,16 +161,6 @@ public abstract class AbstractTQMCReactor extends AbstractReactor {
     }
 
     organizeKeys();
-  }
-
-  protected void loadUserInfo(Connection con) throws SQLException {
-    tqmcUserInfo = TQMCHelper.getTQMCUserInfo(con, userId);
-
-    if (tqmcUserInfo != null) {
-      tqmcUserIsActive = tqmcUserInfo.getIsActive();
-      tqmcUserRole = tqmcUserInfo.getRole();
-      tqmcUserProducts = tqmcUserInfo.getProducts();
-    }
   }
 
   protected abstract NounMetadata doExecute(Connection con) throws SQLException;
