@@ -236,14 +236,6 @@ public class TQMCConstants {
           + "<td><a href=\"${BASE_LINK}/#/${CASE_SUPER_TYPE}/${CASE_TYPE}/${CASE_URL_COMPONENT}\">View</a></td>"
           + "<td>${DUE_DATE} ${WARNING_ICON}</td> </tr>";
 
-  // TODO: add templates for daily digest and deadline emails.
-
-  public static final Map<String, Set<String>> VALID_ROLE_PRODUCT_MAP =
-      TQMCHelper.generateRoleProductMap();
-
-  public static final Map<String, Map<String, Integer>> FORM_ORDER_COMPARATOR_MAP =
-      TQMCHelper.generateFormOrderComparatorMap();
-
   // Padding default length
   public static final int PADDING_LENGTH = 6;
 

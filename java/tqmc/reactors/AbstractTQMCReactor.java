@@ -29,7 +29,6 @@ import tqmc.domain.base.ErrorCode;
 import tqmc.domain.base.TQMCException;
 import tqmc.util.ConversionUtils;
 import tqmc.util.TQMCConstants;
-import tqmc.util.TQMCHelper;
 import tqmc.util.TQMCProperties;
 
 public abstract class AbstractTQMCReactor extends AbstractReactor {
