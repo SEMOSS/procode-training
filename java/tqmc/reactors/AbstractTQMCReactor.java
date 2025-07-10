@@ -2,8 +2,6 @@ package tqmc.reactors;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,7 +12,6 @@ import prerna.sablecc2.om.PixelDataType;
 import prerna.sablecc2.om.PixelOperationType;
 import prerna.sablecc2.om.nounmeta.NounMetadata;
 import prerna.util.Utility;
-import prerna.util.sql.RdbmsTypeEnum;
 import tqmc.domain.base.ErrorCode;
 import tqmc.domain.base.TQMCException;
 import tqmc.util.TQMCProperties;
@@ -29,13 +26,8 @@ public abstract class AbstractTQMCReactor extends AbstractReactor {
   protected TQMCProperties tqmcProperties;
 
   protected String engineId;
-  protected RdbmsTypeEnum engineType;
 
   protected NounMetadata result = null;
-
-  protected boolean tqmcUserIsActive = false;
-  protected String tqmcUserRole = null;
-  protected Set<String> tqmcUserProducts = new HashSet<>();
 
   @Override
   public NounMetadata execute() {
@@ -46,7 +38,6 @@ public abstract class AbstractTQMCReactor extends AbstractReactor {
       if (engine == null) {
         throw new TQMCException(ErrorCode.INTERNAL_SERVER_ERROR, "Unable to find database");
       }
-      engineType = engine.getDbType();
       Connection con = null;
       try {
         con = engine.makeConnection();
