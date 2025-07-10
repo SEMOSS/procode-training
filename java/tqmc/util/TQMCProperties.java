@@ -29,19 +29,7 @@ public class TQMCProperties {
 
   private String projectId;
   private String engineId;
-  private String userEngineId;
-  private String storageId;
-  private String docsProjectId;
-  private String userAccountProvider;
-  private String tqmcUrl;
-  private String resetterUserId;
-  private String resetterUserType;
-  private String defaultAbs1UserId;
-  private String defaultAbs2UserId;
-  private String defaultPhysUserId;
-  private boolean isMilInstance;
   private boolean debuggingEnabled;
-  private String loginGuideName;
 
   private TQMCProperties() {}
 
@@ -72,20 +60,8 @@ public class TQMCProperties {
 
       newInstance.projectId = projectId;
       newInstance.engineId = tqmcProperties.getProperty("engineId");
-      newInstance.storageId = tqmcProperties.getProperty("storageId");
-      newInstance.userEngineId = tqmcProperties.getProperty("userEngineId");
-      newInstance.docsProjectId = tqmcProperties.getProperty("docsProjectId");
-      newInstance.userAccountProvider = tqmcProperties.getProperty("userAccountProvider");
-      newInstance.tqmcUrl = tqmcProperties.getProperty("tqmcUrl");
-      newInstance.resetterUserId = tqmcProperties.getProperty("resetterUserId");
-      newInstance.resetterUserType = tqmcProperties.getProperty("resetterUserType");
-      newInstance.defaultAbs1UserId = tqmcProperties.getProperty("defaultAbstractorOne");
-      newInstance.defaultAbs2UserId = tqmcProperties.getProperty("defaultAbstractorTwo");
-      newInstance.defaultPhysUserId = tqmcProperties.getProperty("defaultPhysUserId");
-      newInstance.isMilInstance = Boolean.parseBoolean(tqmcProperties.getProperty("isMilInstance"));
       newInstance.debuggingEnabled =
           Boolean.parseBoolean(tqmcProperties.getProperty("debuggingEnabled"));
-      newInstance.loginGuideName = tqmcProperties.getProperty("loginGuideName");
 
       INSTANCE = newInstance;
     } catch (IOException e) {
@@ -103,55 +79,7 @@ public class TQMCProperties {
     return engineId;
   }
 
-  public String getStorageId() {
-    return storageId;
-  }
-
-  public String getUserEngineId() {
-    return userEngineId;
-  }
-
-  public String getDocsProjectId() {
-    return docsProjectId;
-  }
-
-  public String getUserAccountProvider() {
-    return userAccountProvider;
-  }
-
-  public String getTqmcUrl() {
-    return tqmcUrl;
-  }
-
-  public String getResetterUserId() {
-    return resetterUserId;
-  }
-
-  public String getResetterUserType() {
-    return resetterUserType;
-  }
-
-  public String getDefaultAbs1UserId() {
-    return defaultAbs1UserId;
-  }
-
-  public String getDefaultAbs2UserId() {
-    return defaultAbs2UserId;
-  }
-
-  public String getDefaultPhysUserId() {
-    return defaultPhysUserId;
-  }
-
-  public boolean getIsMilInstance() {
-    return isMilInstance;
-  }
-
   public boolean getDebuggingEnabled() {
     return debuggingEnabled;
-  }
-
-  public String getLoginGuideName() {
-    return loginGuideName;
   }
 }
