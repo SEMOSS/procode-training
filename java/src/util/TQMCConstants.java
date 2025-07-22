@@ -1,4 +1,4 @@
-package tqmc.util;
+package util;
 
 public class TQMCConstants {
 

@@ -1,4 +1,4 @@
-package tqmc.reactors;
+package reactors;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -12,9 +12,9 @@ import prerna.sablecc2.om.PixelDataType;
 import prerna.sablecc2.om.PixelOperationType;
 import prerna.sablecc2.om.nounmeta.NounMetadata;
 import prerna.util.Utility;
-import tqmc.domain.base.ErrorCode;
-import tqmc.domain.base.TQMCException;
-import tqmc.util.TQMCProperties;
+import domain.base.ErrorCode;
+import domain.base.TQMCException;
+import util.TQMCProperties;
 
 public abstract class AbstractTQMCReactor extends AbstractReactor {
 

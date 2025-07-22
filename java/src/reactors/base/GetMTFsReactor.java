@@ -1,13 +1,13 @@
-package tqmc.reactors.base;
+package reactors.base;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import prerna.sablecc2.om.PixelDataType;
 import prerna.sablecc2.om.nounmeta.NounMetadata;
-import tqmc.domain.base.MTFData;
-import tqmc.reactors.AbstractTQMCReactor;
-import tqmc.util.TQMCHelper;
+import domain.base.MTFData;
+import reactors.AbstractTQMCReactor;
+import util.TQMCHelper;
 
 public class GetMTFsReactor extends AbstractTQMCReactor {
 

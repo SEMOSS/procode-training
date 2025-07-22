@@ -1,4 +1,4 @@
-package tqmc.domain.base;
+package domain.base;
 
 public enum ErrorCode {
   BAD_REQUEST(400, "Invalid request"),

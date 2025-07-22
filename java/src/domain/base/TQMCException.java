@@ -1,4 +1,4 @@
-package tqmc.domain.base;
+package domain.base;
 
 import java.util.HashMap;
 import java.util.Map;

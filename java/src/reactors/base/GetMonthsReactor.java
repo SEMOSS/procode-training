@@ -1,11 +1,11 @@
-package tqmc.reactors.base;
+package reactors.base;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import prerna.sablecc2.om.PixelDataType;
 import prerna.sablecc2.om.nounmeta.NounMetadata;
-import tqmc.reactors.AbstractTQMCReactor;
-import tqmc.util.TQMCConstants;
+import reactors.AbstractTQMCReactor;
+import util.TQMCConstants;
 
 public class GetMonthsReactor extends AbstractTQMCReactor {
 

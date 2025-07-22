@@ -1,4 +1,4 @@
-package tqmc.domain.base;
+package domain.base;
 
 public class MTFData {
   private String mtf_name;

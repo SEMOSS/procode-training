@@ -1,12 +1,12 @@
-package tqmc.util;
+package util;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 import prerna.util.AssetUtility;
 import prerna.util.Utility;
-import tqmc.domain.base.ErrorCode;
-import tqmc.domain.base.TQMCException;
+import domain.base.ErrorCode;
+import domain.base.TQMCException;
 
 /**
  * Loads property values from a project asset at
