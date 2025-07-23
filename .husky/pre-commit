@@ -1,3 +1,5 @@
-echo "Formatting and linting code"
+echo "Formatting and linting FE code"
 pnpm exec lint-staged
+echo "Formatting BE code"
+pre-commit run || pre-commit run
 echo "Committing changes"
