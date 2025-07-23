@@ -1,5 +1,20 @@
+# Lint FE code
 echo "Formatting and linting FE code"
 pnpm exec lint-staged
+
+# Capture list of staged files
+STAGED_FILES=$(git diff --name-only --cached)
+
+
+# Format BE code
 echo "Formatting BE code"
-pre-commit run || pre-commit run
+pre-commit run || true # Ignore a fail for now
+
+# If pre-commit made changes to staged files, re-stage only those files and re-run pre-commit to see if they now pass
+if ! git diff --cached --quiet; then
+  echo "pre-commit hooks made changes, re-staging and re-running..."
+  echo "$STAGED_FILES" | xargs git add
+  pre-commit run
+fi
+
 echo "Committing changes"
