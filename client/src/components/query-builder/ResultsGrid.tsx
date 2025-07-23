@@ -1,14 +1,14 @@
 import { Stack } from '@mui/material';
-import { ColumnDefinition } from './semoss.types';
+import { ColumnDefinition } from '../semoss.types';
 
-export interface QueryResultsProps {
+export interface ResultsGridProps {
     columns: ColumnDefinition[];
     result_set: object[];
     isLoading: boolean;
     error: boolean;
 }
 
-export const QueryResults = ({ isLoading, error }: QueryResultsProps) => {
+export const ResultsGrid = ({ isLoading, error }: ResultsGridProps) => {
     return (
         <Stack>
             {isLoading

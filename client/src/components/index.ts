@@ -1,3 +1,3 @@
 export * from './base';
 export * from './semoss.types';
-export * from './QueryResults';
+export * from './query-builder';
