@@ -1,7 +1,7 @@
 package util;
 
 import domain.base.ErrorCode;
-import domain.base.TQMCException;
+import domain.base.ProjectException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -24,24 +24,24 @@ import prerna.util.Utility;
  *
  * @see java.util.Properties#load(java.io.Reader)
  */
-public class TQMCProperties {
-  private static TQMCProperties INSTANCE = null;
+public class ProjectProperties {
+  private static ProjectProperties INSTANCE = null;
 
   private String projectId;
   private String engineId;
   private boolean debuggingEnabled;
 
-  private TQMCProperties() {}
+  private ProjectProperties() {}
 
-  public static TQMCProperties getInstance() {
+  public static ProjectProperties getInstance() {
     if (INSTANCE == null) {
-      throw new TQMCException(
+      throw new ProjectException(
           ErrorCode.INTERNAL_SERVER_ERROR, "Unable to load project configuration");
     }
     return INSTANCE;
   }
 
-  public static TQMCProperties getInstance(String projectId) {
+  public static ProjectProperties getInstance(String projectId) {
     if (INSTANCE == null) {
       loadProp(projectId);
     }
@@ -49,24 +49,24 @@ public class TQMCProperties {
   }
 
   private static void loadProp(String projectId) {
-    TQMCProperties newInstance = new TQMCProperties();
+    ProjectProperties newInstance = new ProjectProperties();
 
     try (final FileInputStream fileIn =
         new FileInputStream(
             Utility.normalizePath(
                 AssetUtility.getProjectAssetsFolder(projectId) + "/java/project.properties"))) {
-      Properties tqmcProperties = new Properties();
-      tqmcProperties.load(fileIn);
+      Properties projecProperties = new Properties();
+      projecProperties.load(fileIn);
 
       newInstance.projectId = projectId;
-      newInstance.engineId = tqmcProperties.getProperty("engineId");
+      newInstance.engineId = projecProperties.getProperty("engineId");
       newInstance.debuggingEnabled =
-          Boolean.parseBoolean(tqmcProperties.getProperty("debuggingEnabled"));
+          Boolean.parseBoolean(projecProperties.getProperty("debuggingEnabled"));
 
       INSTANCE = newInstance;
     } catch (IOException e) {
       INSTANCE = null;
-      throw new TQMCException(
+      throw new ProjectException(
           ErrorCode.INTERNAL_SERVER_ERROR, "Unable to load project configuration", e);
     }
   }

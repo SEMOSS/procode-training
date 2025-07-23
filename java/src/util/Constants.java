@@ -1,6 +1,6 @@
 package util;
 
-public class TQMCConstants {
+public class Constants {
 
   public static final String[] MONTH_WORDS = {
     "January",

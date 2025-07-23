@@ -1,7 +1,7 @@
 package reactors;
 
 import domain.base.ErrorCode;
-import domain.base.TQMCException;
+import domain.base.ProjectException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -14,16 +14,16 @@ import prerna.sablecc2.om.PixelDataType;
 import prerna.sablecc2.om.PixelOperationType;
 import prerna.sablecc2.om.nounmeta.NounMetadata;
 import prerna.util.Utility;
-import util.TQMCProperties;
+import util.ProjectProperties;
 
-public abstract class AbstractTQMCReactor extends AbstractReactor {
+public abstract class AbstractProjectReactor extends AbstractReactor {
 
-  private static final Logger LOGGER = LogManager.getLogger(AbstractTQMCReactor.class);
+  private static final Logger LOGGER = LogManager.getLogger(AbstractProjectReactor.class);
 
   protected User user;
 
   protected String projectId;
-  protected TQMCProperties tqmcProperties;
+  protected ProjectProperties projectProperties;
 
   protected String engineId;
 
@@ -36,7 +36,7 @@ public abstract class AbstractTQMCReactor extends AbstractReactor {
 
       IRDBMSEngine engine = (IRDBMSEngine) Utility.getEngine(engineId);
       if (engine == null) {
-        throw new TQMCException(ErrorCode.INTERNAL_SERVER_ERROR, "Unable to find database");
+        throw new ProjectException(ErrorCode.INTERNAL_SERVER_ERROR, "Unable to find database");
       }
       Connection con = null;
       try {
@@ -52,11 +52,11 @@ public abstract class AbstractTQMCReactor extends AbstractReactor {
             con.commit();
           } catch (Exception e) {
             con.rollback();
-            TQMCException ex = null;
-            if (e instanceof TQMCException) {
-              ex = (TQMCException) e;
+            ProjectException ex = null;
+            if (e instanceof ProjectException) {
+              ex = (ProjectException) e;
             } else {
-              ex = new TQMCException(ErrorCode.INTERNAL_SERVER_ERROR, e);
+              ex = new ProjectException(ErrorCode.INTERNAL_SERVER_ERROR, e);
             }
             throw ex;
           } finally {
@@ -70,17 +70,17 @@ public abstract class AbstractTQMCReactor extends AbstractReactor {
       }
       return result;
     } catch (Exception e) {
-      TQMCException ex = null;
-      if (e instanceof TQMCException) {
-        ex = (TQMCException) e;
+      ProjectException ex = null;
+      if (e instanceof ProjectException) {
+        ex = (ProjectException) e;
       } else {
-        ex = new TQMCException(ErrorCode.INTERNAL_SERVER_ERROR, e);
+        ex = new ProjectException(ErrorCode.INTERNAL_SERVER_ERROR, e);
       }
       LOGGER.error(String.format("Reactor %s threw an error", this.getClass().getSimpleName()), e);
 
       NounMetadata result =
           new NounMetadata(ex.getAsMap(), PixelDataType.MAP, PixelOperationType.ERROR);
-      if (tqmcProperties != null && tqmcProperties.getDebuggingEnabled()) {
+      if (projectProperties != null && projectProperties.getDebuggingEnabled()) {
         result.addAdditionalReturn(
             new NounMetadata(
                 ExceptionUtils.getFullStackTrace(e),
@@ -97,8 +97,8 @@ public abstract class AbstractTQMCReactor extends AbstractReactor {
       projectId = this.insight.getProjectId();
     }
 
-    tqmcProperties = TQMCProperties.getInstance(projectId);
-    engineId = tqmcProperties.getEngineId();
+    projectProperties = ProjectProperties.getInstance(projectId);
+    engineId = projectProperties.getEngineId();
 
     user = this.insight.getUser();
 

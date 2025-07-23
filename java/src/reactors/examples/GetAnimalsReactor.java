@@ -1,13 +1,13 @@
-package reactors.base;
+package reactors.examples;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import prerna.sablecc2.om.PixelDataType;
 import prerna.sablecc2.om.nounmeta.NounMetadata;
-import reactors.AbstractTQMCReactor;
-import util.TQMCHelper;
+import reactors.AbstractProjectReactor;
+import util.HelperMethods;
 
-public class GetAnimalsReactor extends AbstractTQMCReactor {
+public class GetAnimalsReactor extends AbstractProjectReactor {
 
   @Override
   protected NounMetadata doExecute(Connection con) throws SQLException {
@@ -28,7 +28,7 @@ public class GetAnimalsReactor extends AbstractTQMCReactor {
     //     }
     //   }
     // }
-    int output = TQMCHelper.addIntegerExampleHelper(con, 5, 7);
+    int output = HelperMethods.addIntegerExampleHelper(con, 5, 7);
 
     return new NounMetadata(output, PixelDataType.CONST_INT);
   }
