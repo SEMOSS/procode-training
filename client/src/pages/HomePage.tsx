@@ -1,4 +1,4 @@
-import { Engine } from '@/components';
+import { Engine, QueryResults, ReactorResponse } from '@/components';
 import { useAppContext } from '@/contexts';
 import { useLoadingState } from '@/hooks';
 import {
@@ -16,6 +16,14 @@ const StyledStack = styled(Stack)(({ theme }) => ({
     borderRadius: theme.shape.borderRadius,
 }));
 
+const blankResponse: ReactorResponse = {
+    question: '',
+    explanation: ' ',
+    sql: ' ',
+    result_set: [],
+    columns: [],
+};
+
 /**
  * Renders the home page.
  *
@@ -29,10 +37,10 @@ export const HomePage = () => {
      */
     const [model, setModel] = useState<Engine>(null);
     const [db, setDb] = useState<Engine>(null);
-    const [prompt, setPrompt] = useState<string>('');
-    const [response, setResponse] = useState<string>('');
+    const [question, setQuestion] = useState<string>('');
     const [isResponseLoading, setIsResponseLoading] = useLoadingState(false);
     const [error, setError] = useState<boolean>(false);
+    const [response, setResponse] = useState<ReactorResponse>(blankResponse);
 
     /**
      * Functions
@@ -40,8 +48,8 @@ export const HomePage = () => {
     const submitPrompt = async () => {
         const loadingKey = setIsResponseLoading(true);
         try {
-            const response = await runPixel<string>(
-                `LLM2( engine = ${JSON.stringify(model.app_id)}, command = ${JSON.stringify(prompt)} )`,
+            const response = await runPixel<ReactorResponse>(
+                `QueryDatabase( engine = ${JSON.stringify(model.app_id)}, command = ${JSON.stringify(prompt)}, database = ${JSON.stringify(db)} )`,
             );
             setIsResponseLoading(false, loadingKey, () =>
                 setResponse(response),
@@ -54,15 +62,11 @@ export const HomePage = () => {
     /**
      * Constants
      */
-    const isSubmitDisabled = !model?.app_id || !db?.app_id || !prompt.trim();
+    const isSubmitDisabled = !model?.app_id || !db?.app_id || !question.trim();
 
     return (
         <Stack width="100%" alignItems="center">
-            <StyledStack
-                padding={2}
-                width={{ xs: '100%', md: '50%' }}
-                spacing={2}
-            >
+            <StyledStack padding={2} width="100%" maxWidth="md" spacing={2}>
                 <Stack spacing={1}>
                     <Typography variant="h6" fontWeight="bold">
                         Options
@@ -95,41 +99,54 @@ export const HomePage = () => {
 
                 <Stack spacing={1}>
                     <Typography variant="h6" fontWeight="bold">
-                        Prompt
+                        Query
                     </Typography>
 
                     <TextField
+                        label="Text"
                         multiline
                         rows={3}
-                        value={prompt}
-                        onChange={(e) => setPrompt(e.target.value)}
+                        value={question}
+                        onChange={(e) => setQuestion(e.target.value)}
+                    />
+
+                    <Button
+                        variant="contained"
+                        onClick={submitPrompt}
+                        loading={isResponseLoading}
+                        disabled={isSubmitDisabled}
+                    >
+                        Text to SQL
+                    </Button>
+
+                    <TextField
+                        label="SQL"
+                        multiline
+                        minRows={3}
+                        maxRows={6}
+                        value={response.sql}
+                        disabled
+                    />
+
+                    <TextField
+                        label="Explanation"
+                        multiline
+                        rows={3}
+                        value={response.explanation}
+                        disabled
                     />
                 </Stack>
 
-                <Button
-                    variant="contained"
-                    onClick={submitPrompt}
-                    loading={isResponseLoading}
-                    disabled={isSubmitDisabled}
-                >
-                    Submit
-                </Button>
-
                 <Stack spacing={1}>
                     <Typography variant="h6" fontWeight="bold">
-                        Response
+                        Results
                     </Typography>
 
-                    <TextField
-                        multiline
-                        minRows={3}
-                        value={
-                            isResponseLoading
-                                ? 'Loading...'
-                                : error
-                                  ? 'An error occurred. Please try again later. '
-                                  : response
-                        }
+                    <QueryResults
+                        error={error}
+                        isLoading={isResponseLoading}
+                        columns={response.columns}
+                        result_set={response.result_set}
                     />
                 </Stack>
             </StyledStack>
