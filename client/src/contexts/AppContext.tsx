@@ -12,7 +12,7 @@ import {
 export interface AppContextType {
     runPixel: <T = unknown>(pixelString: string) => Promise<T>;
     isAppDataLoading: boolean;
-    onePlusTwo: number;
+    models: unknown[];
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -47,7 +47,7 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
      * State
      */
     const [isAppDataLoading, setIsAppDataLoading] = useLoadingState(true);
-    const [onePlusTwo, setOnePlusTwo] = useState<number>();
+    const [models, setModels] = useState<unknown[]>();
 
     /**
      * Functions
@@ -67,21 +67,19 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
         const loadAppData = async () => {
             const loadingKey = setIsAppDataLoading(true);
 
-            const response = await runPixel<number>('1 + 2');
+            const response = await runPixel<unknown[]>('MyEngines()');
 
-            setIsAppDataLoading(false, loadingKey, () =>
-                setOnePlusTwo(response),
-            );
+            setIsAppDataLoading(false, loadingKey, () => setModels(response));
         };
 
         if (isReady) {
             // If the insight is ready, then load the app data
             loadAppData();
         }
-    }, [isReady, runPixel, setOnePlusTwo]);
+    }, [isReady, runPixel, setModels]);
 
     return (
-        <AppContext.Provider value={{ runPixel, onePlusTwo, isAppDataLoading }}>
+        <AppContext.Provider value={{ runPixel, models, isAppDataLoading }}>
             {children}
         </AppContext.Provider>
     );

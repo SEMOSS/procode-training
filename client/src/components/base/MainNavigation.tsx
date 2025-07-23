@@ -51,7 +51,7 @@ export const MainNavigation = () => {
                     height={spacing(6)}
                 />
                 <Typography variant="h4" fontWeight="bold">
-                    SEMOSS Blank Canvas
+                    SQL Builder
                 </Typography>
             </CursorStack>
 
