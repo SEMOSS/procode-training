@@ -1,35 +1,37 @@
 package reactors.examples;
 
+import domain.examples.AnimalData;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import prerna.sablecc2.om.PixelDataType;
 import prerna.sablecc2.om.nounmeta.NounMetadata;
 import reactors.AbstractProjectReactor;
-import util.HelperMethods;
 
 public class GetAnimalsReactor extends AbstractProjectReactor {
 
   @Override
   protected NounMetadata doExecute(Connection con) throws SQLException {
 
-    // List<MTFData> output = new ArrayList<>();
-    // try (PreparedStatement mtfQuery =
-    //     con.prepareStatement(
-    //         "SELECT DMIS_ID, MTF_NAME, COALESCE(alias_mtf_name, mtf_name) AS ALIAS_MTF_NAME FROM
-    // MTF ORDER BY LOWER(COALESCE(alias_mtf_name, mtf_name)) ASC"); ) {
-    //   if (mtfQuery.execute()) {
-    //     ResultSet rs = mtfQuery.getResultSet();
-    //     while (rs.next()) {
-    //       String id = rs.getString("DMIS_ID");
-    //       String name = rs.getString("MTF_NAME");
-    //       String alias = rs.getString("ALIAS_MTF_NAME");
-    //       MTFData row = new MTFData(name, id, alias);
-    //       output.add(row);
-    //     }
-    //   }
-    // }
-    int output = HelperMethods.addIntegerExampleHelper(con, 5, 7);
+    List<AnimalData> output = new ArrayList<>();
+    try (PreparedStatement ps =
+        con.prepareStatement(
+            "SELECT animal_id, animal_type, animal_name FROM animal ORDER BY animal_name ASC")) {
+      if (ps.execute()) {
+        ResultSet rs = ps.getResultSet();
+        while (rs.next()) {
+          int id = rs.getInt("animal_id");
+          String type = rs.getString("animal_type");
+          String name = rs.getString("animal_name");
+          AnimalData row = new AnimalData(id, type, name);
+          output.add(row);
+        }
+      }
+    }
 
-    return new NounMetadata(output, PixelDataType.CONST_INT);
+    return new NounMetadata(output, PixelDataType.VECTOR);
   }
 }
