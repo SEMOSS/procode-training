@@ -21,8 +21,10 @@ const blankResponse: ReactorResponse = {
     question: '',
     explanation: ' ',
     sql: ' ',
-    result_set: [],
-    columns: [],
+    result_set: {
+        rows: [],
+        columns: [],
+    },
 };
 
 export const QueryBox = () => {
@@ -31,8 +33,8 @@ export const QueryBox = () => {
     /**
      * State
      */
-    const [model, setModel] = useState<Engine>(null);
-    const [db, setDb] = useState<Engine>(null);
+    const [model, setModel] = useState<Engine>(models[0] ?? null);
+    const [db, setDb] = useState<Engine>(databases[0] ?? null);
     const [question, setQuestion] = useState<string>('');
     const [isResponseLoading, setIsResponseLoading] = useLoadingState(false);
     const [error, setError] = useState<boolean>(false);
@@ -140,18 +142,7 @@ export const QueryBox = () => {
                 <ResultsGrid
                     error={error}
                     isLoading={isResponseLoading}
-                    columns={
-                        response.columns?.length
-                            ? response.columns
-                            : [
-                                  {
-                                      key: 'USER_ID',
-                                      label: 'User ID',
-                                      type: 'string',
-                                  },
-                              ]
-                    }
-                    result_set={response.result_set}
+                    resultSet={response.result_set}
                 />
             </Stack>
         </StyledStack>

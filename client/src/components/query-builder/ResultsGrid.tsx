@@ -1,22 +1,40 @@
-import { ColumnDefinition } from '../semoss.types';
+import { ResultSet } from '../semoss.types';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 export interface ResultsGridProps {
-    columns: ColumnDefinition[];
-    result_set: object[];
+    resultSet: ResultSet;
     isLoading: boolean;
     error: boolean;
 }
 
-export const ResultsGrid = ({ columns }: ResultsGridProps) => {
-    return (
+const FRONT_END_ID = 'FRONT_END_ID';
+
+export const ResultsGrid = ({
+    error,
+    resultSet,
+    isLoading,
+}: ResultsGridProps) => {
+    return error ? (
+        'Error loading results'
+    ) : !resultSet.columns?.length ? (
+        'No results found'
+    ) : (
         <DataGrid
-            columns={columns.map(
-                (col): GridColDef => ({
+            columns={resultSet.columns.map(
+                (col, index): GridColDef => ({
                     field: col.key,
-                    headerName: col.label,
+                    headerName: col.key,
+                    sortable: false,
+                    disableColumnMenu: true,
+                    valueGetter: (row) => row[index],
                 }),
             )}
+            rows={resultSet.rows.map((row, index) => ({
+                ...row,
+                [FRONT_END_ID]: index,
+            }))}
+            getRowId={(row) => row[FRONT_END_ID]}
+            loading={isLoading}
         />
     );
 };

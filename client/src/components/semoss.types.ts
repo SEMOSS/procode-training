@@ -8,12 +8,15 @@ export interface ReactorResponse {
     question: string;
     explanation: string;
     sql: string;
-    result_set: object[];
+    result_set: ResultSet;
+}
+
+export interface ResultSet {
+    rows: unknown[][];
     columns: ColumnDefinition[];
 }
 
 export interface ColumnDefinition {
     key: string;
-    label: string;
     type: string;
 }
