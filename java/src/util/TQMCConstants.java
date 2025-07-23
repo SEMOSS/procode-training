@@ -16,5 +16,4 @@ public class TQMCConstants {
     "November",
     "December"
   };
-
 }

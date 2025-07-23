@@ -15,7 +15,8 @@ public class GetAnimalsReactor extends AbstractTQMCReactor {
     // List<MTFData> output = new ArrayList<>();
     // try (PreparedStatement mtfQuery =
     //     con.prepareStatement(
-    //         "SELECT DMIS_ID, MTF_NAME, COALESCE(alias_mtf_name, mtf_name) AS ALIAS_MTF_NAME FROM MTF ORDER BY LOWER(COALESCE(alias_mtf_name, mtf_name)) ASC"); ) {
+    //         "SELECT DMIS_ID, MTF_NAME, COALESCE(alias_mtf_name, mtf_name) AS ALIAS_MTF_NAME FROM
+    // MTF ORDER BY LOWER(COALESCE(alias_mtf_name, mtf_name)) ASC"); ) {
     //   if (mtfQuery.execute()) {
     //     ResultSet rs = mtfQuery.getResultSet();
     //     while (rs.next()) {

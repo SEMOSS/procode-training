@@ -1,12 +1,12 @@
 package util;
 
+import domain.base.ErrorCode;
+import domain.base.TQMCException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 import prerna.util.AssetUtility;
 import prerna.util.Utility;
-import domain.base.ErrorCode;
-import domain.base.TQMCException;
 
 /**
  * Loads property values from a project asset at

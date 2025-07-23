@@ -8,9 +8,7 @@ import java.sql.SQLException;
 public class TQMCHelper {
   public static int addIntegerExampleHelper(Connection con, int a, int b) throws SQLException {
     int output = 0;
-    try (PreparedStatement ps =
-        con.prepareStatement(
-            "SELECT ? + ? AS OUTPUT"); ) {
+    try (PreparedStatement ps = con.prepareStatement("SELECT ? + ? AS OUTPUT"); ) {
       int parameterIndex = 1;
       ps.setInt(parameterIndex++, a);
       ps.setInt(parameterIndex++, b);
