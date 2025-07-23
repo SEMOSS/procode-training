@@ -55,8 +55,6 @@ export const QueryBox = () => {
         }
     };
 
-    console.log(response);
-
     /**
      * Constants
      */
@@ -113,8 +111,14 @@ export const QueryBox = () => {
                     loading={isResponseLoading}
                     disabled={isSubmitDisabled}
                 >
-                    Text to SQL
+                    Submit
                 </Button>
+            </Stack>
+
+            <Stack spacing={1}>
+                <Typography variant="h6" fontWeight="bold">
+                    Results
+                </Typography>
 
                 <TextField
                     label="SQL"
@@ -132,17 +136,21 @@ export const QueryBox = () => {
                     value={response.explanation}
                     disabled
                 />
-            </Stack>
-
-            <Stack spacing={1}>
-                <Typography variant="h6" fontWeight="bold">
-                    Results
-                </Typography>
 
                 <ResultsGrid
                     error={error}
                     isLoading={isResponseLoading}
-                    columns={response.columns}
+                    columns={
+                        response.columns?.length
+                            ? response.columns
+                            : [
+                                  {
+                                      key: 'USER_ID',
+                                      label: 'User ID',
+                                      type: 'string',
+                                  },
+                              ]
+                    }
                     result_set={response.result_set}
                 />
             </Stack>

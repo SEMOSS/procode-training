@@ -59,6 +59,10 @@ export default {
             React: 'react',
             ReactDOM: 'react-dom',
         }),
+        // new MiniCssExtractPlugin({
+        //     filename: '[name].css',
+        //     chunkFilename: '[id].css',
+        // }),
         new webpack.DefinePlugin({
             'process.env': JSON.stringify(process.env),
         }),
@@ -73,6 +77,10 @@ export default {
             {
                 test: /\.tsx?$/,
                 use: 'ts-loader',
+            },
+            {
+                test: /\.css$/,
+                use: ['css-loader'],
             },
 
             // Add your rules for custom modules here

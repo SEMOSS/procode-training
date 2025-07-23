@@ -1,5 +1,5 @@
-import { Stack } from '@mui/material';
 import { ColumnDefinition } from '../semoss.types';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 export interface ResultsGridProps {
     columns: ColumnDefinition[];
@@ -8,14 +8,15 @@ export interface ResultsGridProps {
     error: boolean;
 }
 
-export const ResultsGrid = ({ isLoading, error }: ResultsGridProps) => {
+export const ResultsGrid = ({ columns }: ResultsGridProps) => {
     return (
-        <Stack>
-            {isLoading
-                ? 'Loading...'
-                : error
-                  ? 'Error loading results'
-                  : 'Results loaded successfully'}
-        </Stack>
+        <DataGrid
+            columns={columns.map(
+                (col): GridColDef => ({
+                    field: col.key,
+                    headerName: col.label,
+                }),
+            )}
+        />
     );
 };
