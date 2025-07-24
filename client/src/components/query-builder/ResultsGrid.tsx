@@ -26,7 +26,7 @@ export const ResultsGrid = ({
                     headerName: col.key,
                     sortable: false,
                     disableColumnMenu: true,
-                    valueGetter: (row) => row[index],
+                    valueGetter: (_, row) => row[index],
                 }),
             )}
             rows={resultSet.rows.map((row, index) => ({
