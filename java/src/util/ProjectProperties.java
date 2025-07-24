@@ -55,13 +55,13 @@ public class ProjectProperties {
         new FileInputStream(
             Utility.normalizePath(
                 AssetUtility.getProjectAssetsFolder(projectId) + "/java/project.properties"))) {
-      Properties projecProperties = new Properties();
-      projecProperties.load(fileIn);
+      Properties projectProperties = new Properties();
+      projectProperties.load(fileIn);
 
       newInstance.projectId = projectId;
-      newInstance.engineId = projecProperties.getProperty("engineId");
+      newInstance.engineId = projectProperties.getProperty("engineId");
       newInstance.debuggingEnabled =
-          Boolean.parseBoolean(projecProperties.getProperty("debuggingEnabled"));
+          Boolean.parseBoolean(projectProperties.getProperty("debuggingEnabled"));
 
       INSTANCE = newInstance;
     } catch (IOException e) {
