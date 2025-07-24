@@ -39,6 +39,7 @@ export const QueryBox = () => {
     const [isResponseLoading, setIsResponseLoading] = useLoadingState(false);
     const [error, setError] = useState<boolean>(false);
     const [response, setResponse] = useState<ReactorResponse>(blankResponse);
+    const [autosizeTrigger, setAutosizeTrigger] = useState<number>(0);
 
     /**
      * Functions
@@ -49,9 +50,10 @@ export const QueryBox = () => {
             const response = await runPixel<ReactorResponse>(
                 `QueryDatabase( engine = ${JSON.stringify(model.app_id)}, command = ${JSON.stringify(question)}, database = ${JSON.stringify(db.app_id)} )`,
             );
-            setIsResponseLoading(false, loadingKey, () =>
-                setResponse(response),
-            );
+            setIsResponseLoading(false, loadingKey, () => {
+                setError(false);
+                setResponse(response);
+            });
         } catch {
             setIsResponseLoading(false, loadingKey, () => setError(true));
         }
@@ -66,7 +68,7 @@ export const QueryBox = () => {
         <StyledStack padding={2} width="100%" maxWidth="md" spacing={2}>
             <Stack spacing={1}>
                 <Typography variant="h6" fontWeight="bold">
-                    Options
+                    Prompt
                 </Typography>
 
                 <Autocomplete
@@ -79,6 +81,7 @@ export const QueryBox = () => {
                         <TextField {...params} label="Model" />
                     )}
                     fullWidth
+                    disabled={isResponseLoading}
                 />
 
                 <Autocomplete
@@ -91,20 +94,17 @@ export const QueryBox = () => {
                         <TextField {...params} label="Database" />
                     )}
                     fullWidth
+                    disabled={isResponseLoading}
                 />
-            </Stack>
-
-            <Stack spacing={1}>
-                <Typography variant="h6" fontWeight="bold">
-                    Query
-                </Typography>
 
                 <TextField
                     label="Text"
                     multiline
-                    rows={3}
+                    minRows={3}
+                    maxRows={6}
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
+                    disabled={isResponseLoading}
                 />
 
                 <Button
@@ -119,7 +119,7 @@ export const QueryBox = () => {
 
             <Stack spacing={1}>
                 <Typography variant="h6" fontWeight="bold">
-                    Results
+                    Query
                 </Typography>
 
                 <TextField
@@ -127,22 +127,57 @@ export const QueryBox = () => {
                     multiline
                     minRows={3}
                     maxRows={6}
-                    value={response.sql}
+                    value={
+                        error
+                            ? 'An error occurred while generating the results.'
+                            : response.sql
+                    }
                     disabled
                 />
 
                 <TextField
                     label="Explanation"
                     multiline
-                    rows={3}
-                    value={response.explanation}
+                    minRows={3}
+                    maxRows={6}
+                    value={
+                        error
+                            ? 'An error occurred while generating the results.'
+                            : response.explanation
+                    }
                     disabled
                 />
+            </Stack>
+
+            <Stack spacing={1}>
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    spacing={1}
+                >
+                    <Typography variant="h6" fontWeight="bold">
+                        Data
+                    </Typography>
+
+                    <Button
+                        variant="outlined"
+                        disabled={
+                            isResponseLoading ||
+                            error ||
+                            !response.result_set?.columns.length
+                        }
+                        onClick={() => setAutosizeTrigger((prev) => prev + 1)}
+                    >
+                        Autosize columns
+                    </Button>
+                </Stack>
 
                 <ResultsGrid
                     error={error}
                     isLoading={isResponseLoading}
                     resultSet={response.result_set}
+                    autosizeTrigger={autosizeTrigger}
                 />
             </Stack>
         </StyledStack>
