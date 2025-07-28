@@ -1,4 +1,3 @@
-import { Engine } from '@/components';
 import { useLoadingState } from '@/hooks';
 import { useInsight } from '@semoss/sdk-react';
 import {
@@ -13,8 +12,7 @@ import {
 export interface AppContextType {
     runPixel: <T = unknown>(pixelString: string) => Promise<T>;
     isAppDataLoading: boolean;
-    models: Engine[];
-    databases: Engine[];
+    onePlusTwo: number;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -49,8 +47,7 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
      * State
      */
     const [isAppDataLoading, setIsAppDataLoading] = useLoadingState(true);
-    const [models, setModels] = useState<Engine[]>();
-    const [databases, setDatabases] = useState<Engine[]>();
+    const [onePlusTwo, setOnePlusTwo] = useState<number>();
 
     /**
      * Functions
@@ -78,19 +75,9 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
 
             const loadSetPairs: LoadSetPair<unknown>[] = [
                 {
-                    loader: async () =>
-                        await runPixel<Engine[]>(
-                            ` MyEngines ( metaFilters = [{ "tag" : "text-generation" }] , engineTypes = [ 'MODEL' ] )`,
-                        ),
-                    setter: (response) => setModels(response),
-                } satisfies LoadSetPair<Engine[]>,
-                {
-                    loader: async () =>
-                        await runPixel<Engine[]>(
-                            ` MyEngines ( engineTypes = [ 'DATABASE' ] )`,
-                        ),
-                    setter: (response) => setDatabases(response),
-                } satisfies LoadSetPair<Engine[]>,
+                    loader: async () => await runPixel<number>('1 + 2'),
+                    setter: (response) => setOnePlusTwo(response),
+                } satisfies LoadSetPair<number>,
             ];
 
             await Promise.all(
@@ -114,9 +101,7 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
     }, [isReady, runPixel]);
 
     return (
-        <AppContext.Provider
-            value={{ runPixel, models, isAppDataLoading, databases }}
-        >
+        <AppContext.Provider value={{ runPixel, onePlusTwo, isAppDataLoading }}>
             {children}
         </AppContext.Provider>
     );
