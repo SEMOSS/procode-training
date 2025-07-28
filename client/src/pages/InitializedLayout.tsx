@@ -1,5 +1,5 @@
-import { MainNavigation } from '@/components';
-import { CircularProgress, Stack } from '@mui/material';
+import { LoadingScreen, MainNavigation } from '@/components';
+import { Stack } from '@mui/material';
 import { useInsight } from '@semoss/sdk-react';
 import { Outlet } from 'react-router';
 
@@ -24,13 +24,7 @@ export const InitializedLayout = () => {
                 </Stack>
             ) : (
                 // Otherwise, show a centered loading wheel
-                <Stack
-                    height="100%"
-                    alignItems="center"
-                    justifyContent="center"
-                >
-                    <CircularProgress />
-                </Stack>
+                <LoadingScreen />
             )}
         </Stack>
     );

@@ -67,10 +67,30 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
         const loadAppData = async () => {
             const loadingKey = setIsAppDataLoading(true);
 
-            const response = await runPixel<number>('1 + 2');
+            interface LoadSetPair<T> {
+                loader: () => Promise<T>;
+                value?: T;
+                setter: (value: T) => void;
+            }
+
+            const loadSetPairs: LoadSetPair<unknown>[] = [
+                {
+                    loader: async () => await runPixel<number>('1 + 2'),
+                    setter: (response) => setOnePlusTwo(response),
+                } satisfies LoadSetPair<number>,
+            ];
+
+            await Promise.all(
+                loadSetPairs.map(
+                    async (loadSetPair) =>
+                        (loadSetPair.value = await loadSetPair.loader()),
+                ),
+            );
 
             setIsAppDataLoading(false, loadingKey, () =>
-                setOnePlusTwo(response),
+                loadSetPairs.forEach((loadSetPair) =>
+                    loadSetPair.setter(loadSetPair.value),
+                ),
             );
         };
 
@@ -78,7 +98,7 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
             // If the insight is ready, then load the app data
             loadAppData();
         }
-    }, [isReady, runPixel, setOnePlusTwo]);
+    }, [isReady, runPixel]);
 
     return (
         <AppContext.Provider value={{ runPixel, onePlusTwo, isAppDataLoading }}>

@@ -60,7 +60,7 @@ export const MainNavigation = () => {
                     alt="Semoss Blue Logo"
                     height={spacing(6)}
                 />
-                <Typography variant="h4" fontWeight="bold">
+                <Typography variant="h4" fontWeight="bold" whiteSpace="nowrap">
                     SEMOSS Blank Canvas
                 </Typography>
             </CursorStack>
