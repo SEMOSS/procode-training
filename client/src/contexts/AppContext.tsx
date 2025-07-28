@@ -1,3 +1,4 @@
+import { Engine } from '@/components';
 import { useLoadingState } from '@/hooks';
 import { useInsight } from '@semoss/sdk-react';
 import {
@@ -12,7 +13,8 @@ import {
 export interface AppContextType {
     runPixel: <T = unknown>(pixelString: string) => Promise<T>;
     isAppDataLoading: boolean;
-    onePlusTwo: number;
+    models: Engine[];
+    databases: Engine[];
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -47,7 +49,8 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
      * State
      */
     const [isAppDataLoading, setIsAppDataLoading] = useLoadingState(true);
-    const [onePlusTwo, setOnePlusTwo] = useState<number>();
+    const [models, setModels] = useState<Engine[]>();
+    const [databases, setDatabases] = useState<Engine[]>();
 
     /**
      * Functions
@@ -67,10 +70,40 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
         const loadAppData = async () => {
             const loadingKey = setIsAppDataLoading(true);
 
-            const response = await runPixel<number>('1 + 2');
+            interface LoadSetPair<T> {
+                loader: () => Promise<T>;
+                value?: T;
+                setter: (value: T) => void;
+            }
+
+            const loadSetPairs: LoadSetPair<unknown>[] = [
+                {
+                    loader: async () =>
+                        await runPixel<Engine[]>(
+                            ` MyEngines ( metaFilters = [{ "tag" : "text-generation" }] , engineTypes = [ 'MODEL' ] )`,
+                        ),
+                    setter: (response) => setModels(response),
+                } satisfies LoadSetPair<Engine[]>,
+                {
+                    loader: async () =>
+                        await runPixel<Engine[]>(
+                            ` MyEngines ( engineTypes = [ 'DATABASE' ] )`,
+                        ),
+                    setter: (response) => setDatabases(response),
+                } satisfies LoadSetPair<Engine[]>,
+            ];
+
+            await Promise.all(
+                loadSetPairs.map(
+                    async (loadSetPair) =>
+                        (loadSetPair.value = await loadSetPair.loader()),
+                ),
+            );
 
             setIsAppDataLoading(false, loadingKey, () =>
-                setOnePlusTwo(response),
+                loadSetPairs.forEach((loadSetPair) =>
+                    loadSetPair.setter(loadSetPair.value),
+                ),
             );
         };
 
@@ -78,10 +111,12 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
             // If the insight is ready, then load the app data
             loadAppData();
         }
-    }, [isReady, runPixel, setOnePlusTwo]);
+    }, [isReady, runPixel]);
 
     return (
-        <AppContext.Provider value={{ runPixel, onePlusTwo, isAppDataLoading }}>
+        <AppContext.Provider
+            value={{ runPixel, models, isAppDataLoading, databases }}
+        >
             {children}
         </AppContext.Provider>
     );
