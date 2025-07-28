@@ -47,6 +47,7 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
      * State
      */
     const [isAppDataLoading, setIsAppDataLoading] = useLoadingState(true);
+    // Example state variable to store the result of a pixel operation
     const [onePlusTwo, setOnePlusTwo] = useState<number>();
 
     /**
@@ -64,15 +65,19 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
      * Effects
      */
     useEffect(() => {
+        // Function to load app data
         const loadAppData = async () => {
             const loadingKey = setIsAppDataLoading(true);
 
+            // Define a type for the loader and setter pairs
+            // This allows us to load multiple pieces of data simultaneously and set them in state
             interface LoadSetPair<T> {
                 loader: () => Promise<T>;
                 value?: T;
                 setter: (value: T) => void;
             }
 
+            // Create an array of loadSetPairs, each containing a loader function and a setter function
             const loadSetPairs: LoadSetPair<unknown>[] = [
                 {
                     loader: async () => await runPixel<number>('1 + 2'),
@@ -80,6 +85,7 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
                 } satisfies LoadSetPair<number>,
             ];
 
+            // Execute all loaders in parallel and wait for them all to complete
             await Promise.all(
                 loadSetPairs.map(
                     async (loadSetPair) =>
@@ -87,6 +93,8 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
                 ),
             );
 
+            // Once all loaders have completed, set the loading state to false
+            // and call each setter with the loaded value
             setIsAppDataLoading(false, loadingKey, () =>
                 loadSetPairs.forEach((loadSetPair) =>
                     loadSetPair.setter(loadSetPair.value),
