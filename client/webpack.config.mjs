@@ -59,10 +59,6 @@ export default {
             React: 'react',
             ReactDOM: 'react-dom',
         }),
-        // new MiniCssExtractPlugin({
-        //     filename: '[name].css',
-        //     chunkFilename: '[id].css',
-        // }),
         new webpack.DefinePlugin({
             'process.env': JSON.stringify(process.env),
         }),
