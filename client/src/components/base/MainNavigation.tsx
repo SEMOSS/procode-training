@@ -1,6 +1,7 @@
 import { Button, Stack, styled, Typography, useTheme } from '@mui/material';
 import { SemossBlueLogo } from '@/assets';
 import { useNavigate } from 'react-router';
+import { ROUTE_PATH_PAGE_A } from '@/pages/routes.constants';
 import { useInsight } from '@semoss/sdk-react';
 
 // A Stack with a different-colored background
@@ -18,7 +19,16 @@ const CursorStack = styled(Stack)({
 const navigationButtons: {
     path: string;
     text: string;
-}[] = [];
+}[] = [
+    {
+        path: '/',
+        text: 'Home',
+    },
+    {
+        path: ROUTE_PATH_PAGE_A,
+        text: 'Page A',
+    },
+];
 
 /**
  * The main navigation bar allowing users to move between pages, if they are authorized.
@@ -51,7 +61,7 @@ export const MainNavigation = () => {
                     height={spacing(6)}
                 />
                 <Typography variant="h4" fontWeight="bold" whiteSpace="nowrap">
-                    SQL Builder
+                    SEMOSS Blank Canvas
                 </Typography>
             </CursorStack>
 

@@ -5,7 +5,7 @@ import { useAppContext } from '@/contexts';
 import { LoadingScreen } from '@/components';
 
 /**
- * Renders pages if the user is logged in, otherwise sends them to the login page.
+ * Sends users to the login page if they are not authorized, shows a loading screen while app data is loading, otherwise renders the child components.
  *
  * @component
  */

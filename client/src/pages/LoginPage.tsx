@@ -14,7 +14,7 @@ export const LoginPage = () => {
     const { state } = useLocation(); // If the user was routed here, then there may be information about where they were trying to go
 
     // If the user is already authorized, we can route them off of this page. If the user was routed here, attempt to send them back to their target
-    if (isAuthorized) return <Navigate to={state.target ?? '/'} />;
+    if (isAuthorized) return <Navigate to={state?.target ?? '/'} />;
 
     /**
      * State / Refs

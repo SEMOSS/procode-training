@@ -1,4 +1,3 @@
-import { QueryBox } from '@/components';
 import { Stack } from '@mui/material';
 
 /**
@@ -9,7 +8,7 @@ import { Stack } from '@mui/material';
 export const HomePage = () => {
     return (
         <Stack width="100%" alignItems="center">
-            <QueryBox />
+            <div>Home page</div>
         </Stack>
     );
 };
