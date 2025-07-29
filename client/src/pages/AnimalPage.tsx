@@ -1,6 +1,7 @@
-import { Animal, AnimalList } from '@/components';
-import { useLoadingPixel, useSettingPixel } from '@/hooks';
+import { AddAnimalModal, Animal, AnimalList } from '@/components';
+import { useLoadingPixel } from '@/hooks';
 import { Button, Stack, Typography } from '@mui/material';
+import { useState } from 'react';
 
 /**
  * Renders a page for the animal example.
@@ -14,13 +15,17 @@ export const AnimalPage = () => {
     const [animalList, isAnimalListLoading, fetchAnimalList] = useLoadingPixel<
         Animal[]
     >('GetAnimals( )', []);
-    const [addAnimal, isLoadingAddAnmial] = useSettingPixel();
+    const [isAddAnimalModalOpen, setIsAddAnimalModalOpen] =
+        useState<boolean>(false);
 
     /**
      * Functions
      */
-    const clickButton = async () => {
-        addAnimal('1 + 3', () => fetchAnimalList());
+    const handleModalClose = (addedAnimal: boolean) => {
+        setIsAddAnimalModalOpen(false);
+        if (addedAnimal) {
+            fetchAnimalList();
+        }
     };
 
     return (
@@ -31,13 +36,20 @@ export const AnimalPage = () => {
                 justifyContent="space-between"
             >
                 <Typography variant="h4">Animal Page</Typography>
-                <Button onClick={clickButton} variant="contained">
+                <Button
+                    onClick={() => setIsAddAnimalModalOpen(true)}
+                    variant="contained"
+                >
                     Add animal
                 </Button>
             </Stack>
             <AnimalList
                 animalList={animalList ?? []}
-                loading={isAnimalListLoading || isLoadingAddAnmial}
+                loading={isAnimalListLoading}
+            />
+            <AddAnimalModal
+                open={isAddAnimalModalOpen}
+                onClose={handleModalClose}
             />
         </Stack>
     );
