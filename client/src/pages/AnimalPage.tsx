@@ -1,4 +1,4 @@
-import { AnimalList } from '@/components';
+import { Animal, AnimalList } from '@/components';
 import { useAppContext } from '@/contexts';
 import { usePixel } from '@/hooks';
 
@@ -10,7 +10,10 @@ import { usePixel } from '@/hooks';
 export const AnimalPage = () => {
     const { runPixel } = useAppContext();
 
-    const [output, isOutputLoading] = usePixel<number>('4 + 5');
+    const [animalList, isAnimalListLoading] = usePixel<Animal[]>(
+        'GetAnimals( )',
+        [],
+    );
 
     const clickButton = async () => {
         const response = await runPixel<number>('2 + 3');
@@ -21,16 +24,7 @@ export const AnimalPage = () => {
         <div>
             <div>Animal Page</div>
             <button onClick={clickButton}>Button</button>
-            <div>{`4 + 5 = ${isOutputLoading ? 'loading' : output}`}</div>
-            <AnimalList
-                animalList={[
-                    {
-                        animal_id: '1',
-                        animal_name: 'Dog',
-                        animal_type: 'Mammal',
-                    },
-                ]}
-            />
+            <AnimalList animalList={isAnimalListLoading ? [] : animalList} />
         </div>
     );
 };
