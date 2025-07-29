@@ -35,7 +35,7 @@ export const AnimalPage = () => {
                 alignItems="center"
                 justifyContent="space-between"
             >
-                <Typography variant="h4">Animal Page</Typography>
+                <Typography variant="h4">Animals</Typography>
                 <Button
                     onClick={() => setIsAddAnimalModalOpen(true)}
                     variant="contained"

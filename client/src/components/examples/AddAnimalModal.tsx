@@ -5,7 +5,10 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
+    Stack,
+    TextField,
 } from '@mui/material';
+import { useState } from 'react';
 
 export interface AddAnimalModalProps {
     open: boolean;
@@ -18,7 +21,13 @@ export interface AddAnimalModalProps {
  * @component
  */
 export const AddAnimalModal = ({ open, onClose }: AddAnimalModalProps) => {
-    const [addAnimal] = useSettingPixel();
+    const [addAnimal, isLoading] = useSettingPixel();
+
+    /**
+     * State
+     */
+    const [animalName, setAnimalName] = useState<string>('');
+    const [animalType, setAnimalType] = useState<string>('');
 
     /**
      * Functions
@@ -30,9 +39,32 @@ export const AddAnimalModal = ({ open, onClose }: AddAnimalModalProps) => {
     return (
         <Dialog open={open} fullWidth maxWidth="sm">
             <DialogTitle>Add animal</DialogTitle>
-            <DialogContent>Hello</DialogContent>
+
+            <DialogContent>
+                <Stack spacing={2}>
+                    {/* div to prevent title clipping */}
+                    <div />
+
+                    <TextField
+                        value={animalName}
+                        onChange={(e) => setAnimalName(e.target.value)}
+                        label="Name"
+                    />
+
+                    <TextField
+                        value={animalType}
+                        onChange={(e) => setAnimalType(e.target.value)}
+                        label="Type"
+                    />
+                </Stack>
+            </DialogContent>
+
             <DialogActions>
-                <Button onClick={handleSubmitClick} variant="contained">
+                <Button
+                    onClick={handleSubmitClick}
+                    variant="contained"
+                    loading={isLoading}
+                >
                     Add animal
                 </Button>
             </DialogActions>
