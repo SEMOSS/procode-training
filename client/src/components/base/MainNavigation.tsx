@@ -1,7 +1,7 @@
 import { Button, Stack, styled, Typography, useTheme } from '@mui/material';
 import { SemossBlueLogo } from '@/assets';
 import { useNavigate } from 'react-router';
-import { ROUTE_PATH_PAGE_A } from '@/pages/routes.constants';
+import { ROUTE_PATH_ANIMAL_PAGE } from '@/pages/routes.constants';
 import { useInsight } from '@semoss/sdk-react';
 
 // A Stack with a different-colored background
@@ -25,8 +25,8 @@ const navigationButtons: {
         text: 'Home',
     },
     {
-        path: ROUTE_PATH_PAGE_A,
-        text: 'Page A',
+        path: ROUTE_PATH_ANIMAL_PAGE,
+        text: 'Animal Page',
     },
 ];
 

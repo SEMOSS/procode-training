@@ -1,10 +1,13 @@
 import { HashRouter, Navigate, Route, Routes } from 'react-router';
-import { ROUTE_PATH_LOGIN_PAGE, ROUTE_PATH_PAGE_A } from './routes.constants';
+import {
+    ROUTE_PATH_LOGIN_PAGE,
+    ROUTE_PATH_ANIMAL_PAGE,
+} from './routes.constants';
 import { InitializedLayout } from './InitializedLayout';
 import { AuthorizedLayout } from './AuthorizedLayout';
 import { HomePage } from './HomePage';
 import { LoginPage } from './LoginPage';
-import { PageA } from './PageA';
+import { AnimalPage } from './AnimalPage';
 
 /**
  * Renders pages based on url.
@@ -23,7 +26,10 @@ export const Router = () => {
                         {/* If the path is empty, use the home page */}
                         <Route index element={<HomePage />} />
 
-                        <Route path={ROUTE_PATH_PAGE_A} element={<PageA />} />
+                        <Route
+                            path={ROUTE_PATH_ANIMAL_PAGE}
+                            element={<AnimalPage />}
+                        />
                     </Route>
 
                     {/* The login page should be available to non-logged in users (duh) */}
