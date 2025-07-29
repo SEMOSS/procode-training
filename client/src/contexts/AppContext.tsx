@@ -72,24 +72,29 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
             // Define a type for the loader and setter pairs
             // This allows us to load multiple pieces of data simultaneously and set them in state
             interface LoadSetPair<T> {
-                loader: () => Promise<T>;
+                loader: string;
                 value?: T;
-                setter: (value: T) => void;
+                setter?: (value: T) => void;
             }
 
             // Create an array of loadSetPairs, each containing a loader function and a setter function
             const loadSetPairs: LoadSetPair<unknown>[] = [
                 {
-                    loader: async () => await runPixel<number>('1 + 2'),
+                    loader: '1 + 2',
                     setter: (response) => setOnePlusTwo(response),
                 } satisfies LoadSetPair<number>,
+                {
+                    loader: 'ReloadInsightClasses()',
+                },
             ];
 
             // Execute all loaders in parallel and wait for them all to complete
             await Promise.all(
                 loadSetPairs.map(
                     async (loadSetPair) =>
-                        (loadSetPair.value = await loadSetPair.loader()),
+                        (loadSetPair.value = await runPixel(
+                            loadSetPair.loader,
+                        )),
                 ),
             );
 
@@ -97,7 +102,7 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
             // and call each setter with the loaded value
             setIsAppDataLoading(false, loadingKey, () =>
                 loadSetPairs.forEach((loadSetPair) =>
-                    loadSetPair.setter(loadSetPair.value),
+                    loadSetPair.setter?.(loadSetPair.value),
                 ),
             );
         };

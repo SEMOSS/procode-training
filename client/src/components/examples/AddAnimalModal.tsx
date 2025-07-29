@@ -33,7 +33,10 @@ export const AddAnimalModal = ({ open, onClose }: AddAnimalModalProps) => {
      * Functions
      */
     const handleSubmitClick = async () => {
-        addAnimal('1 + 3', () => onClose(true));
+        addAnimal(
+            `AddAnimal(animal_name=${JSON.stringify(animalName)}, animal_type=${JSON.stringify(animalType)})`,
+            () => onClose(true),
+        );
     };
 
     return (
