@@ -1,6 +1,6 @@
 import { Animal, AnimalList } from '@/components';
 import { useAppContext } from '@/contexts';
-import { usePixel } from '@/hooks';
+import { useLoadingPixel } from '@/hooks';
 
 /**
  * Renders a page for the animal example.
@@ -10,7 +10,7 @@ import { usePixel } from '@/hooks';
 export const AnimalPage = () => {
     const { runPixel } = useAppContext();
 
-    const [animalList, isAnimalListLoading] = usePixel<Animal[]>(
+    const [animalList, isAnimalListLoading] = useLoadingPixel<Animal[]>(
         'GetAnimals( )',
         [],
     );

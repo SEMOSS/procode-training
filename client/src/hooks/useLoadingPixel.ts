@@ -10,7 +10,7 @@ import { useAppContext } from '@/contexts';
  * @param {T} [initialValue] The initial value of the state, before being overwritten by the pixel return.
  * @returns {[T, boolean, () => void]} The pixel return, whether the call is loading, and a function to re-fetch.
  */
-export const usePixel = <T>(
+export const useLoadingPixel = <T>(
     pixelString: string,
     initialValue?: T,
 ): [T, boolean, () => void] => {
