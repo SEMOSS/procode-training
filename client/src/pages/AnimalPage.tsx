@@ -14,7 +14,7 @@ export const AnimalPage = () => {
     const [animalList, isAnimalListLoading, fetchAnimalList] = useLoadingPixel<
         Animal[]
     >('GetAnimals( )', []);
-    const [addAnimal] = useSettingPixel();
+    const [addAnimal, isLoadingAddAnmial] = useSettingPixel();
 
     /**
      * Functions
@@ -24,7 +24,7 @@ export const AnimalPage = () => {
     };
 
     return (
-        <Stack>
+        <Stack spacing={2}>
             <Stack
                 direction="row"
                 alignItems="center"
@@ -35,7 +35,10 @@ export const AnimalPage = () => {
                     Add animal
                 </Button>
             </Stack>
-            <AnimalList animalList={isAnimalListLoading ? [] : animalList} />
+            <AnimalList
+                animalList={animalList ?? []}
+                loading={isAnimalListLoading || isLoadingAddAnmial}
+            />
         </Stack>
     );
 };
