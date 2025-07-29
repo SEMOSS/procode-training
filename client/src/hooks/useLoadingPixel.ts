@@ -3,7 +3,7 @@ import { useLoadingState } from './useLoadingState';
 import { useAppContext } from '@/contexts';
 
 /**
- * Custom hook to call a reactor on page load.
+ * Custom hook to call a reactor, typically for fetching data on page load.
  *
  * @template T The expected type of the pixel response.
  * @param {string} [pixelString] The pixel to call.
