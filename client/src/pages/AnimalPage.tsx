@@ -1,6 +1,5 @@
 import { Animal, AnimalList } from '@/components';
-import { useAppContext } from '@/contexts';
-import { useLoadingPixel } from '@/hooks';
+import { useLoadingPixel, useSettingPixel } from '@/hooks';
 
 /**
  * Renders a page for the animal example.
@@ -8,16 +7,15 @@ import { useLoadingPixel } from '@/hooks';
  * @component
  */
 export const AnimalPage = () => {
-    const { runPixel } = useAppContext();
-
     const [animalList, isAnimalListLoading] = useLoadingPixel<Animal[]>(
         'GetAnimals( )',
         [],
     );
 
+    const [addAnimal] = useSettingPixel();
+
     const clickButton = async () => {
-        const response = await runPixel<number>('2 + 3');
-        console.log(response);
+        addAnimal('1 + 3', (response) => console.log(response));
     };
 
     return (

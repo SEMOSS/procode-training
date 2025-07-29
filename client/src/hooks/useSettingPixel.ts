@@ -6,15 +6,15 @@ import { useAppContext } from '@/contexts';
  * Custom hook to call a reactor, typically used for calling a pixel on a click
  *
  * @template T The expected type of the pixel response.
- * @returns {[boolean, (pixelString: string, onSuccess?: (response: T) => Promise<void>, onError?: (error: Error) => Promise<void>) => void]} A function to call the pixel and a boolean indicating if the pixel is loading.
+ * @returns {[(pixelString: string, onSuccess?: (response: T) => Promise<void> | void, onError?: (error: Error) => Promise<void> | void) => void, boolean]} A function to call the pixel and a boolean indicating if the pixel is loading.
  */
 export const useSettingPixel = <T>(): [
-    boolean,
     (
         pixelString: string,
-        onSuccess?: (response: T) => Promise<void>,
-        onError?: (error: Error) => Promise<void>,
+        onSuccess?: (response: T) => Promise<void> | void,
+        onError?: (error: Error) => Promise<void> | void,
     ) => void,
+    boolean,
 ] => {
     const { runPixel } = useAppContext();
 
@@ -29,8 +29,8 @@ export const useSettingPixel = <T>(): [
     const fetchPixel = useCallback(
         (
             pixelString: string,
-            onSuccess?: (response: T) => Promise<void>,
-            onError?: (error: Error) => Promise<void>,
+            onSuccess?: (response: T) => Promise<void> | void,
+            onError?: (error: Error) => Promise<void> | void,
         ) => {
             (async () => {
                 const loadingKey = setIsLoading(true);
@@ -47,5 +47,5 @@ export const useSettingPixel = <T>(): [
         [setIsLoading, runPixel],
     );
 
-    return [isLoading, fetchPixel];
+    return [fetchPixel, isLoading];
 };
