@@ -6,10 +6,10 @@ import { useAppContext } from '@/contexts';
  * Custom hook to call a reactor, typically used for calling a pixel on a click
  *
  * @template T The expected type of the pixel response.
- * @returns {[(pixelString: string, onSuccess?: (response: T) => Promise<void> | void, onError?: (error: Error) => Promise<void> | void) => void, boolean]} A function to call the pixel and a boolean indicating if the pixel is loading.
+ * @returns {[(pixelString: string, onSuccess?:  <T>(response: T) => Promise<void> | void, onError?: (error: Error) => Promise<void> | void) => void, boolean]} A function to call the pixel and a boolean indicating if the pixel is loading.
  */
-export const useSettingPixel = <T>(): [
-    (
+export const useSettingPixel = (): [
+    <T>(
         pixelString: string,
         onSuccess?: (response: T) => Promise<void> | void,
         onError?: (error: Error) => Promise<void> | void,
@@ -27,7 +27,7 @@ export const useSettingPixel = <T>(): [
      * Functions
      */
     const fetchPixel = useCallback(
-        (
+        <T>(
             pixelString: string,
             onSuccess?: (response: T) => Promise<void> | void,
             onError?: (error: Error) => Promise<void> | void,
