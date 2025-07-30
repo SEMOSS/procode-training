@@ -83,9 +83,6 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
                     loader: '1 + 2',
                     setter: (response) => setOnePlusTwo(response),
                 } satisfies LoadSetPair<number>,
-                {
-                    loader: 'ReloadInsightClasses()',
-                },
             ];
 
             // Execute all loaders in parallel and wait for them all to complete
