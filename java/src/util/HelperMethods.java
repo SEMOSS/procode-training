@@ -1,5 +1,8 @@
 package util;
 
+import domain.base.ErrorCode;
+import domain.base.ProjectException;
+import domain.examples.AnimalData;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,6 +21,33 @@ public class HelperMethods {
           output = rs.getInt("OUTPUT");
         }
       }
+    }
+
+    return output;
+  }
+
+  public static AnimalData getAnimalByIdHelper(Connection con, int animalId) throws SQLException {
+
+    AnimalData output = null;
+
+    try (PreparedStatement ps =
+        con.prepareStatement(
+            "SELECT animal_id, animal_type, animal_name FROM animal WHERE animal_id = ?")) {
+      int parameterIndex = 1;
+      ps.setInt(parameterIndex++, animalId);
+      if (ps.execute()) {
+        ResultSet rs = ps.getResultSet();
+        if (rs.next()) {
+          int id = rs.getInt("animal_id");
+          String type = rs.getString("animal_type");
+          String name = rs.getString("animal_name");
+          output = new AnimalData(id, type, name);
+        }
+      }
+    }
+
+    if (output == null) {
+      throw new ProjectException(ErrorCode.NOT_FOUND, "No animal found with that ID");
     }
 
     return output;
