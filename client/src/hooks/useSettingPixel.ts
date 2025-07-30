@@ -16,7 +16,7 @@ export const useSettingPixel = <T>(): [
     ) => void,
     boolean,
 ] => {
-    const { runPixel } = useAppContext();
+    const { runPixel, setMessageSnackbarProps } = useAppContext();
 
     /**
      * State
@@ -36,9 +36,14 @@ export const useSettingPixel = <T>(): [
                 const loadingKey = setIsLoading(true);
                 try {
                     const response = await runPixel<T>(pixelString);
-                    setIsLoading(false, loadingKey, () =>
-                        onSuccess?.(response),
-                    );
+                    setIsLoading(false, loadingKey, () => {
+                        onSuccess?.(response);
+                        setMessageSnackbarProps({
+                            open: true,
+                            message: 'Success',
+                            severity: 'success',
+                        });
+                    });
                 } catch (error) {
                     setIsLoading(false, loadingKey, () => onError?.(error));
                 }

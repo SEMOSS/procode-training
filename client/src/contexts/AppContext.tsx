@@ -63,16 +63,20 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
     /**
      * Functions
      */
+
+    // Function to run a pixel and return the result. Opens the snackbar if there is an error.
     const runPixel = useCallback(
         async <T,>(pixelString: string) => {
-            let response: Awaited<ReturnType<typeof actions.run<T[]>>>;
             try {
-                response = await actions.run<T[]>(pixelString);
+                const response = await actions.run<T[]>(pixelString);
                 return response.pixelReturn[0].output;
             } catch (error) {
                 setMessageSnackbarProps({
                     open: true,
-                    message: `${error}`,
+                    // If the error message is an empty object, use a default message
+                    // This can happen when SEMOSS SDK returns an empty object - that should be fixed in the SDK
+                    // but for now, we handle it gracefully here
+                    message: `${error.message === {}.toString() ? 'Error during operation' : error.message}`,
                     severity: 'error',
                 });
                 throw error;

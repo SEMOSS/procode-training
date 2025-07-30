@@ -39,6 +39,12 @@ export const AddAnimalModal = ({ open, onClose }: AddAnimalModalProps) => {
         );
     };
 
+    /**
+     * Constants
+     */
+    const isReadyToSubmit =
+        animalName.trim().length > 0 && animalType.trim().length > 0;
+
     return (
         <Dialog open={open} fullWidth maxWidth="sm">
             <DialogTitle>Add animal</DialogTitle>
@@ -67,6 +73,7 @@ export const AddAnimalModal = ({ open, onClose }: AddAnimalModalProps) => {
                     onClick={handleSubmitClick}
                     variant="contained"
                     loading={isLoading}
+                    disabled={!isReadyToSubmit}
                 >
                     Add animal
                 </Button>
