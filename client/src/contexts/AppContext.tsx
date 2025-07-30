@@ -65,8 +65,18 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
      */
     const runPixel = useCallback(
         async <T,>(pixelString: string) => {
-            const response = actions.run<T[]>(pixelString);
-            return (await response).pixelReturn[0].output;
+            let response: Awaited<ReturnType<typeof actions.run<T[]>>>;
+            try {
+                response = await actions.run<T[]>(pixelString);
+                return response.pixelReturn[0].output;
+            } catch (error) {
+                setMessageSnackbarProps({
+                    open: true,
+                    message: `${error}`,
+                    severity: 'error',
+                });
+                throw error;
+            }
         },
         [actions],
     );

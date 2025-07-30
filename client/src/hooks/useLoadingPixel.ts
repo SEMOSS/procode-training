@@ -28,8 +28,12 @@ export const useLoadingPixel = <T>(
     const fetchPixel = useCallback(() => {
         (async () => {
             const loadingKey = setIsLoading(true);
-            const response = await runPixel<T>(pixelString);
-            setIsLoading(false, loadingKey, () => setResponse(response));
+            try {
+                const response = await runPixel<T>(pixelString);
+                setIsLoading(false, loadingKey, () => setResponse(response));
+            } catch {
+                setIsLoading(false, loadingKey);
+            }
         })();
     }, [pixelString, setIsLoading, runPixel]);
 

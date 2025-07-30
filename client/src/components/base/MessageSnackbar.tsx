@@ -12,7 +12,11 @@ export interface MessageSnackbarProps {
  *
  * @component
  */
-export const MessageSnackbar = ({ open, severity }: MessageSnackbarProps) => {
+export const MessageSnackbar = ({
+    open,
+    severity,
+    message,
+}: MessageSnackbarProps) => {
     const { setMessageSnackbarProps } = useAppContext();
 
     /**
@@ -30,9 +34,13 @@ export const MessageSnackbar = ({ open, severity }: MessageSnackbarProps) => {
     };
 
     return (
-        <Snackbar open={open} onClose={handleClose}>
+        <Snackbar
+            open={open}
+            onClose={handleClose}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        >
             <Alert severity={severity} onClose={handleClose}>
-                Hello
+                {message}
             </Alert>
         </Snackbar>
     );

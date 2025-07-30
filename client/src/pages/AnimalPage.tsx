@@ -17,7 +17,7 @@ export const AnimalPage = () => {
      */
     const [animalList, isAnimalListLoading, fetchAnimalList] = useLoadingPixel<
         Animal[]
-    >('GetAnimals( )', []);
+    >('GetAnimalz( )', []);
     const [isAddAnimalModalOpen, setIsAddAnimalModalOpen] =
         useState<boolean>(false);
 
