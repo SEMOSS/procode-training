@@ -1,2 +1,3 @@
 export * from './useLoadingState';
-export * from './usePixel';
+export * from './useLoadingPixel';
+export * from './useSettingPixel';

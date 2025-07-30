@@ -1,8 +1,11 @@
+import { MessageSnackbar, MessageSnackbarProps } from '@/components';
 import { useLoadingState } from '@/hooks';
 import { useInsight } from '@semoss/sdk-react';
 import {
     createContext,
+    Dispatch,
     PropsWithChildren,
+    SetStateAction,
     useCallback,
     useContext,
     useEffect,
@@ -13,6 +16,7 @@ export interface AppContextType {
     runPixel: <T = unknown>(pixelString: string) => Promise<T>;
     isAppDataLoading: boolean;
     onePlusTwo: number;
+    setMessageSnackbarProps: Dispatch<SetStateAction<MessageSnackbarProps>>;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -47,16 +51,36 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
      * State
      */
     const [isAppDataLoading, setIsAppDataLoading] = useLoadingState(true);
+    const [messageSnackbarProps, setMessageSnackbarProps] =
+        useState<MessageSnackbarProps>({
+            open: false,
+            message: '',
+            severity: 'info',
+        });
     // Example state variable to store the result of a pixel operation
     const [onePlusTwo, setOnePlusTwo] = useState<number>();
 
     /**
      * Functions
      */
+
+    // Function to run a pixel and return the result. Opens the snackbar if there is an error.
     const runPixel = useCallback(
         async <T,>(pixelString: string) => {
-            const response = actions.run<T[]>(pixelString);
-            return (await response).pixelReturn[0].output;
+            try {
+                const response = await actions.run<T[]>(pixelString);
+                return response.pixelReturn[0].output;
+            } catch (error) {
+                setMessageSnackbarProps({
+                    open: true,
+                    // If the error message is an empty object, use a default message
+                    // This can happen when SEMOSS SDK returns an empty object - that should be fixed in the SDK
+                    // but for now, we handle it gracefully here
+                    message: `${error.message === {}.toString() ? 'Error during operation' : error.message}`,
+                    severity: 'error',
+                });
+                throw error;
+            }
         },
         [actions],
     );
@@ -72,15 +96,15 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
             // Define a type for the loader and setter pairs
             // This allows us to load multiple pieces of data simultaneously and set them in state
             interface LoadSetPair<T> {
-                loader: () => Promise<T>;
+                loader: string;
                 value?: T;
-                setter: (value: T) => void;
+                setter?: (value: T) => void;
             }
 
             // Create an array of loadSetPairs, each containing a loader function and a setter function
             const loadSetPairs: LoadSetPair<unknown>[] = [
                 {
-                    loader: async () => await runPixel<number>('1 + 2'),
+                    loader: '1 + 2',
                     setter: (response) => setOnePlusTwo(response),
                 } satisfies LoadSetPair<number>,
             ];
@@ -89,7 +113,9 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
             await Promise.all(
                 loadSetPairs.map(
                     async (loadSetPair) =>
-                        (loadSetPair.value = await loadSetPair.loader()),
+                        (loadSetPair.value = await runPixel(
+                            loadSetPair.loader,
+                        )),
                 ),
             );
 
@@ -97,7 +123,7 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
             // and call each setter with the loaded value
             setIsAppDataLoading(false, loadingKey, () =>
                 loadSetPairs.forEach((loadSetPair) =>
-                    loadSetPair.setter(loadSetPair.value),
+                    loadSetPair.setter?.(loadSetPair.value),
                 ),
             );
         };
@@ -109,8 +135,17 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
     }, [isReady, runPixel]);
 
     return (
-        <AppContext.Provider value={{ runPixel, onePlusTwo, isAppDataLoading }}>
+        <AppContext.Provider
+            value={{
+                runPixel,
+                onePlusTwo,
+                isAppDataLoading,
+                setMessageSnackbarProps,
+            }}
+        >
             {children}
+            {/* The MessageSnackbar component is rendered here so that it can be used to display messages throughout the app */}
+            <MessageSnackbar {...messageSnackbarProps} />
         </AppContext.Provider>
     );
 };

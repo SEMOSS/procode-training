@@ -19,7 +19,7 @@ public class GetAnimalsReactor extends AbstractProjectReactor {
     List<AnimalData> output = new ArrayList<>();
     try (PreparedStatement ps =
         con.prepareStatement(
-            "SELECT animal_id, animal_type, animal_name FROM animal ORDER BY animal_name ASC")) {
+            "SELECT animal_id, animal_type, animal_name FROM animal ORDER BY animal_id ASC")) {
       if (ps.execute()) {
         ResultSet rs = ps.getResultSet();
         while (rs.next()) {
