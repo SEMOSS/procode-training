@@ -1,4 +1,5 @@
 import { AddAnimalModal, Animal, AnimalList } from '@/components';
+import { useAppContext } from '@/contexts';
 import { useLoadingPixel } from '@/hooks';
 import { Button, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
@@ -9,6 +10,8 @@ import { useState } from 'react';
  * @component
  */
 export const AnimalPage = () => {
+    const { setMessageSnackbarProps } = useAppContext();
+
     /**
      * State
      */
@@ -43,14 +46,28 @@ export const AnimalPage = () => {
                     Add animal
                 </Button>
             </Stack>
+
             <AnimalList
                 animalList={animalList ?? []}
                 loading={isAnimalListLoading}
             />
+
             <AddAnimalModal
                 open={isAddAnimalModalOpen}
                 onClose={handleModalClose}
             />
+
+            <Button
+                onClick={() =>
+                    setMessageSnackbarProps({
+                        open: true,
+                        message: 'This is a test message',
+                        severity: 'success',
+                    })
+                }
+            >
+                click
+            </Button>
         </Stack>
     );
 };

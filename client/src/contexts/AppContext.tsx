@@ -1,8 +1,11 @@
+import { MessageSnackbar, MessageSnackbarProps } from '@/components';
 import { useLoadingState } from '@/hooks';
 import { useInsight } from '@semoss/sdk-react';
 import {
     createContext,
+    Dispatch,
     PropsWithChildren,
+    SetStateAction,
     useCallback,
     useContext,
     useEffect,
@@ -13,6 +16,7 @@ export interface AppContextType {
     runPixel: <T = unknown>(pixelString: string) => Promise<T>;
     isAppDataLoading: boolean;
     onePlusTwo: number;
+    setMessageSnackbarProps: Dispatch<SetStateAction<MessageSnackbarProps>>;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -47,6 +51,12 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
      * State
      */
     const [isAppDataLoading, setIsAppDataLoading] = useLoadingState(true);
+    const [messageSnackbarProps, setMessageSnackbarProps] =
+        useState<MessageSnackbarProps>({
+            open: false,
+            message: '',
+            severity: 'info',
+        });
     // Example state variable to store the result of a pixel operation
     const [onePlusTwo, setOnePlusTwo] = useState<number>();
 
@@ -111,8 +121,17 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
     }, [isReady, runPixel]);
 
     return (
-        <AppContext.Provider value={{ runPixel, onePlusTwo, isAppDataLoading }}>
+        <AppContext.Provider
+            value={{
+                runPixel,
+                onePlusTwo,
+                isAppDataLoading,
+                setMessageSnackbarProps,
+            }}
+        >
             {children}
+            {/* The MessageSnackbar component is rendered here so that it can be used to display messages throughout the app */}
+            <MessageSnackbar {...messageSnackbarProps} />
         </AppContext.Provider>
     );
 };
