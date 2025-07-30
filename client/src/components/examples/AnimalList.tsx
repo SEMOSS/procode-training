@@ -1,9 +1,11 @@
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridDeleteIcon } from '@mui/x-data-grid';
 import { Animal } from './examples.types';
+import { IconButton } from '@mui/material';
 
 export interface AnimalListProps {
     animalList: Animal[];
     loading?: boolean;
+    onDelete: (animalToDelete: Animal) => void;
 }
 
 /**
@@ -11,7 +13,11 @@ export interface AnimalListProps {
  *
  * @component
  */
-export const AnimalList = ({ animalList, loading }: AnimalListProps) => {
+export const AnimalList = ({
+    animalList,
+    loading,
+    onDelete,
+}: AnimalListProps) => {
     return (
         <DataGrid
             loading={loading}
@@ -19,6 +25,17 @@ export const AnimalList = ({ animalList, loading }: AnimalListProps) => {
                 { field: 'animal_id', headerName: 'ID', type: 'number' },
                 { field: 'animal_name', headerName: 'Name', type: 'string' },
                 { field: 'animal_type', headerName: 'Type', type: 'string' },
+                {
+                    field: 'actions',
+                    headerName: 'Actions',
+                    type: 'actions',
+                    align: 'right',
+                    getActions: (rowParams) => [
+                        <IconButton onClick={() => onDelete(rowParams.row)}>
+                            <GridDeleteIcon />
+                        </IconButton>,
+                    ],
+                },
             ]}
             rows={animalList}
             getRowId={(row) => row.animal_id}

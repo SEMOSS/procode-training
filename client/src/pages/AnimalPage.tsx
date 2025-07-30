@@ -1,4 +1,9 @@
-import { AddAnimalModal, Animal, AnimalList } from '@/components';
+import {
+    AddAnimalModal,
+    Animal,
+    AnimalList,
+    DeleteAnimalModal,
+} from '@/components';
 import { useLoadingPixel } from '@/hooks';
 import { Button, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
@@ -17,13 +22,17 @@ export const AnimalPage = () => {
     >('GetAnimals( )', []);
     const [isAddAnimalModalOpen, setIsAddAnimalModalOpen] =
         useState<boolean>(false);
+    const [isDeleteAnimalModalOpen, setIsDeleteAnimalModalOpen] =
+        useState<boolean>(false);
+    const [animalToDelete, setAnimalToDelete] = useState<Animal | null>(null);
 
     /**
      * Functions
      */
-    const handleModalClose = (addedAnimal: boolean) => {
+    const handleModalClose = (changedAnimals: boolean) => {
         setIsAddAnimalModalOpen(false);
-        if (addedAnimal) {
+        setIsDeleteAnimalModalOpen(false);
+        if (changedAnimals) {
             fetchAnimalList();
         }
     };
@@ -47,10 +56,20 @@ export const AnimalPage = () => {
             <AnimalList
                 animalList={animalList ?? []}
                 loading={isAnimalListLoading}
+                onDelete={(animalToDelete) => {
+                    setIsDeleteAnimalModalOpen(true);
+                    setAnimalToDelete(animalToDelete);
+                }}
             />
 
             <AddAnimalModal
                 open={isAddAnimalModalOpen}
+                onClose={handleModalClose}
+            />
+
+            <DeleteAnimalModal
+                open={isDeleteAnimalModalOpen}
+                animalToDelete={animalToDelete}
                 onClose={handleModalClose}
             />
         </Stack>
