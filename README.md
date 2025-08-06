@@ -74,8 +74,8 @@ To make changes visible to users:
    `workspace/Semoss/project/[YourAppName]_[YourAppID]/app_root/version/`
 2. Rename `assets` to `old-assets`.
 3. Open a terminal at this location.
-4. Clone this repository:  
-   `git clone git@github.com:Deloitte-US/SemossBlankCanvas.git`
+4. Clone this repository:
+   `git clone git@github.com:Deloitte-US/SemossBlankCanvas.git`, if using SSH keys
 5. Rename the cloned `SemossBlankCanvas` folder to `assets`.
 6. Open `assets` in your code editor (VS Code recommended).
 
