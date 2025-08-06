@@ -1,6 +1,6 @@
 import { MessageSnackbar, MessageSnackbarProps } from '@/components';
 import { useLoadingState } from '@/hooks';
-import { getSystemConfig } from '@semoss/sdk';
+import { getSystemConfig, runPixel as runPixelSemossSdk } from '@semoss/sdk';
 import { useInsight } from '@semoss/sdk-react';
 import {
     createContext,
@@ -49,7 +49,7 @@ export const useAppContext = (): AppContextType => {
  */
 export const AppContextProvider = ({ children }: PropsWithChildren) => {
     // Get the current state of the current insight
-    const { actions, isReady, system } = useInsight();
+    const { actions, isReady, system, insightId } = useInsight();
 
     /**
      * State
@@ -73,7 +73,10 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
     const runPixel = useCallback(
         async <T,>(pixelString: string) => {
             try {
-                const response = await actions.run<T[]>(pixelString);
+                const response = await runPixelSemossSdk<T[]>(
+                    pixelString,
+                    insightId,
+                );
                 return response.pixelReturn[0].output;
             } catch (error) {
                 setMessageSnackbarProps({
@@ -87,7 +90,7 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
                 throw error;
             }
         },
-        [actions],
+        [actions, insightId],
     );
 
     // Allow users to log in, and grab their name when they do
@@ -99,6 +102,7 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
                     username,
                     password,
                 });
+                // Run a new config call, to get the name of the user
                 const response = await getSystemConfig();
                 setUserLoginName(
                     Object.values(response?.logins ?? {})?.[0]?.toString() ||
@@ -172,6 +176,7 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
         }
     }, [isReady, runPixel]);
 
+    // On start up, grab the name of the user from the config call if they are already logged in
     useEffect(() => {
         setUserLoginName(
             Object.values(system?.config?.logins ?? {})?.[0]?.toString() ||

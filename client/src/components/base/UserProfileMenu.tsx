@@ -8,6 +8,11 @@ export interface UserProfileMenuProps {
     anchorEl: Element;
 }
 
+/**
+ * Renders a menu showing users their name and allowing them to log out
+ *
+ * @component
+ */
 export const UserProfileMenu = ({ open, anchorEl }: UserProfileMenuProps) => {
     const { logout, userLoginName } = useAppContext();
 
