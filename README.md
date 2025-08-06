@@ -26,7 +26,7 @@ The first step of local development is creating an App on your local SEMOSS inst
 
 Now that you've created your app, let's discuss its file structure. On the app editor page, you should see a file explorer component that is displaying a folder called `portals`. Note that although you can see `portals`, the file explorer component itself is actually displaying the *contents* of the folder `assets` - as in, `portals` is inside of `assets`, and if `assets` had more files, you would be able to see them in the file explorer too. We will revisit the assets folder later, but for now just note that `assets` is the main folder for the app's code, and that `portals` lives inside of it.
 
-Inside of `portals` is `index.html`. Clicking on `index.html` will show you its contents, which are a basic placeholder for an app. When rendering your App, SEMOSS looks for `portals/index.html`.
+Inside of `portals` is `index.html`. Clicking on `index.html` will show you its contents, which are basic placeholders for an app. When rendering your App, SEMOSS looks for `portals/index.html`.
 
 Let's now look at your computer's file explorer to see where these files live.
 - Open a new file explorer window at your `workspace` folder
@@ -34,7 +34,7 @@ Let's now look at your computer's file explorer to see where these files live.
 - Notice that inside of `version`, you can now see the `assets` folder - as discussed, `assets` is the main folder for the app's code
 - Clicking inside of `assets`, you can now seen the familiar `portals` folder and `portals/index.html` files
 
-The `assets` folder you've found here, and the assets folder in the SEMOSS UI's file explorer are the exact same folder; you are just viewing them via two different methods.
+The `assets` folder you've found here and the assets folder in the SEMOSS UI's file explorer are the exact same folder - you are just viewing them via two different methods.
 
 ### Publishing your pro-code app
 
@@ -50,9 +50,9 @@ The `workspace/Semoss/project/YourAppName_your-app-id/app_root/version/assets` i
 - Refresh your page
 - Verify that your edits to `portals/index.html` now do show up on the App tab.
 
-Note: when you click on "Publish files", the code snapshot created lives in `workspace/apache-tomcat-9.0.102/webapps/Monolith/public_home/your-app-id`
+Note: when you click on "Publish files", the created code snapshot lives in `workspace/apache-tomcat-9.0.102/webapps/Monolith/public_home/your-app-id`
 
-## React App formatting
+## React app creation using this repository
 
 Now that you have created a pro-code app and that you understand how to navigate SEMOSS' file structure, you can turn your app into a React app.
 
