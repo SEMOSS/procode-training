@@ -9,8 +9,8 @@
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.1",
         "@mui/icons-material": "^7.3.1",
-        "@mui/material": "^7.2.0",
-        "@mui/x-data-grid": "^8.9.1",
+        "@mui/material": "^7.3.1",
+        "@mui/x-data-grid": "^8.9.2",
         "@semoss/sdk": "1.0.0-beta.28",
         "@semoss/sdk-react": "1.0.0-beta.20",
         "css-loader": "^7.1.2",
@@ -20,13 +20,13 @@
         "react-router": "^7.7.1"
     },
     "devDependencies": {
-        "@types/node": "^24.1.0",
-        "@types/react": "^19.1.8",
+        "@types/node": "^24.2.0",
+        "@types/react": "^19.1.9",
         "dotenv": "^17.2.1",
         "html-webpack-plugin": "^5.6.3",
         "ts-loader": "^9.5.2",
-        "typescript": "^5.8.3",
-        "webpack": "^5.100.2",
+        "typescript": "^5.9.2",
+        "webpack": "^5.101.0",
         "webpack-cli": "^6.0.1",
         "webpack-dev-server": "^5.2.2",
         "webpackbar": "^7.0.0"
