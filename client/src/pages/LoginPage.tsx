@@ -1,3 +1,4 @@
+import { useAppContext } from '@/contexts';
 import { useLoadingState } from '@/hooks';
 import { Button, Stack, TextField } from '@mui/material';
 import { useInsight } from '@semoss/sdk-react';
@@ -10,7 +11,8 @@ import { Navigate, useLocation } from 'react-router';
  * @component
  */
 export const LoginPage = () => {
-    const { isAuthorized, actions } = useInsight();
+    const { isAuthorized } = useInsight();
+    const { login } = useAppContext();
     const { state } = useLocation(); // If the user was routed here, then there may be information about where they were trying to go
 
     // If the user is already authorized, we can route them off of this page. If the user was routed here, attempt to send them back to their target
@@ -30,20 +32,14 @@ export const LoginPage = () => {
      */
     const passwordLogin = async () => {
         const loadingKey = setIsLoginLoading(true);
-        try {
-            // Attempt to log in
-            await actions.login({
-                type: 'native',
-                username,
-                password,
-            });
-        } catch {
-            // actions.login throws an error if the request was bad, so tell the user and take them back to pw
+
+        // Attempt to log in
+        const success = await login(username, password);
+        if (!success) {
             setShowError(true);
             passwordInputRef.current?.focus();
-        } finally {
-            setIsLoginLoading(false, loadingKey);
         }
+        setIsLoginLoading(false, loadingKey);
     };
 
     // When the user begins typing, clear out the errors

@@ -1,5 +1,6 @@
 import { MessageSnackbar, MessageSnackbarProps } from '@/components';
 import { useLoadingState } from '@/hooks';
+import { getSystemConfig } from '@semoss/sdk';
 import { useInsight } from '@semoss/sdk-react';
 import {
     createContext,
@@ -14,6 +15,9 @@ import {
 
 export interface AppContextType {
     runPixel: <T = unknown>(pixelString: string) => Promise<T>;
+    login: (username: string, password: string) => Promise<boolean>;
+    logout: () => Promise<boolean>;
+    userLoginName: string;
     isAppDataLoading: boolean;
     onePlusTwo: number;
     setMessageSnackbarProps: Dispatch<SetStateAction<MessageSnackbarProps>>;
@@ -45,12 +49,13 @@ export const useAppContext = (): AppContextType => {
  */
 export const AppContextProvider = ({ children }: PropsWithChildren) => {
     // Get the current state of the current insight
-    const { actions, isReady } = useInsight();
+    const { actions, isReady, system } = useInsight();
 
     /**
      * State
      */
     const [isAppDataLoading, setIsAppDataLoading] = useLoadingState(true);
+    const [userLoginName, setUserLoginName] = useState<string | null>(null);
     const [messageSnackbarProps, setMessageSnackbarProps] =
         useState<MessageSnackbarProps>({
             open: false,
@@ -84,6 +89,39 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
         },
         [actions],
     );
+
+    // Allow users to log in, and grab their name when they do
+    const login = useCallback(
+        async (username: string, password: string) => {
+            try {
+                await actions.login({
+                    type: 'native',
+                    username,
+                    password,
+                });
+                const response = await getSystemConfig();
+                setUserLoginName(
+                    Object.values(response?.logins ?? {})?.[0]?.toString() ||
+                        null,
+                );
+                return true;
+            } catch {
+                return false;
+            }
+        },
+        [actions],
+    );
+
+    // Allow users to log out, and clear their name when they do
+    const logout = useCallback(async () => {
+        try {
+            await actions.logout();
+            setUserLoginName(null);
+            return true;
+        } catch {
+            return false;
+        }
+    }, [actions]);
 
     /**
      * Effects
@@ -134,6 +172,13 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
         }
     }, [isReady, runPixel]);
 
+    useEffect(() => {
+        setUserLoginName(
+            Object.values(system?.config?.logins ?? {})?.[0]?.toString() ||
+                null,
+        );
+    }, [system]);
+
     return (
         <AppContext.Provider
             value={{
@@ -141,6 +186,9 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
                 onePlusTwo,
                 isAppDataLoading,
                 setMessageSnackbarProps,
+                login,
+                logout,
+                userLoginName,
             }}
         >
             {children}
