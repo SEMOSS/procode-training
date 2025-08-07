@@ -11,3 +11,5 @@ classes/
 java/project.properties
 .admin/
 .DS_Store
+.vscode/
+target/
