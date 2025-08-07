@@ -29,12 +29,12 @@ Before using this repository, ensure you have the following:
    Go to [http://localhost:9090/SemossWeb/packages/client/dist/#/](http://localhost:9090/SemossWeb/packages/client/dist/#/) (referred to as "the SEMOSS UI").
 
 2. **Create a new app:**
-   - Navigate to the "App" page (usually on the left sidebar).
-   - Click "Create New App".
-   - Choose to develop your app in code (not Drag & Drop).
-   - Enter a name and description (e.g., `YourAppName`).
-   - Submit to create the app. You'll be taken to the editor page.
-   - Note the long string in the URL—this is your app's ID (`your-app-id`), e.g., `1337e31c-2131-4ef4-b942-94bdffa65c3f`.
+    - Navigate to the "App" page (usually on the left sidebar).
+    - Click "Create New App".
+    - Choose to develop your app in code (not Drag & Drop).
+    - Enter a name and description (e.g., `YourAppName`).
+    - Submit to create the app. You'll be taken to the editor page.
+    - Note the long string in the URL—this is your app's ID (`your-app-id`), e.g., `1337e31c-2131-4ef4-b942-94bdffa65c3f`.
 
 ---
 
@@ -45,6 +45,7 @@ Before using this repository, ensure you have the following:
 - `assets` is the main folder for your app's code.
 
 **On your computer:**
+
 - Go to `workspace/Semoss/project/[YourAppName]_[your-app-id]/app_root/version/`
 - Inside `version`, you'll find the `assets` folder, which contains `portals` and `portals/index.html`.
 - The `assets` folder in your file system and the one in the SEMOSS UI are the same.

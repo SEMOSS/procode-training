@@ -9,6 +9,7 @@ import {
     TextField,
 } from '@mui/material';
 import { useState } from 'react';
+import { DatePicker } from '../library';
 
 export interface AddAnimalModalProps {
     open: boolean;
@@ -28,13 +29,14 @@ export const AddAnimalModal = ({ open, onClose }: AddAnimalModalProps) => {
      */
     const [animalName, setAnimalName] = useState<string>('');
     const [animalType, setAnimalType] = useState<string>('');
+    const [dateOfBirth, setDateOfBirth] = useState<string | null>(null);
 
     /**
      * Functions
      */
     const handleSubmitClick = async () => {
         addAnimal(
-            `AddAnimal(animal_name=${JSON.stringify(animalName)}, animal_type=${JSON.stringify(animalType)})`,
+            `AddAnimal(animal_name=${JSON.stringify(animalName)}, animal_type=${JSON.stringify(animalType)}, date_of_birth=${JSON.stringify(dateOfBirth)})`,
             () => onClose(true),
         );
     };
@@ -43,7 +45,9 @@ export const AddAnimalModal = ({ open, onClose }: AddAnimalModalProps) => {
      * Constants
      */
     const isReadyToSubmit =
-        animalName.trim().length > 0 && animalType.trim().length > 0;
+        animalName.trim().length > 0 &&
+        animalType.trim().length > 0 &&
+        dateOfBirth !== null;
 
     return (
         <Dialog open={open} fullWidth maxWidth="sm">
@@ -64,6 +68,13 @@ export const AddAnimalModal = ({ open, onClose }: AddAnimalModalProps) => {
                         value={animalType}
                         onChange={(e) => setAnimalType(e.target.value)}
                         label="Type"
+                    />
+
+                    <DatePicker
+                        value={dateOfBirth}
+                        onChange={(newValue) => setDateOfBirth(newValue)}
+                        label="Date of birth"
+                        maxDate={new Date()} // Prevent future dates
                     />
                 </Stack>
             </DialogContent>
