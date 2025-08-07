@@ -11,6 +11,7 @@
 	</properties>
 	<build>
 		<sourceDirectory>java/src</sourceDirectory>
+		<outputDirectory>classes</outputDirectory>
 		<resources>
 			<resource>
 				<directory>java</directory>
