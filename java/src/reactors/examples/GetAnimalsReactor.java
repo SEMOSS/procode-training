@@ -19,14 +19,15 @@ public class GetAnimalsReactor extends AbstractProjectReactor {
     List<AnimalData> output = new ArrayList<>();
     try (PreparedStatement ps =
         con.prepareStatement(
-            "SELECT animal_id, animal_type, animal_name FROM animal ORDER BY animal_id ASC")) {
+            "SELECT animal_id, animal_type, animal_name, date_of_birth FROM animal ORDER BY animal_id ASC")) {
       if (ps.execute()) {
         ResultSet rs = ps.getResultSet();
         while (rs.next()) {
           int id = rs.getInt("animal_id");
           String type = rs.getString("animal_type");
           String name = rs.getString("animal_name");
-          AnimalData row = new AnimalData(id, type, name);
+          String dateOfBirth = rs.getString("date_of_birth");
+          AnimalData row = new AnimalData(id, type, name, dateOfBirth);
           output.add(row);
         }
       }

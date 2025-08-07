@@ -32,7 +32,7 @@ public class HelperMethods {
 
     try (PreparedStatement ps =
         con.prepareStatement(
-            "SELECT animal_id, animal_type, animal_name FROM animal WHERE animal_id = ?")) {
+            "SELECT animal_id, animal_type, animal_name, date_of_birth FROM animal WHERE animal_id = ?")) {
       int parameterIndex = 1;
       ps.setInt(parameterIndex++, animalId);
       if (ps.execute()) {
@@ -41,7 +41,8 @@ public class HelperMethods {
           int id = rs.getInt("animal_id");
           String type = rs.getString("animal_type");
           String name = rs.getString("animal_name");
-          output = new AnimalData(id, type, name);
+          String dateOfBirth = rs.getString("date_of_birth");
+          output = new AnimalData(id, type, name, dateOfBirth);
         }
       }
     }

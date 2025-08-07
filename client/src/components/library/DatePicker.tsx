@@ -37,7 +37,6 @@ export const DatePicker = (props: DatePickerProps) => {
         referenceDate,
         ...muiProps
     } = props;
-    console.log(maxDate, dayjs(maxDate));
 
     const getValidDayjs = (
         value: string | Date | Dayjs | null,

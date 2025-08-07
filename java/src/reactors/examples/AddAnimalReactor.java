@@ -13,27 +13,37 @@ public class AddAnimalReactor extends AbstractProjectReactor {
 
   public static final String animalNameColumn = "animal_name";
   public static final String animalTypeColumn = "animal_type";
+  public static final String dateOfBirthColumn = "date_of_birth";
 
   public AddAnimalReactor() {
-    this.keysToGet = new String[] {animalNameColumn, animalTypeColumn};
-    this.keyRequired = new int[] {1, 1};
+    this.keysToGet = new String[] {animalNameColumn, animalTypeColumn, dateOfBirthColumn};
+    this.keyRequired = new int[] {1, 1, 1};
   }
 
   @Override
   protected NounMetadata doExecute(Connection con) throws SQLException {
     String animalName = this.keyValue.get(animalNameColumn);
     String animalType = this.keyValue.get(animalTypeColumn);
+    String dateOfBirth = this.keyValue.get(dateOfBirthColumn);
 
-    if (animalName == null || animalName.isEmpty() || animalType == null || animalType.isEmpty()) {
-      throw new ProjectException(ErrorCode.BAD_REQUEST, "Animal name and type cannot be empty");
+    if (animalName == null
+        || animalName.isEmpty()
+        || animalType == null
+        || animalType.isEmpty()
+        || dateOfBirth == null
+        || dateOfBirth.isEmpty()) {
+      throw new ProjectException(
+          ErrorCode.BAD_REQUEST, "Animal name, type, and date of birth cannot be empty");
     }
 
     try (PreparedStatement ps =
         con.prepareStatement(
-            "INSERT INTO animal (animal_name, animal_type)\n" + "VALUES (?, ?);")) {
+            "INSERT INTO animal (animal_name, animal_type, date_of_birth)\n"
+                + "VALUES (?, ?, ?);")) {
       int parameterIndex = 1;
       ps.setString(parameterIndex++, animalName);
       ps.setString(parameterIndex++, animalType);
+      ps.setString(parameterIndex++, dateOfBirth);
       ps.execute();
     }
 
