@@ -26,6 +26,12 @@ export const AnimalList = ({
                 { field: 'animal_name', headerName: 'Name', type: 'string' },
                 { field: 'animal_type', headerName: 'Type', type: 'string' },
                 {
+                    field: 'date_of_birth',
+                    headerName: 'Date of birth',
+                    type: 'date',
+                    valueGetter: (value) => (value ? new Date(value) : null),
+                },
+                {
                     field: 'actions',
                     headerName: 'Actions',
                     type: 'actions',

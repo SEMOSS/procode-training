@@ -90,7 +90,7 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
                 throw error;
             }
         },
-        [actions, insightId],
+        [insightId],
     );
 
     // Allow users to log in, and grab their name when they do

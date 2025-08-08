@@ -5,6 +5,7 @@ client/node_modules/
 # Build directories
 portals/
 classes/
+target/
 
 # Local configuration files
 *.local
@@ -12,4 +13,3 @@ java/project.properties
 .admin/
 .DS_Store
 .vscode/
-target/
