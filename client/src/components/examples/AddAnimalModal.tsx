@@ -5,11 +5,14 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
+    IconButton,
     Stack,
     TextField,
+    Typography,
 } from '@mui/material';
 import { useState } from 'react';
 import { DatePicker } from '../library';
+import { CloseRounded } from '@mui/icons-material';
 
 export interface AddAnimalModalProps {
     open: boolean;
@@ -37,8 +40,15 @@ export const AddAnimalModal = ({ open, onClose }: AddAnimalModalProps) => {
     const handleSubmitClick = async () => {
         addAnimal(
             `AddAnimal(animal_name=${JSON.stringify(animalName)}, animal_type=${JSON.stringify(animalType)}, date_of_birth=${JSON.stringify(dateOfBirth)})`,
-            () => onClose(true),
+            () => handleClose(true),
         );
+    };
+
+    const handleClose = (madeChanges?: boolean) => {
+        setAnimalName('');
+        setAnimalType('');
+        setDateOfBirth(null);
+        onClose(madeChanges ?? false);
     };
 
     /**
@@ -51,7 +61,18 @@ export const AddAnimalModal = ({ open, onClose }: AddAnimalModalProps) => {
 
     return (
         <Dialog open={open} fullWidth maxWidth="sm">
-            <DialogTitle>Add animal</DialogTitle>
+            <DialogTitle>
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                >
+                    <Typography variant="h6">Add Animal</Typography>
+                    <IconButton onClick={() => handleClose(false)}>
+                        <CloseRounded />
+                    </IconButton>
+                </Stack>
+            </DialogTitle>
 
             <DialogContent>
                 <Stack spacing={2}>
