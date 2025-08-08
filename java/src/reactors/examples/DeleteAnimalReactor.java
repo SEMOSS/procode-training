@@ -1,5 +1,7 @@
 package reactors.examples;
 
+import domain.base.ErrorCode;
+import domain.base.ProjectException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -28,6 +30,8 @@ public class DeleteAnimalReactor extends AbstractProjectReactor {
       int parameterIndex = 1;
       ps.setInt(parameterIndex++, animalId);
       ps.execute();
+    } catch (SQLException e) {
+      throw new ProjectException(ErrorCode.INTERNAL_SERVER_ERROR, "Error deleting animal");
     }
 
     return new NounMetadata(true, PixelDataType.BOOLEAN);

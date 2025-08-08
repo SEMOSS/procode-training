@@ -21,7 +21,7 @@ public class AddAnimalReactor extends AbstractProjectReactor {
   }
 
   @Override
-  protected NounMetadata doExecute(Connection con) throws SQLException {
+  protected NounMetadata doExecute(Connection con) {
     String animalName = this.keyValue.get(animalNameColumn);
     String animalType = this.keyValue.get(animalTypeColumn);
     String dateOfBirth = this.keyValue.get(dateOfBirthColumn);
@@ -45,6 +45,8 @@ public class AddAnimalReactor extends AbstractProjectReactor {
       ps.setString(parameterIndex++, animalType);
       ps.setString(parameterIndex++, dateOfBirth);
       ps.execute();
+    } catch (SQLException e) {
+      throw new ProjectException(ErrorCode.INTERNAL_SERVER_ERROR, "Error adding animal");
     }
 
     return new NounMetadata(true, PixelDataType.BOOLEAN);
