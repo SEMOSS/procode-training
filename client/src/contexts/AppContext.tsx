@@ -77,14 +77,28 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
                     pixelString,
                     insightId,
                 );
+                if (response.errors.length > 0)
+                    throw new Error(
+                        response.errors
+                            .map(
+                                (
+                                    error:
+                                        | string
+                                        | { message: string }
+                                        | undefined,
+                                ) =>
+                                    (typeof error === 'string'
+                                        ? error
+                                        : error?.message) ??
+                                    'Error during operation',
+                            )
+                            .join(', '),
+                    );
                 return response.pixelReturn[0].output;
             } catch (error) {
                 setMessageSnackbarProps({
                     open: true,
-                    // If the error message is an empty object, use a default message
-                    // This can happen when SEMOSS SDK returns an empty object - that should be fixed in the SDK
-                    // but for now, we handle it gracefully here
-                    message: `${error.message === {}.toString() ? 'Error during operation' : error.message}`,
+                    message: `${error.message ?? 'Error during operation'}`,
                     severity: 'error',
                 });
                 throw error;
