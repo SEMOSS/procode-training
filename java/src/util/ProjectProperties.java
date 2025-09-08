@@ -27,9 +27,8 @@ import prerna.util.Utility;
 public class ProjectProperties {
   private static ProjectProperties INSTANCE = null;
 
-  private String projectId;
-  private String engineId;
-  private boolean debuggingEnabled;
+  // private String engineId;
+  // private boolean debuggingEnabled;
 
   private ProjectProperties() {}
 
@@ -58,10 +57,11 @@ public class ProjectProperties {
       Properties projectProperties = new Properties();
       projectProperties.load(fileIn);
 
-      newInstance.projectId = projectId;
-      newInstance.engineId = projectProperties.getProperty("engineId");
-      newInstance.debuggingEnabled =
-          Boolean.parseBoolean(projectProperties.getProperty("debuggingEnabled"));
+      // TODO Add any properties to be read by the properties file and add the corresponding getter
+
+      // newInstance.engineId = projectProperties.getProperty("engineId");
+      // newInstance.debuggingEnabled =
+      //     Boolean.parseBoolean(projectProperties.getProperty("debuggingEnabled"));
 
       INSTANCE = newInstance;
     } catch (IOException e) {
@@ -71,15 +71,11 @@ public class ProjectProperties {
     }
   }
 
-  public String getProjectId() {
-    return projectId;
-  }
+  // public String getEngineId() {
+  //   return engineId;
+  // }
 
-  public String getEngineId() {
-    return engineId;
-  }
-
-  public boolean getDebuggingEnabled() {
-    return debuggingEnabled;
-  }
+  // public boolean getDebuggingEnabled() {
+  //   return debuggingEnabled;
+  // }
 }

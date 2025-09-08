@@ -1,56 +1,29 @@
 package util;
 
-import domain.base.ErrorCode;
-import domain.base.ProjectException;
-import domain.examples.AnimalData;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import prerna.auth.User;
+import prerna.engine.impl.rdbms.RDBMSNativeEngine;
+import prerna.query.querystruct.SelectQueryStruct;
+import prerna.query.querystruct.filters.SimpleQueryFilter;
+import prerna.query.querystruct.selectors.QueryColumnSelector;
+import prerna.util.QueryExecutionUtility;
+
+import java.util.List;
+import java.util.Map;
 
 public class HelperMethods {
-  public static int addIntegerExampleHelper(Connection con, int a, int b) throws SQLException {
-    int output = 0;
-    try (PreparedStatement ps = con.prepareStatement("SELECT ? + ? AS OUTPUT"); ) {
-      int parameterIndex = 1;
-      ps.setInt(parameterIndex++, a);
-      ps.setInt(parameterIndex++, b);
-      if (ps.execute()) {
-        ResultSet rs = ps.getResultSet();
-        while (rs.next()) {
-          output = rs.getInt("OUTPUT");
-        }
-      }
-    }
 
-    return output;
+  public static String getUserId(User user) {
+    return user.getPrimaryLoginToken().getId();
   }
 
-  public static AnimalData getAnimalByIdHelper(Connection con, int animalId) throws SQLException {
+  // Disclaimer: This method will not work as is - it is an example of how to query a database
+  public List<Map<String, Object>> queryDatabase(RDBMSNativeEngine database, String filter) {
+    SelectQueryStruct qs = new SelectQueryStruct();
+    qs.addSelector(new QueryColumnSelector("TABLE_1_NAME__SELECT_COLUMN_NAME"));
 
-    AnimalData output = null;
+    qs.addRelation("TABLE_1_NAME__JOIN_COLUMN_NAME", "TABLE_2_NAME__JOIN_COLUMN_NAME", "inner.join");
+    qs.addExplicitFilter(SimpleQueryFilter.makeColToValFilter("TABLE_1_NAME__FILTER_COLUMN_NAME", "==", filter));
 
-    try (PreparedStatement ps =
-        con.prepareStatement(
-            "SELECT animal_id, animal_type, animal_name, date_of_birth FROM animal WHERE animal_id = ?")) {
-      int parameterIndex = 1;
-      ps.setInt(parameterIndex++, animalId);
-      if (ps.execute()) {
-        ResultSet rs = ps.getResultSet();
-        if (rs.next()) {
-          int id = rs.getInt("animal_id");
-          String type = rs.getString("animal_type");
-          String name = rs.getString("animal_name");
-          String dateOfBirth = rs.getString("date_of_birth");
-          output = new AnimalData(id, type, name, dateOfBirth);
-        }
-      }
-    }
-
-    if (output == null) {
-      throw new ProjectException(ErrorCode.NOT_FOUND, "No animal found with that ID");
-    }
-
-    return output;
+    return QueryExecutionUtility.flushRsToMap(database, qs);
   }
 }

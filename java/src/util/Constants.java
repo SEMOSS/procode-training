@@ -2,18 +2,8 @@ package util;
 
 public class Constants {
 
-  public static final String[] MONTH_WORDS = {
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-  };
+  // TODO add any constants to be referenced in the project
+
+  // public static final String APP_NAME = "DEFAULT_CODE_APP";
+
 }
