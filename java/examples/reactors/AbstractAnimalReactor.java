@@ -1,25 +1,29 @@
-package reactors;
+package examples.reactors;
 
-import domain.base.ErrorCode;
-import domain.base.ProjectException;
+import examples.domain.base.ErrorCode;
+import examples.domain.base.ProjectException;
+import examples.util.ProjectProperties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import prerna.auth.User;
+import prerna.engine.impl.rdbms.RDBMSNativeEngine;
 import prerna.reactor.AbstractReactor;
 import prerna.sablecc2.om.PixelDataType;
 import prerna.sablecc2.om.PixelOperationType;
 import prerna.sablecc2.om.nounmeta.NounMetadata;
-import util.ProjectProperties;
+import prerna.util.Utility;
 
-public abstract class AbstractProjectReactor extends AbstractReactor {
+public abstract class AbstractAnimalReactor extends AbstractReactor {
 
-  private static final Logger LOGGER = LogManager.getLogger(AbstractProjectReactor.class);
+  private static final Logger LOGGER = LogManager.getLogger(AbstractAnimalReactor.class);
 
   protected User user;
   protected String projectId;
   protected ProjectProperties projectProperties;
 
-  // TODO: intialize protected variables you would like your reactors to have access to
+  // intialize protected variables you would like your reactors to have access to
+  protected String databaseId;
+  protected RDBMSNativeEngine database;
 
   protected NounMetadata result = null;
 
@@ -49,7 +53,11 @@ public abstract class AbstractProjectReactor extends AbstractReactor {
 
     projectProperties = ProjectProperties.getInstance(projectId);
 
-    // TODO: Update protected variables
+    // Update protected variables
+    databaseId = projectProperties.getDatabaseId();
+    if (databaseId != null) {
+      database = (RDBMSNativeEngine) Utility.getDatabase(databaseId);
+    }
 
     user = this.insight.getUser();
 
