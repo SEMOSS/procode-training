@@ -1,14 +1,13 @@
 package util;
 
+import java.util.List;
+import java.util.Map;
 import prerna.auth.User;
 import prerna.engine.impl.rdbms.RDBMSNativeEngine;
 import prerna.query.querystruct.SelectQueryStruct;
 import prerna.query.querystruct.filters.SimpleQueryFilter;
 import prerna.query.querystruct.selectors.QueryColumnSelector;
 import prerna.util.QueryExecutionUtility;
-
-import java.util.List;
-import java.util.Map;
 
 public class HelperMethods {
 
@@ -21,8 +20,10 @@ public class HelperMethods {
     SelectQueryStruct qs = new SelectQueryStruct();
     qs.addSelector(new QueryColumnSelector("TABLE_1_NAME__SELECT_COLUMN_NAME"));
 
-    qs.addRelation("TABLE_1_NAME__JOIN_COLUMN_NAME", "TABLE_2_NAME__JOIN_COLUMN_NAME", "inner.join");
-    qs.addExplicitFilter(SimpleQueryFilter.makeColToValFilter("TABLE_1_NAME__FILTER_COLUMN_NAME", "==", filter));
+    qs.addRelation(
+        "TABLE_1_NAME__JOIN_COLUMN_NAME", "TABLE_2_NAME__JOIN_COLUMN_NAME", "inner.join");
+    qs.addExplicitFilter(
+        SimpleQueryFilter.makeColToValFilter("TABLE_1_NAME__FILTER_COLUMN_NAME", "==", filter));
 
     return QueryExecutionUtility.flushRsToMap(database, qs);
   }

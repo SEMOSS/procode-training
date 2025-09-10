@@ -2,18 +2,13 @@ package reactors;
 
 import domain.base.ErrorCode;
 import domain.base.ProjectException;
-import java.sql.SQLException;
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import prerna.auth.User;
-import prerna.engine.api.IRDBMSEngine;
-import prerna.engine.impl.rdbms.RDBMSNativeEngine;
 import prerna.reactor.AbstractReactor;
 import prerna.sablecc2.om.PixelDataType;
 import prerna.sablecc2.om.PixelOperationType;
 import prerna.sablecc2.om.nounmeta.NounMetadata;
-import prerna.util.Utility;
 import util.ProjectProperties;
 
 public abstract class AbstractProjectReactor extends AbstractReactor {
@@ -26,7 +21,7 @@ public abstract class AbstractProjectReactor extends AbstractReactor {
   protected ProjectProperties projectProperties;
 
   // protected String engineId;
-  // protected RDBMSNativeEngine engine; 
+  // protected RDBMSNativeEngine engine;
 
   protected NounMetadata result = null;
 
@@ -68,12 +63,11 @@ public abstract class AbstractProjectReactor extends AbstractReactor {
     // TODO: Load engines into protected variables that reactors can access
     // engineId = projectProperties.getEngineId();
     // engine = (RDBMSNativeEngine) Utility.getDatabase(projectProperties.getEngineId());
-    
+
     user = this.insight.getUser();
 
     organizeKeys();
   }
 
   protected abstract NounMetadata doExecute();
-
 }
