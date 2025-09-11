@@ -100,7 +100,12 @@ This repository includes several tools to help maintain code quality:
 - [pre-commit](https://pre-commit.com/): Ensures code formatting and quality checks are run before committing (primarily for back-end code).
 - [lint-staged](https://github.com/okonet/lint-staged): Runs Prettier and ESLint on staged files before each commit to prevent bad code from being pushed.
   - Note: if you are a Mac user, and your commits are erroring out with the message `" not foundECURSIVE_EXEC_FIRST_FAIL  Command "lint-staged`, then you likely need to change your line-endings in `./husky/pre-commit` and `./husky/commit-msg` from CRLF to LF.
-- [commitizen](https://www.conventionalcommits.org/en/v1.0.0/): This pre-commit hook uses conventional commit syntax. Check this link out to understand how to format your commit messages.
+- [commitizen](https://www.conventionalcommits.org/en/v1.0.0/): This pre-commit hook uses conventional commit syntax. Check this link out to understand how to format your commit messages. Here are some common examples:
+   - `feat: Major feature added`
+   - `docs: Documentation changed/updated`
+   - `fix: Bug fixed and code restored to working state`
+   - `refactor(style): Changed some code around to adhere to better style`
+   - `chore: Some update/chore that you've been needing to do`
 
 ---
 
