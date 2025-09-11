@@ -8,6 +8,6 @@ STAGED_FILES=$(git diff --name-only --cached)
 
 # Format BE code
 echo "Formatting BE code"
-pre-commit run
+pre-commit run --all-files
 
 echo "Committing changes"
