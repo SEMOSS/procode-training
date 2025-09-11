@@ -99,6 +99,7 @@ This repository includes several tools to help maintain code quality:
 - [ESLint](https://eslint.org/docs/latest/use/core-concepts/): Checks your front-end code for quality and common errors.
 - [pre-commit](https://pre-commit.com/): Ensures code formatting and quality checks are run before committing (primarily for back-end code).
 - [lint-staged](https://github.com/okonet/lint-staged): Runs Prettier and ESLint on staged files before each commit to prevent bad code from being pushed.
+- [commitizen](https://www.conventionalcommits.org/en/v1.0.0/): This pre-commit hook uses conventional commit syntax. Check this link out to understand how to format your commit messages.
 
 ---
 
