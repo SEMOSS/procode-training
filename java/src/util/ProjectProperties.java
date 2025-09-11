@@ -37,9 +37,7 @@ public class ProjectProperties {
     try (final FileInputStream fileIn =
         new FileInputStream(
             Utility.normalizePath(
-                AssetUtility.getProjectAssetsFolder(projectId)
-                    + "/java/examples/project.properties"))) { // using properties file in examples
-      // folder
+                AssetUtility.getProjectAssetsFolder(projectId) + "/java/project.properties"))) {
       Properties projectProperties = new Properties();
       projectProperties.load(fileIn);
 
