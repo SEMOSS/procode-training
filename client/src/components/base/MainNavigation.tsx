@@ -79,7 +79,7 @@ export const MainNavigation = () => {
                         fontWeight="bold"
                         whiteSpace="nowrap"
                     >
-                        SEMOSS Template
+                        SEMOSS Templatey
                     </Typography>
                 </CursorStack>
 
