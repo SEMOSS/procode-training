@@ -3,8 +3,7 @@ import {
     ROUTE_PATH_LOGIN_PAGE,
     ROUTE_PATH_ANIMAL_PAGE,
 } from './routes.constants';
-import { InitializedLayout } from './InitializedLayout';
-import { AuthorizedLayout } from './AuthorizedLayout';
+import { AuthorizedLayout, InitializedLayout } from './layouts';
 import { HomePage } from './HomePage';
 import { LoginPage } from './LoginPage';
 import { AnimalPage } from './AnimalPage';

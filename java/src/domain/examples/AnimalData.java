@@ -1,47 +1,47 @@
 package domain.examples;
 
 public class AnimalData {
-  private int animal_id;
-  private String animal_type;
-  private String animal_name;
-  private String date_of_birth;
+  private String animalId;
+  private String animalType;
+  private String animalName;
+  private String dateOfBirth;
 
-  public AnimalData(int animal_id, String animal_type, String animal_name, String date_of_birth) {
-    this.animal_id = animal_id;
-    this.animal_type = animal_type;
-    this.animal_name = animal_name;
-    this.date_of_birth = date_of_birth;
+  public AnimalData(String animalId, String animalType, String animalName, String dateOfBirth) {
+    this.animalId = animalId;
+    this.animalType = animalType;
+    this.animalName = animalName;
+    this.dateOfBirth = dateOfBirth;
   }
 
-  public String getName() {
-    return animal_name;
+  public String getAnimalName() {
+    return animalName;
   }
 
-  public void setName(String name) {
-    this.animal_name = name;
+  public void setAnimalName(String animalName) {
+    this.animalName = animalName;
   }
 
-  public int getId() {
-    return animal_id;
+  public String getAnimalId() {
+    return animalId;
   }
 
-  public void setId(int id) {
-    this.animal_id = id;
+  public void setAnimalId(String animalId) {
+    this.animalId = animalId;
   }
 
   public String getDateOfBirth() {
-    return date_of_birth;
+    return dateOfBirth;
   }
 
   public void setDateOfBirth(String dateOfBirth) {
-    this.date_of_birth = dateOfBirth;
+    this.dateOfBirth = dateOfBirth;
   }
 
-  public String getType() {
-    return animal_type;
+  public String getAnimalType() {
+    return animalType;
   }
 
-  public void setType(String type) {
-    this.animal_type = type;
+  public void setAnimalType(String animalType) {
+    this.animalType = animalType;
   }
 }

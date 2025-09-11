@@ -1,36 +1,30 @@
 package reactors.examples;
 
 import domain.examples.AnimalData;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import prerna.sablecc2.om.PixelDataType;
 import prerna.sablecc2.om.nounmeta.NounMetadata;
 import reactors.AbstractProjectReactor;
+import util.HelperMethods;
 
 public class GetAnimalsReactor extends AbstractProjectReactor {
 
   @Override
-  protected NounMetadata doExecute(Connection con) throws SQLException {
+  protected NounMetadata doExecute() {
 
+    List<Map<String, Object>> animals = HelperMethods.getAnimals(database);
     List<AnimalData> output = new ArrayList<>();
-    try (PreparedStatement ps =
-        con.prepareStatement(
-            "SELECT animal_id, animal_type, animal_name, date_of_birth FROM animal ORDER BY animal_id ASC")) {
-      if (ps.execute()) {
-        ResultSet rs = ps.getResultSet();
-        while (rs.next()) {
-          int id = rs.getInt("animal_id");
-          String type = rs.getString("animal_type");
-          String name = rs.getString("animal_name");
-          String dateOfBirth = rs.getString("date_of_birth");
-          AnimalData row = new AnimalData(id, type, name, dateOfBirth);
-          output.add(row);
-        }
-      }
+
+    for (Map<String, Object> animal : animals) {
+      AnimalData row =
+          new AnimalData(
+              (String) animal.get("animalId"),
+              (String) animal.get("animalName"),
+              (String) animal.get("animalType"),
+              (String) animal.get("dateOfBirth"));
+      output.add(row);
     }
 
     return new NounMetadata(output, PixelDataType.VECTOR);

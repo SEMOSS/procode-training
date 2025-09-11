@@ -2,37 +2,32 @@ package reactors.examples;
 
 import domain.base.ErrorCode;
 import domain.base.ProjectException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 import prerna.sablecc2.om.PixelDataType;
 import prerna.sablecc2.om.nounmeta.NounMetadata;
 import reactors.AbstractProjectReactor;
+import util.Constants;
 import util.HelperMethods;
 
 public class DeleteAnimalReactor extends AbstractProjectReactor {
 
-  public static final String animalIdColumn = "animal_id";
-
   public DeleteAnimalReactor() {
-    this.keysToGet = new String[] {animalIdColumn};
+    this.keysToGet = new String[] {Constants.ANIMAL_ID};
     this.keyRequired = new int[] {1};
   }
 
   @Override
-  protected NounMetadata doExecute(Connection con) throws SQLException {
-    int animalId = Integer.parseInt(this.keyValue.get(animalIdColumn));
+  protected NounMetadata doExecute() {
+    String animalId = this.keyValue.get(Constants.ANIMAL_ID);
 
     // The below method will throw an exception if the animal does not exist
-    HelperMethods.getAnimalByIdHelper(con, animalId);
-
-    try (PreparedStatement ps = con.prepareStatement("DELETE FROM animal WHERE animal_id = ?")) {
-      int parameterIndex = 1;
-      ps.setInt(parameterIndex++, animalId);
-      ps.execute();
-    } catch (SQLException e) {
-      throw new ProjectException(ErrorCode.INTERNAL_SERVER_ERROR, "Error deleting animal");
+    List<Map<String, Object>> animals = HelperMethods.getAnimalById(database, animalId);
+    if (animals.isEmpty()) {
+      throw new ProjectException(ErrorCode.NOT_FOUND, "Animal not found");
     }
+
+    HelperMethods.deleteAnimal(database, animalId);
 
     return new NounMetadata(true, PixelDataType.BOOLEAN);
   }

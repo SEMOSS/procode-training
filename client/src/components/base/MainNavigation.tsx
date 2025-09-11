@@ -84,7 +84,7 @@ export const MainNavigation = () => {
                         fontWeight="bold"
                         whiteSpace="nowrap"
                     >
-                        SEMOSS Blank Canvas
+                        SEMOSS Template
                     </Typography>
                 </CursorStack>
 

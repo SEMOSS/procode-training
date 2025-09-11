@@ -39,7 +39,7 @@ export const AddAnimalModal = ({ open, onClose }: AddAnimalModalProps) => {
      */
     const handleSubmitClick = async () => {
         addAnimal(
-            `AddAnimal(animal_name=${JSON.stringify(animalName)}, animal_type=${JSON.stringify(animalType)}, date_of_birth=${JSON.stringify(dateOfBirth)})`,
+            `AddAnimal(animalName=${JSON.stringify(animalName)}, animalType=${JSON.stringify(animalType)}, dateOfBirth=${JSON.stringify(dateOfBirth)})`,
             () => handleClose(true),
         );
     };
