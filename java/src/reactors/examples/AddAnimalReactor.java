@@ -1,14 +1,15 @@
-package examples.reactors;
+package reactors.examples;
 
-import examples.domain.base.ErrorCode;
-import examples.domain.base.ProjectException;
-import examples.util.AnimalHelperMethods;
-import examples.util.Constants;
+import domain.base.ErrorCode;
+import domain.base.ProjectException;
 import org.apache.commons.lang3.StringUtils;
 import prerna.sablecc2.om.PixelDataType;
 import prerna.sablecc2.om.nounmeta.NounMetadata;
+import reactors.AbstractProjectReactor;
+import util.Constants;
+import util.HelperMethods;
 
-public class AddAnimalReactor extends AbstractAnimalReactor {
+public class AddAnimalReactor extends AbstractProjectReactor {
 
   public AddAnimalReactor() {
     this.keysToGet =
@@ -29,7 +30,7 @@ public class AddAnimalReactor extends AbstractAnimalReactor {
           ErrorCode.BAD_REQUEST, "Animal name, type, and date of birth cannot be empty");
     }
 
-    AnimalHelperMethods.addAnimal(database, animalName, animalType, dateOfBirth);
+    HelperMethods.addAnimal(database, animalName, animalType, dateOfBirth);
 
     return new NounMetadata(true, PixelDataType.BOOLEAN);
   }

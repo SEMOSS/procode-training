@@ -1,4 +1,4 @@
-package examples.domain.animal;
+package domain.examples;
 
 public class AnimalData {
   private String animalId;

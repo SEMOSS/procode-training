@@ -1,13 +1,16 @@
-package examples.reactors;
+package reactors.examples;
 
-import examples.domain.base.ErrorCode;
-import examples.domain.base.ProjectException;
-import examples.util.AnimalHelperMethods;
-import examples.util.Constants;
+import domain.base.ErrorCode;
+import domain.base.ProjectException;
+import java.util.List;
+import java.util.Map;
 import prerna.sablecc2.om.PixelDataType;
 import prerna.sablecc2.om.nounmeta.NounMetadata;
+import reactors.AbstractProjectReactor;
+import util.Constants;
+import util.HelperMethods;
 
-public class DeleteAnimalReactor extends AbstractAnimalReactor {
+public class DeleteAnimalReactor extends AbstractProjectReactor {
 
   public DeleteAnimalReactor() {
     this.keysToGet = new String[] {Constants.ANIMAL_ID};
@@ -19,12 +22,12 @@ public class DeleteAnimalReactor extends AbstractAnimalReactor {
     String animalId = this.keyValue.get(Constants.ANIMAL_ID);
 
     // The below method will throw an exception if the animal does not exist
-    List<Map<String, Object>> animals = AnimalHelperMethods.getAnimalById(database, animalId);
+    List<Map<String, Object>> animals = HelperMethods.getAnimalById(database, animalId);
     if (animals.isEmpty()) {
       throw new ProjectException(ErrorCode.NOT_FOUND, "Animal not found");
     }
 
-    AnimalHelperMethods.deleteAnimal(database, animalId);
+    HelperMethods.deleteAnimal(database, animalId);
 
     return new NounMetadata(true, PixelDataType.BOOLEAN);
   }

@@ -1,12 +1,13 @@
-package examples.reactors;
+package reactors.examples;
 
-import examples.util.AnimalHelperMethods;
-import examples.util.Constants;
 import java.util.Map;
 import prerna.sablecc2.om.PixelDataType;
 import prerna.sablecc2.om.nounmeta.NounMetadata;
+import reactors.AbstractProjectReactor;
+import util.Constants;
+import util.HelperMethods;
 
-public class GetAnimalByIdReactor extends AbstractAnimalReactor {
+public class GetAnimalByIdReactor extends AbstractProjectReactor {
 
   public GetAnimalByIdReactor() {
     this.keysToGet = new String[] {Constants.ANIMAL_ID};
@@ -16,7 +17,7 @@ public class GetAnimalByIdReactor extends AbstractAnimalReactor {
   @Override
   protected NounMetadata doExecute() {
     String animalId = this.keyValue.get(Constants.ANIMAL_ID);
-    Map<String, Object> animalData = AnimalHelperMethods.getAnimalById(database, animalId).get(0);
+    Map<String, Object> animalData = HelperMethods.getAnimalById(database, animalId).get(0);
 
     return new NounMetadata(animalData, PixelDataType.MAP);
   }

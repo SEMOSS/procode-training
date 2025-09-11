@@ -5,10 +5,12 @@ import domain.base.ProjectException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import prerna.auth.User;
+import prerna.engine.impl.rdbms.RDBMSNativeEngine;
 import prerna.reactor.AbstractReactor;
 import prerna.sablecc2.om.PixelDataType;
 import prerna.sablecc2.om.PixelOperationType;
 import prerna.sablecc2.om.nounmeta.NounMetadata;
+import prerna.util.Utility;
 import util.ProjectProperties;
 
 public abstract class AbstractProjectReactor extends AbstractReactor {
@@ -19,7 +21,9 @@ public abstract class AbstractProjectReactor extends AbstractReactor {
   protected String projectId;
   protected ProjectProperties projectProperties;
 
-  // TODO: intialize protected variables you would like your reactors to have access to
+  // intialize protected variables you would like your reactors to have access to
+  protected String databaseId;
+  protected RDBMSNativeEngine database;
 
   protected NounMetadata result = null;
 
@@ -49,7 +53,11 @@ public abstract class AbstractProjectReactor extends AbstractReactor {
 
     projectProperties = ProjectProperties.getInstance(projectId);
 
-    // TODO: Update protected variables
+    // Update protected variables
+    databaseId = projectProperties.getDatabaseId();
+    if (databaseId != null) {
+      database = (RDBMSNativeEngine) Utility.getDatabase(databaseId);
+    }
 
     user = this.insight.getUser();
 
