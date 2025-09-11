@@ -7,7 +7,7 @@ import { Stack, Typography } from '@mui/material';
  * @component
  */
 export const HomePage = () => {
-    const [data, isLoading] = useLoadingPixel<string>('HelloWorld()');
+    const [data, isLoading] = useLoadingPixel<string>('HelloUser()');
 
     return (
         <Stack spacing={2}>
@@ -16,7 +16,7 @@ export const HomePage = () => {
                 Welcome to the SEMOSS Template application! This is a starting
                 point for building your own SEMOSS application.
             </Typography>
-            <Typography variant="h6">Example of a pixel call:</Typography>
+            <Typography variant="h6">Example of a pixel call: HelloUser()</Typography>
             <Typography>{isLoading ? 'Loading...' : data}</Typography>
         </Stack>
     );
