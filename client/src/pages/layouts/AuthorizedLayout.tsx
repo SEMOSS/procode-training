@@ -1,6 +1,6 @@
 import { useInsight } from '@semoss/sdk-react';
 import { Navigate, Outlet, useLocation } from 'react-router';
-import { ROUTE_PATH_LOGIN_PAGE } from './routes.constants';
+import { ROUTE_PATH_LOGIN_PAGE } from '../routes.constants';
 import { useAppContext } from '@/contexts';
 import { LoadingScreen } from '@/components';
 
