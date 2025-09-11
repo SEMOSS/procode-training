@@ -28,7 +28,7 @@ public class HelloUserReactor extends AbstractProjectReactor {
     name = (name == null) ? user.getPrimaryLoginToken().getName() : name;
 
     // grabbing user from AbstractProjectReactor
-    String response = "Hello " + name + "! Welcome to SEMOSS.";
+    String response = "Hello, " + name + "! Welcome to SEMOSS.";
 
     return new NounMetadata(response, PixelDataType.CONST_STRING);
   }
