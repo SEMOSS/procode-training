@@ -1,4 +1,4 @@
-package reactors.example;
+package reactors.examples;
 
 import prerna.sablecc2.om.PixelDataType;
 import prerna.sablecc2.om.ReactorKeysEnum;
