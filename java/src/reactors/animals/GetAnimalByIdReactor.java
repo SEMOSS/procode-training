@@ -12,6 +12,7 @@ import reactors.AbstractProjectReactor;
 import util.Constants;
 import util.HelperMethods;
 
+// Get an animal by its ID!
 public class GetAnimalByIdReactor extends AbstractProjectReactor {
 
   public GetAnimalByIdReactor() {

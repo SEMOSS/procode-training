@@ -10,6 +10,7 @@ import prerna.sablecc2.om.nounmeta.NounMetadata;
 import reactors.AbstractProjectReactor;
 import util.HelperMethods;
 
+// Get all the animals in the database!
 public class GetAnimalsReactor extends AbstractProjectReactor {
 
   @Override

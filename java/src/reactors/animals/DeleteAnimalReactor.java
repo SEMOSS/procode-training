@@ -10,6 +10,7 @@ import reactors.AbstractProjectReactor;
 import util.Constants;
 import util.HelperMethods;
 
+// Remove an animal from the database!
 public class DeleteAnimalReactor extends AbstractProjectReactor {
 
   public DeleteAnimalReactor() {

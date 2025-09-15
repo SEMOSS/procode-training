@@ -9,6 +9,7 @@ import reactors.AbstractProjectReactor;
 import util.Constants;
 import util.HelperMethods;
 
+// Add an animal to the database!
 public class AddAnimalReactor extends AbstractProjectReactor {
 
   public AddAnimalReactor() {
