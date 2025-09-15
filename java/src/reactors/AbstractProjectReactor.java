@@ -2,10 +2,13 @@ package reactors;
 
 import domain.base.ErrorCode;
 import domain.base.ProjectException;
+import java.util.List;
+import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import prerna.auth.User;
 import prerna.reactor.AbstractReactor;
+import prerna.sablecc2.om.GenRowStruct;
 import prerna.sablecc2.om.PixelDataType;
 import prerna.sablecc2.om.PixelOperationType;
 import prerna.sablecc2.om.nounmeta.NounMetadata;
@@ -54,6 +57,21 @@ public abstract class AbstractProjectReactor extends AbstractReactor {
     user = this.insight.getUser();
 
     organizeKeys();
+  }
+
+  protected Map<String, Object> getMap(String paramName) {
+    GenRowStruct mapGrs = this.store.getNoun(paramName);
+    if (mapGrs != null && !mapGrs.isEmpty()) {
+      List<NounMetadata> mapInputs = mapGrs.getNounsOfType(PixelDataType.MAP);
+      if (mapInputs != null && !mapInputs.isEmpty()) {
+        return (Map<String, Object>) mapInputs.get(0).getValue();
+      }
+    }
+    List<NounMetadata> mapInputs = this.curRow.getNounsOfType(PixelDataType.MAP);
+    if (mapInputs != null && !mapInputs.isEmpty()) {
+      return (Map<String, Object>) mapInputs.get(0).getValue();
+    }
+    return null;
   }
 
   protected abstract NounMetadata doExecute();
