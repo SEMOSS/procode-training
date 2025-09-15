@@ -1,10 +1,9 @@
 package reactors.animals;
 
+import domain.animals.AnimalData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import domain.animals.AnimalData;
 import prerna.date.SemossDate;
 import prerna.sablecc2.om.PixelDataType;
 import prerna.sablecc2.om.nounmeta.NounMetadata;

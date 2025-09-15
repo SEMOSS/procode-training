@@ -1,11 +1,10 @@
 package reactors.animals;
 
-import java.util.List;
-import java.util.Map;
-
 import domain.animals.AnimalData;
 import domain.base.ErrorCode;
 import domain.base.ProjectException;
+import java.util.List;
+import java.util.Map;
 import prerna.date.SemossDate;
 import prerna.sablecc2.om.PixelDataType;
 import prerna.sablecc2.om.nounmeta.NounMetadata;
@@ -25,22 +24,23 @@ public class GetAnimalByIdReactor extends AbstractProjectReactor {
     String animalId = this.keyValue.get(Constants.ANIMAL_ID);
     List<Map<String, Object>> animalData = HelperMethods.getAnimalById(database, animalId);
     if (animalData.isEmpty()) {
-    	throw new ProjectException(ErrorCode.NOT_FOUND, "Animal not found");
+      throw new ProjectException(ErrorCode.NOT_FOUND, "Animal not found");
     }
-    
+
     if (animalData.size() > 1) {
-    	throw new ProjectException(ErrorCode.INTERNAL_SERVER_ERROR, "Multiple animals found with that id");
+      throw new ProjectException(
+          ErrorCode.INTERNAL_SERVER_ERROR, "Multiple animals found with that id");
     }
-    
+
     Map<String, Object> animal = animalData.get(0);
-    
+
     AnimalData row =
         new AnimalData(
             (String) animal.get("animalId"),
             (String) animal.get("animalName"),
             (String) animal.get("animalType"),
             (SemossDate) animal.get("dateOfBirth"));
-    
+
     return new NounMetadata(row, PixelDataType.MAP);
   }
 }
