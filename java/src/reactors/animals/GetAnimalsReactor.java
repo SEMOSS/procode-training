@@ -1,9 +1,11 @@
-package reactors.examples;
+package reactors.animals;
 
-import domain.examples.AnimalData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import domain.animals.AnimalData;
+import prerna.date.SemossDate;
 import prerna.sablecc2.om.PixelDataType;
 import prerna.sablecc2.om.nounmeta.NounMetadata;
 import reactors.AbstractProjectReactor;
@@ -23,7 +25,7 @@ public class GetAnimalsReactor extends AbstractProjectReactor {
               (String) animal.get("animalId"),
               (String) animal.get("animalName"),
               (String) animal.get("animalType"),
-              (String) animal.get("dateOfBirth"));
+              (SemossDate) animal.get("dateOfBirth"));
       output.add(row);
     }
 
