@@ -2,6 +2,7 @@ package util;
 
 import domain.base.ErrorCode;
 import domain.base.ProjectException;
+import domain.examples.database.AnimalData;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -23,10 +24,10 @@ public class HelperMethods {
 
   public static List<Map<String, Object>> getAnimals(RDBMSNativeEngine database) {
     SelectQueryStruct qs = new SelectQueryStruct();
-    qs.addSelector(new QueryColumnSelector("ANIMAL__ANIMAL_ID", "animalId"));
-    qs.addSelector(new QueryColumnSelector("ANIMAL__ANIMAL_NAME", "animalName"));
-    qs.addSelector(new QueryColumnSelector("ANIMAL__ANIMAL_TYPE", "animalType"));
-    qs.addSelector(new QueryColumnSelector("ANIMAL__DATE_OF_BIRTH", "dateOfBirth"));
+    qs.addSelector(new QueryColumnSelector("ANIMAL__ANIMAL_ID", "animal_id"));
+    qs.addSelector(new QueryColumnSelector("ANIMAL__ANIMAL_NAME", "animal_name"));
+    qs.addSelector(new QueryColumnSelector("ANIMAL__ANIMAL_TYPE", "animal_type"));
+    qs.addSelector(new QueryColumnSelector("ANIMAL__DATE_OF_BIRTH", "date_of_birth"));
 
     return QueryExecutionUtility.flushRsToMap(database, qs);
   }
@@ -34,34 +35,35 @@ public class HelperMethods {
   public static List<Map<String, Object>> getAnimalById(
       RDBMSNativeEngine database, String animalId) {
     SelectQueryStruct qs = new SelectQueryStruct();
-    qs.addSelector(new QueryColumnSelector("ANIMAL__ANIMAL_ID", "animalId"));
-    qs.addSelector(new QueryColumnSelector("ANIMAL__ANIMAL_NAME", "animalName"));
-    qs.addSelector(new QueryColumnSelector("ANIMAL__ANIMAL_TYPE", "animalType"));
-    qs.addSelector(new QueryColumnSelector("ANIMAL__DATE_OF_BIRTH", "dateOfBirth"));
+    qs.addSelector(new QueryColumnSelector("ANIMAL__ANIMAL_ID", "animal_id"));
+    qs.addSelector(new QueryColumnSelector("ANIMAL__ANIMAL_NAME", "animal_name"));
+    qs.addSelector(new QueryColumnSelector("ANIMAL__ANIMAL_TYPE", "animal_type"));
+    qs.addSelector(new QueryColumnSelector("ANIMAL__DATE_OF_BIRTH", "date_of_birth"));
     qs.addExplicitFilter(SimpleQueryFilter.makeColToValFilter("ANIMAL__ANIMAL_ID", "==", animalId));
 
     return QueryExecutionUtility.flushRsToMap(database, qs);
   }
 
-  public static void addAnimal(
-      RDBMSNativeEngine database, String animalName, String animalType, String dateOfBirth) {
+  public static void addAnimal(RDBMSNativeEngine database, AnimalData animalData) {
 
     Connection con = null;
     try {
       con = database.getConnection();
       try (PreparedStatement ps =
           con.prepareStatement(
-              "INSERT INTO ANIMAL (ANIMAL_NAME, ANIMAL_TYPE, DATE_OF_BIRTH)\n"
+              "INSERT INTO ANIMAL (ANIMAL_ID, ANIMAL_NAME, ANIMAL_TYPE, DATE_OF_BIRTH)\n"
                   + "VALUES (?, ?, ?);")) {
         int parameterIndex = 1;
-        ps.setString(parameterIndex++, animalName);
-        ps.setString(parameterIndex++, animalType);
-        ps.setString(parameterIndex++, dateOfBirth);
+        ps.setString(parameterIndex, animalData.getAnimalId());
+        ps.setString(parameterIndex++, animalData.getAnimalName());
+        ps.setString(parameterIndex++, animalData.getAnimalType());
+        ps.setObject(parameterIndex++, animalData.getDateOfBirth());
         ps.execute();
       } catch (SQLException e) {
         throw new ProjectException(ErrorCode.INTERNAL_SERVER_ERROR);
       }
     } catch (Exception e) {
+      System.out.println(e.getStackTrace().toString());
       throw new ProjectException(ErrorCode.INTERNAL_SERVER_ERROR, "Error adding animal");
     } finally {
       ConnectionUtils.closeAllConnectionsIfPooling(database, con, null, null);

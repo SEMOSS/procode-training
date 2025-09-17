@@ -1,11 +1,9 @@
-package reactors.animals;
+package reactors.examples.database;
 
-import domain.animals.AnimalData;
 import domain.base.ErrorCode;
 import domain.base.ProjectException;
 import java.util.List;
 import java.util.Map;
-import prerna.date.SemossDate;
 import prerna.sablecc2.om.PixelDataType;
 import prerna.sablecc2.om.nounmeta.NounMetadata;
 import reactors.AbstractProjectReactor;
@@ -35,13 +33,6 @@ public class GetAnimalByIdReactor extends AbstractProjectReactor {
 
     Map<String, Object> animal = animalData.get(0);
 
-    AnimalData row =
-        new AnimalData(
-            (String) animal.get("animalId"),
-            (String) animal.get("animalName"),
-            (String) animal.get("animalType"),
-            (SemossDate) animal.get("dateOfBirth"));
-
-    return new NounMetadata(row, PixelDataType.MAP);
+    return new NounMetadata(animal, PixelDataType.MAP);
   }
 }

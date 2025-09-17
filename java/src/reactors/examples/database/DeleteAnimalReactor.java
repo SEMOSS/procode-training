@@ -1,4 +1,4 @@
-package reactors.animals;
+package reactors.examples.database;
 
 import domain.base.ErrorCode;
 import domain.base.ProjectException;

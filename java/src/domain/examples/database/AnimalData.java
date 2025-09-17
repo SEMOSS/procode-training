@@ -1,5 +1,6 @@
-package domain.animals;
+package domain.examples.database;
 
+import java.util.Map;
 import prerna.date.SemossDate;
 
 public class AnimalData {
@@ -45,5 +46,13 @@ public class AnimalData {
 
   public void setAnimalType(String animalType) {
     this.animalType = animalType;
+  }
+
+  public Map<String, Object> toMap() {
+    return Map.of(
+        "animal_id", animalId,
+        "animal_type", animalType,
+        "animal_name", animalName,
+        "date_of_birth", dateOfBirth);
   }
 }
