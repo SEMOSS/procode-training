@@ -7,6 +7,9 @@ import { Stack, Typography } from '@mui/material';
  * @component
  */
 export const HomePage = () => {
+    /**
+     * State
+     */
     const [data, isLoading] = useLoadingPixel<string>('HelloUser()');
 
     return (
