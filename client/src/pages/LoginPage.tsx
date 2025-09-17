@@ -3,7 +3,7 @@ import { useLoadingState } from '@/hooks';
 import { Button, Stack, TextField } from '@mui/material';
 import { useInsight } from '@semoss/sdk-react';
 import { ChangeEvent, useRef, useState } from 'react';
-import { Navigate, useLocation } from 'react-router';
+import { Navigate, useLocation } from 'react-router-dom';
 
 /**
  * Renders a the login page if the user is not already logged in, otherwise sends them to the home page.

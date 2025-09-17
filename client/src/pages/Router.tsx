@@ -1,8 +1,9 @@
-import { HashRouter, Navigate, Route, Routes } from 'react-router';
+import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ROUTE_PATH_LOGIN_PAGE } from './routes.constants';
 import { AuthorizedLayout, InitializedLayout } from './layouts';
 import { HomePage } from './HomePage';
 import { LoginPage } from './LoginPage';
+import { ErrorPage } from './ErrorPage';
 
 /**
  * Renders pages based on url.
@@ -15,11 +16,21 @@ export const Router = () => {
         <HashRouter>
             <Routes>
                 {/* Wrap every route in InitializedLayout to ensure SEMOSS is ready to handle requests */}
-                <Route element={<InitializedLayout />}>
+                <Route
+                    element={<InitializedLayout />}
+                    errorElement={<ErrorPage />}
+                >
                     {/* Wrap pages that should only be available to logged in users */}
-                    <Route element={<AuthorizedLayout />}>
+                    <Route
+                        element={<AuthorizedLayout />}
+                        errorElement={<ErrorPage />}
+                    >
                         {/* If the path is empty, use the home page */}
-                        <Route index element={<HomePage />} />
+                        <Route
+                            index
+                            element={<HomePage />}
+                            errorElement={<ErrorPage />}
+                        />
                     </Route>
 
                     {/* The login page should be available to non-logged in users (duh) */}

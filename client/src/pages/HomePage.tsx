@@ -1,5 +1,6 @@
 import { useLoadingPixel } from '@/hooks';
 import { Stack, Typography } from '@mui/material';
+import { useState } from 'react';
 
 /**
  * Renders the home page.
@@ -8,6 +9,8 @@ import { Stack, Typography } from '@mui/material';
  */
 export const HomePage = () => {
     const [data, isLoading] = useLoadingPixel<string>('HelloUser()');
+
+    const [test, setTest] = useState<{ b: string }>({ b: 'test' });
 
     return (
         <Stack spacing={2}>
@@ -31,6 +34,8 @@ export const HomePage = () => {
                     </ul>
                 </li>
             </ul>
+            {test.b}
+            <button onClick={() => setTest(null)}>error</button>
         </Stack>
     );
 };
