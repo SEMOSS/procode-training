@@ -7,7 +7,7 @@ import {
     useTheme,
 } from '@mui/material';
 import { SemossBlueLogo } from '@/assets';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { ROUTE_PATH_ANIMAL_PAGE } from '@/pages';
 import { AccountCircle } from '@mui/icons-material';
 import { useInsight } from '@semoss/sdk-react';
