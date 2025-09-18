@@ -5,6 +5,10 @@ import prerna.sablecc2.om.ReactorKeysEnum;
 import prerna.sablecc2.om.nounmeta.NounMetadata;
 import reactors.AbstractProjectReactor;
 
+/**
+ * Example reactor that demonstrates basic user interaction. Accepts optional name parameter or uses
+ * current user's name.
+ */
 public class HelloUserReactor extends AbstractProjectReactor {
 
   // Note: Has access to protected variables defined in AbstractProjectReactor

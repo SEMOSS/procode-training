@@ -14,18 +14,24 @@ import prerna.sablecc2.om.PixelOperationType;
 import prerna.sablecc2.om.nounmeta.NounMetadata;
 import util.ProjectProperties;
 
+/**
+ * Base class for all project-specific reactors. Provides project context, standardized error
+ * handling, and utility methods.
+ */
 public abstract class AbstractProjectReactor extends AbstractReactor {
 
   private static final Logger LOGGER = LogManager.getLogger(AbstractProjectReactor.class);
 
+  // Core project context available to all extending reactors
   protected User user;
   protected String projectId;
   protected ProjectProperties projectProperties;
 
-  // TODO: intialize protected variables you would like your reactors to have access to
+  // TODO: Initialize additional protected variables (engines, external services, etc.)
 
   protected NounMetadata result = null;
 
+  /** Main execution entry point with standardized error handling. */
   @Override
   public NounMetadata execute() {
     try {
@@ -38,12 +44,13 @@ public abstract class AbstractProjectReactor extends AbstractReactor {
       } else {
         ex = new ProjectException(ErrorCode.INTERNAL_SERVER_ERROR, e);
       }
-      LOGGER.error(String.format("Reactor %s threw an error", this.getClass().getSimpleName()), e);
 
+      LOGGER.error(String.format("Reactor %s threw an error", this.getClass().getSimpleName()), e);
       return new NounMetadata(ex.getAsMap(), PixelDataType.MAP, PixelOperationType.ERROR);
     }
   }
 
+  /** Initializes project context before execution. */
   protected void preExecute() {
     projectId = this.insight.getContextProjectId();
     if (projectId == null) {
@@ -52,13 +59,13 @@ public abstract class AbstractProjectReactor extends AbstractReactor {
 
     projectProperties = ProjectProperties.getInstance(projectId);
 
-    // TODO: Update protected variables
+    // TODO: Initialize additional resources (engines, external services, etc.)
 
     user = this.insight.getUser();
-
     organizeKeys();
   }
 
+  /** Utility method to extract Map parameters from reactor input. */
   protected Map<String, Object> getMap(String paramName) {
     GenRowStruct mapGrs = this.store.getNoun(paramName);
     if (mapGrs != null && !mapGrs.isEmpty()) {
@@ -67,12 +74,15 @@ public abstract class AbstractProjectReactor extends AbstractReactor {
         return (Map<String, Object>) mapInputs.get(0).getValue();
       }
     }
+
     List<NounMetadata> mapInputs = this.curRow.getNounsOfType(PixelDataType.MAP);
     if (mapInputs != null && !mapInputs.isEmpty()) {
       return (Map<String, Object>) mapInputs.get(0).getValue();
     }
+
     return null;
   }
 
+  /** Abstract method for concrete reactor implementation. */
   protected abstract NounMetadata doExecute();
 }
