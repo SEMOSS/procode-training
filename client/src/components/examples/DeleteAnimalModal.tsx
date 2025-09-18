@@ -28,8 +28,9 @@ export const DeleteAnimalModal = ({
      * Functions
      */
     const handleSubmitClick = async () => {
-        runPixel(`DeleteAnimal(${animalToDelete.animal_id})`, () =>
-            onClose(true),
+        runPixel(
+            `DeleteAnimal(${JSON.stringify(animalToDelete.animal_id)})`,
+            () => onClose(true),
         );
     };
 
