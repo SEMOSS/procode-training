@@ -76,7 +76,7 @@ To make changes visible to users:
 2. Rename `assets` to `old-assets`.
 3. Open a terminal at this location.
 4. Clone this repository:
-   `git clone git@github.com:Deloitte-US/Template.git`, if using SSH keys
+   `git clone git@github.com:SEMOSS/Template.git`, if using SSH keys
 5. Rename the cloned `Template` folder to `assets`.
 6. Open `assets` in your code editor (VS Code recommended).
 
