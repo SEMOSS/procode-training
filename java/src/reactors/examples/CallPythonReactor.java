@@ -30,7 +30,7 @@ public class CallPythonReactor extends AbstractProjectReactor {
   @Override
   protected NounMetadata doExecute() {
     // grab the input number
-    int inputNum = (Integer) this.keyValue.get(ReactorKeysEnum.NUMERIC_VALUE.getKey());
+    String inputNum = this.keyValue.get(ReactorKeysEnum.NUMERIC_VALUE.getKey());
     String appFolder = AssetUtility.getProjectAssetsFolder(projectId);
     // define the file to grab the helper function from
     String sourceFile = "nthFibonacci.py";
@@ -42,7 +42,7 @@ public class CallPythonReactor extends AbstractProjectReactor {
     String moduleName = sourceFile.replace(".py", "");
 
     // define the arguments to be passed to the function
-    List<Object> argsList = new ArrayList<>();
+    List<String> argsList = new ArrayList<>();
     argsList.add(inputNum);
 
     String args = "";
