@@ -11,7 +11,7 @@ import {
     Typography,
 } from '@mui/material';
 import { useState } from 'react';
-import { DatePicker } from '../library';
+import { DatePicker } from '@/components';
 import { CloseRounded } from '@mui/icons-material';
 
 export interface AddAnimalModalProps {

@@ -1,5 +1,5 @@
 import { DataGrid, GridDeleteIcon } from '@mui/x-data-grid';
-import { Animal } from './examples.types';
+import { Animal } from './animal.types';
 import { IconButton } from '@mui/material';
 
 export interface AnimalListProps {

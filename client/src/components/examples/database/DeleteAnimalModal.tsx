@@ -1,5 +1,5 @@
-import { ConfirmationDialog } from '../library';
-import { Animal } from './examples.types';
+import { ConfirmationDialog } from '@/components';
+import { Animal } from './animal.types';
 import { useSettingPixel } from '@/hooks';
 import { Button } from '@mui/material';
 
