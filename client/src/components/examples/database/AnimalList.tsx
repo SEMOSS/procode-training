@@ -1,5 +1,5 @@
 import { DataGrid, GridDeleteIcon } from '@mui/x-data-grid';
-import { Animal } from './examples.types';
+import { Animal } from './animal.types';
 import { IconButton } from '@mui/material';
 
 export interface AnimalListProps {
@@ -18,11 +18,12 @@ export const AnimalList = ({
     loading,
     onDelete,
 }: AnimalListProps) => {
+    console.log(animalList);
     return (
         <DataGrid
             loading={loading}
             columns={[
-                { field: 'animal_id', headerName: 'ID', type: 'number' },
+                { field: 'animal_id', headerName: 'ID', type: 'string' },
                 { field: 'animal_name', headerName: 'Name', type: 'string' },
                 { field: 'animal_type', headerName: 'Type', type: 'string' },
                 {

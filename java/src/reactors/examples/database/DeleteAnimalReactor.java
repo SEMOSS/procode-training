@@ -1,4 +1,4 @@
-package reactors.examples;
+package reactors.examples.database;
 
 import domain.base.ErrorCode;
 import domain.base.ProjectException;
@@ -10,6 +10,7 @@ import reactors.AbstractProjectReactor;
 import util.Constants;
 import util.HelperMethods;
 
+// Remove an animal from the database!
 public class DeleteAnimalReactor extends AbstractProjectReactor {
 
   public DeleteAnimalReactor() {

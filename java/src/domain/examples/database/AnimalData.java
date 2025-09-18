@@ -1,12 +1,15 @@
-package domain.examples;
+package domain.examples.database;
+
+import java.util.Map;
+import prerna.date.SemossDate;
 
 public class AnimalData {
   private String animalId;
   private String animalType;
   private String animalName;
-  private String dateOfBirth;
+  private SemossDate dateOfBirth;
 
-  public AnimalData(String animalId, String animalType, String animalName, String dateOfBirth) {
+  public AnimalData(String animalId, String animalType, String animalName, SemossDate dateOfBirth) {
     this.animalId = animalId;
     this.animalType = animalType;
     this.animalName = animalName;
@@ -29,11 +32,11 @@ public class AnimalData {
     this.animalId = animalId;
   }
 
-  public String getDateOfBirth() {
+  public SemossDate getDateOfBirth() {
     return dateOfBirth;
   }
 
-  public void setDateOfBirth(String dateOfBirth) {
+  public void setDateOfBirth(SemossDate dateOfBirth) {
     this.dateOfBirth = dateOfBirth;
   }
 
@@ -43,5 +46,13 @@ public class AnimalData {
 
   public void setAnimalType(String animalType) {
     this.animalType = animalType;
+  }
+
+  public Map<String, Object> toMap() {
+    return Map.of(
+        "animal_id", animalId,
+        "animal_type", animalType,
+        "animal_name", animalName,
+        "date_of_birth", dateOfBirth);
   }
 }

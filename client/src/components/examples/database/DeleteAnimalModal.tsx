@@ -1,5 +1,5 @@
-import { ConfirmationDialog } from '../library';
-import { Animal } from './examples.types';
+import { ConfirmationDialog } from '@/components';
+import { Animal } from './animal.types';
 import { useSettingPixel } from '@/hooks';
 import { Button } from '@mui/material';
 
@@ -28,8 +28,9 @@ export const DeleteAnimalModal = ({
      * Functions
      */
     const handleSubmitClick = async () => {
-        runPixel(`DeleteAnimal(${animalToDelete.animal_id})`, () =>
-            onClose(true),
+        runPixel(
+            `DeleteAnimal(${JSON.stringify(animalToDelete.animal_id)})`,
+            () => onClose(true),
         );
     };
 

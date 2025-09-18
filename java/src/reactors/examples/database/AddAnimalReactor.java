@@ -1,14 +1,18 @@
-package reactors.examples;
+package reactors.examples.database;
 
 import domain.base.ErrorCode;
 import domain.base.ProjectException;
+import domain.examples.database.AnimalData;
+import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
+import prerna.date.SemossDate;
 import prerna.sablecc2.om.PixelDataType;
 import prerna.sablecc2.om.nounmeta.NounMetadata;
 import reactors.AbstractProjectReactor;
 import util.Constants;
 import util.HelperMethods;
 
+// Add an animal to the database!
 public class AddAnimalReactor extends AbstractProjectReactor {
 
   public AddAnimalReactor() {
@@ -30,7 +34,14 @@ public class AddAnimalReactor extends AbstractProjectReactor {
           ErrorCode.BAD_REQUEST, "Animal name, type, and date of birth cannot be empty");
     }
 
-    HelperMethods.addAnimal(database, animalName, animalType, dateOfBirth);
+    AnimalData animalData =
+        new AnimalData(
+            UUID.randomUUID().toString(),
+            animalType,
+            animalName,
+            new SemossDate(dateOfBirth, "yyyy-MM-dd"));
+
+    HelperMethods.addAnimal(database, animalData);
 
     return new NounMetadata(true, PixelDataType.BOOLEAN);
   }
