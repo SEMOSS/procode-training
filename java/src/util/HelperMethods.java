@@ -52,18 +52,17 @@ public class HelperMethods {
       try (PreparedStatement ps =
           con.prepareStatement(
               "INSERT INTO ANIMAL (ANIMAL_ID, ANIMAL_NAME, ANIMAL_TYPE, DATE_OF_BIRTH)\n"
-                  + "VALUES (?, ?, ?);")) {
+                  + "VALUES (?, ?, ?, ?);")) {
         int parameterIndex = 1;
-        ps.setString(parameterIndex, animalData.getAnimalId());
+        ps.setString(parameterIndex++, animalData.getAnimalId());
         ps.setString(parameterIndex++, animalData.getAnimalName());
         ps.setString(parameterIndex++, animalData.getAnimalType());
-        ps.setObject(parameterIndex++, animalData.getDateOfBirth());
+        ps.setObject(parameterIndex++, animalData.getDateOfBirth().getFormattedDate());
         ps.execute();
       } catch (SQLException e) {
         throw new ProjectException(ErrorCode.INTERNAL_SERVER_ERROR);
       }
     } catch (Exception e) {
-      System.out.println(e.getStackTrace().toString());
       throw new ProjectException(ErrorCode.INTERNAL_SERVER_ERROR, "Error adding animal");
     } finally {
       ConnectionUtils.closeAllConnectionsIfPooling(database, con, null, null);
