@@ -18,7 +18,6 @@ export const AnimalList = ({
     loading,
     onDelete,
 }: AnimalListProps) => {
-    console.log(animalList);
     return (
         <DataGrid
             loading={loading}
