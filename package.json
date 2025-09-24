@@ -2,7 +2,7 @@
     "private": true,
     "scripts": {
         "fix": "prettier . --write && eslint --fix; pre-commit run --all-files || pre-commit run --all-files",
-        "prepare": "husky"
+        "dev": "pnpm --dir client dev"
     },
     "devDependencies": {
         "eslint": "^9.36.0",
