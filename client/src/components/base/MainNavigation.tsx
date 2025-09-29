@@ -28,8 +28,7 @@ const CursorStack = styled(Stack)({
 const navigationButtons: {
     path: string;
     text: string;
-}[] = [
-];
+}[] = [];
 
 /**
  * The main navigation bar allowing users to move between pages, if they are authorized.

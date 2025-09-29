@@ -156,8 +156,7 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
             }
 
             // Create an array of loadSetPairs, each containing a loader function and a setter function
-            const loadSetPairs: LoadSetPair<unknown>[] = [
-            ];
+            const loadSetPairs: LoadSetPair<unknown>[] = [];
 
             // Execute all loaders in parallel and wait for them all to complete
             await Promise.all(

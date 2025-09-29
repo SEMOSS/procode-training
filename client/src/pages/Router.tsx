@@ -1,7 +1,5 @@
 import { createHashRouter, Navigate, RouterProvider } from 'react-router-dom';
-import {
-    ROUTE_PATH_LOGIN_PAGE,
-} from './routes.constants';
+import { ROUTE_PATH_LOGIN_PAGE } from './routes.constants';
 import { AuthorizedLayout, InitializedLayout } from './layouts';
 import { HomePage } from './HomePage';
 import { LoginPage } from './LoginPage';
