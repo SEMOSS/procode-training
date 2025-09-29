@@ -1,12 +1,10 @@
 import { createHashRouter, Navigate, RouterProvider } from 'react-router-dom';
 import {
     ROUTE_PATH_LOGIN_PAGE,
-    ROUTE_PATH_ANIMAL_PAGE,
 } from './routes.constants';
 import { AuthorizedLayout, InitializedLayout } from './layouts';
 import { HomePage } from './HomePage';
 import { LoginPage } from './LoginPage';
-import { AnimalPage } from './AnimalPage';
 import { ErrorPage } from './ErrorPage';
 
 const router = createHashRouter([
@@ -26,10 +24,6 @@ const router = createHashRouter([
                         // If the path is empty, use the home page
                         index: true,
                         Component: HomePage,
-                    },
-                    {
-                        path: ROUTE_PATH_ANIMAL_PAGE,
-                        Component: AnimalPage,
                     },
                     // {
                     //     // Example of a new page

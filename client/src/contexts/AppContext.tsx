@@ -19,7 +19,6 @@ export interface AppContextType {
     logout: () => Promise<boolean>;
     userLoginName: string;
     isAppDataLoading: boolean;
-    onePlusTwo: number;
     setMessageSnackbarProps: Dispatch<SetStateAction<MessageSnackbarProps>>;
 }
 
@@ -63,7 +62,6 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
             severity: 'info',
         });
     // Example state variable to store the result of a pixel operation
-    const [onePlusTwo, setOnePlusTwo] = useState<number>();
 
     /**
      * Functions
@@ -159,10 +157,6 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
 
             // Create an array of loadSetPairs, each containing a loader function and a setter function
             const loadSetPairs: LoadSetPair<unknown>[] = [
-                {
-                    loader: '1 + 2',
-                    setter: (response) => setOnePlusTwo(response),
-                } satisfies LoadSetPair<number>,
             ];
 
             // Execute all loaders in parallel and wait for them all to complete
@@ -202,7 +196,6 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
         <AppContext.Provider
             value={{
                 runPixel,
-                onePlusTwo,
                 isAppDataLoading,
                 setMessageSnackbarProps,
                 login,

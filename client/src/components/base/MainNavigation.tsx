@@ -8,7 +8,6 @@ import {
 } from '@mui/material';
 import { SemossBlueLogo } from '@/assets';
 import { useNavigate } from 'react-router-dom';
-import { ROUTE_PATH_ANIMAL_PAGE } from '@/pages';
 import { AccountCircle } from '@mui/icons-material';
 import { useInsight } from '@semoss/sdk-react';
 import { useState } from 'react';
@@ -30,14 +29,6 @@ const navigationButtons: {
     path: string;
     text: string;
 }[] = [
-    {
-        path: '/',
-        text: 'Home',
-    },
-    {
-        path: ROUTE_PATH_ANIMAL_PAGE,
-        text: 'Animal Page',
-    },
 ];
 
 /**
@@ -84,7 +75,7 @@ export const MainNavigation = () => {
                         fontWeight="bold"
                         whiteSpace="nowrap"
                     >
-                        SEMOSS Template
+                        Meeting Minutes
                     </Typography>
                 </CursorStack>
 
