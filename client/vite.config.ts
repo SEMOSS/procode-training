@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => {
         },
         server: {
             proxy: {
-                '/Monolith': {
+                [env.CLIENT_MODULE]: {
                     target: env.ENDPOINT,
                     changeOrigin: true,
                     secure: false,
