@@ -6,6 +6,7 @@ export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd(), '');
     return {
         root: 'src',
+        base: './',
         envDir: '../',
         envPrefix: 'CLIENT_',
         resolve: {
