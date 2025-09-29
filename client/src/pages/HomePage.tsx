@@ -1,12 +1,6 @@
 import { useAppContext } from '@/contexts';
 import { useLoadingPixel, useLoadingState } from '@/hooks';
-import {
-    Autocomplete,
-    Button,
-    Stack,
-    TextField,
-    Typography,
-} from '@mui/material';
+import { Autocomplete, Button, Stack, TextField } from '@mui/material';
 import { useState } from 'react';
 
 interface Engine {
@@ -84,52 +78,49 @@ export const HomePage = () => {
 
     return (
         <Stack spacing={2}>
-            {isLoadingEngines ? (
-                <Typography>Loading engines...</Typography>
-            ) : (
-                <>
-                    <Autocomplete
-                        options={engines || []}
-                        getOptionLabel={(option) => option.app_name}
-                        renderInput={(params) => (
-                            <TextField {...params} label="Model" />
-                        )}
-                        getOptionKey={(option) => option.app_id}
-                    />
+            <Autocomplete
+                options={engines || []}
+                getOptionLabel={(option) => option.app_name}
+                renderInput={(params) => (
+                    <TextField {...params} label="Model" />
+                )}
+                getOptionKey={(option) => option.app_id}
+                loading={isLoadingEngines}
+            />
 
-                    <Autocomplete
-                        isOptionEqualToValue={(option, value) =>
-                            option.app_id === value.app_id
-                        }
-                        value={selectedVector}
-                        onChange={(_, newValue) => setSelectedVector(newValue)}
-                        options={vectors || []}
-                        getOptionLabel={(option) => option.app_name}
-                        renderInput={(params) => (
-                            <TextField {...params} label="Vector" />
-                        )}
-                        getOptionKey={(option) => option.app_id}
-                        loading={isLoadingVectors || isCreatingVector}
-                    />
+            <Autocomplete
+                isOptionEqualToValue={(option, value) =>
+                    option.app_id === value.app_id
+                }
+                value={selectedVector}
+                onChange={(_, newValue) => setSelectedVector(newValue)}
+                options={vectors || []}
+                getOptionLabel={(option) => option.app_name}
+                renderInput={(params) => (
+                    <TextField {...params} label="Vector" />
+                )}
+                getOptionKey={(option) => option.app_id}
+                loading={isLoadingVectors || isCreatingVector}
+            />
 
-                    <Stack direction="row" spacing={2} alignItems="center">
-                        <TextField
-                            label="New Vector"
-                            fullWidth
-                            size="small"
-                            value={newVectorName}
-                            onChange={(e) => setNewVectorName(e.target.value)}
-                        />
-                        <Button
-                            onClick={createVector}
-                            variant="contained"
-                            style={{ whiteSpace: 'nowrap' }}
-                        >
-                            Create Vector
-                        </Button>
-                    </Stack>
-                </>
-            )}
+            <Stack direction="row" spacing={2} alignItems="center">
+                <TextField
+                    label="New Vector"
+                    fullWidth
+                    size="small"
+                    value={newVectorName}
+                    onChange={(e) => setNewVectorName(e.target.value)}
+                />
+                <Button
+                    onClick={createVector}
+                    variant="contained"
+                    style={{ whiteSpace: 'nowrap' }}
+                    disabled={!newVectorName}
+                    loading={isCreatingVector}
+                >
+                    Create Vector
+                </Button>
+            </Stack>
         </Stack>
     );
 };
