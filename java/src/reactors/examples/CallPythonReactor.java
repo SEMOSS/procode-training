@@ -6,8 +6,6 @@ import prerna.ds.py.PyTranslator;
 import prerna.sablecc2.om.PixelDataType;
 import prerna.sablecc2.om.ReactorKeysEnum;
 import prerna.sablecc2.om.nounmeta.NounMetadata;
-import prerna.util.AssetUtility;
-import prerna.util.Constants;
 import reactors.AbstractProjectReactor;
 
 /**
@@ -31,43 +29,26 @@ public class CallPythonReactor extends AbstractProjectReactor {
   protected NounMetadata doExecute() {
     // grab the input number
     String inputNum = this.keyValue.get(ReactorKeysEnum.NUMERIC_VALUE.getKey());
-    String appFolder = AssetUtility.getProjectAssetsFolder(projectId);
-    // define the file to grab the helper function from
-    String sourceFile = "nthFibonacci.py";
-    // define the helper function to be executed
-    String functionName = "nthFibonacci";
-    String path = appFolder + DIR_SEPARATOR + Constants.PY_BASE_FOLDER + DIR_SEPARATOR;
-    path = path.replace("\\", "/");
 
-    String moduleName = sourceFile.replace(".py", "");
+    // define the file to grab the helper function from
+    String sourceFile = "py/nthFibonacci.py";
+
+    PyTranslator pt = this.insight.getPyTranslator();
+
+    String projectId = this.insight.getContextProjectId();
+    if (projectId == null) {
+      projectId = this.insight.getProjectId();
+    }
+
+    String fibonacciModule = pt.loadPythonModuleFromFile(sourceFile, projectId);
+
+    String functionName = "nthFibonacci";
 
     // define the arguments to be passed to the function
     List<String> argsList = new ArrayList<>();
     argsList.add(inputNum);
 
-    String args = "";
-    if (argsList != null && !argsList.isEmpty()) {
-      args = String.join(", ", argsList);
-    }
-
-    // Create a python script to be executed
-    String commands =
-        "import sys\n"
-            + "sys.path.append(\""
-            + path
-            + "\")\n"
-            + "from "
-            + moduleName
-            + " import "
-            + functionName
-            + "\n"
-            + functionName
-            + "("
-            + args
-            + ")\n";
-
-    PyTranslator pt = this.insight.getPyTranslator();
-    Object pyResponse = pt.runDirectPy(this.insight, commands);
+    Object pyResponse = pt.runFunctionFromLoadedModule(fibonacciModule, functionName, argsList);
 
     return new NounMetadata(pyResponse, PixelDataType.CONST_STRING);
   }
