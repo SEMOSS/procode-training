@@ -40,6 +40,9 @@ importers:
             react-dom:
                 specifier: ^18.3.1
                 version: 18.3.1(react@18.3.1)
+            react-dropzone:
+                specifier: ^14.3.8
+                version: 14.3.8(react@18.3.1)
             react-router-dom:
                 specifier: ^7.9.3
                 version: 7.9.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1064,6 +1067,13 @@ packages:
         engines: { node: '>=0.4.0' }
         hasBin: true
 
+    attr-accept@2.2.5:
+        resolution:
+            {
+                integrity: sha512-0bDNnY/u6pPwHDMoF0FieU354oBi0a8rD9FcsLwzcGWbc8KS8KPIi7y+s13OlVY+gMWc/9xEMUgNE6Qm8ZllYQ==,
+            }
+        engines: { node: '>=4' }
+
     babel-plugin-macros@3.1.0:
         resolution:
             {
@@ -1219,6 +1229,13 @@ packages:
         peerDependenciesMeta:
             picomatch:
                 optional: true
+
+    file-selector@2.1.2:
+        resolution:
+            {
+                integrity: sha512-QgXo+mXTe8ljeqUFaX3QVHc5osSItJ/Km+xpocx0aSqWGMSCf6qYs/VnzZgS864Pjn5iceMRFigeAV7AfTlaig==,
+            }
+        engines: { node: '>= 12' }
 
     find-root@1.1.0:
         resolution:
@@ -1415,6 +1432,15 @@ packages:
         peerDependencies:
             react: ^18.3.1
 
+    react-dropzone@14.3.8:
+        resolution:
+            {
+                integrity: sha512-sBgODnq+lcA4P296DY4wacOZz3JFpD99fp+hb//iBO2HHnyeZU3FwWyXJ6salNpqQdsZrgMrotuko/BdJMV8Ug==,
+            }
+        engines: { node: '>= 10.13' }
+        peerDependencies:
+            react: '>= 16.8 || 18.0.0'
+
     react-is@16.13.1:
         resolution:
             {
@@ -1575,6 +1601,12 @@ packages:
                 integrity: sha512-j2Zq4NyQYG5XMST4cbs02Ak8iJUdxRM0XI5QyxXuZOzKOINmWurp3smXu3y5wDcJrptwpSjgXHzIQxR0omXljQ==,
             }
         engines: { node: '>=12.0.0' }
+
+    tslib@2.8.1:
+        resolution:
+            {
+                integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==,
+            }
 
     typescript@5.9.2:
         resolution:
@@ -2249,6 +2281,8 @@ snapshots:
     acorn@8.15.0:
         optional: true
 
+    attr-accept@2.2.5: {}
+
     babel-plugin-macros@3.1.0:
         dependencies:
             '@babel/runtime': 7.28.4
@@ -2347,6 +2381,10 @@ snapshots:
         optionalDependencies:
             picomatch: 4.0.3
 
+    file-selector@2.1.2:
+        dependencies:
+            tslib: 2.8.1
+
     find-root@1.1.0: {}
 
     fsevents@2.3.3:
@@ -2437,6 +2475,13 @@ snapshots:
             loose-envify: 1.4.0
             react: 18.3.1
             scheduler: 0.23.2
+
+    react-dropzone@14.3.8(react@18.3.1):
+        dependencies:
+            attr-accept: 2.2.5
+            file-selector: 2.1.2
+            prop-types: 15.8.1
+            react: 18.3.1
 
     react-is@16.13.1: {}
 
@@ -2546,6 +2591,8 @@ snapshots:
         dependencies:
             fdir: 6.5.0(picomatch@4.0.3)
             picomatch: 4.0.3
+
+    tslib@2.8.1: {}
 
     typescript@5.9.2: {}
 
