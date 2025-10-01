@@ -1,3 +1,4 @@
+import { VectorFiles } from '@/components';
 import { useAppContext } from '@/contexts';
 import { useLoadingPixel, useLoadingState } from '@/hooks';
 import { Autocomplete, Button, Stack, TextField } from '@mui/material';
@@ -121,6 +122,7 @@ export const HomePage = () => {
                     Create Vector
                 </Button>
             </Stack>
+            <VectorFiles engineId={selectedVector?.app_id} />
         </Stack>
     );
 };
