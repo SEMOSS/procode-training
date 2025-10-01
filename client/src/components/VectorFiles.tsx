@@ -1,5 +1,6 @@
 import { useLoadingPixel } from '@/hooks';
 import { Stack, Typography } from '@mui/material';
+import { Dropzone } from './library';
 
 export interface VectorFilesProps {
     engineId?: string;
@@ -27,12 +28,16 @@ export const VectorFiles = ({ engineId }: VectorFilesProps) => {
         [],
     );
 
-    console.log(isLoadingFiles, files);
     return !engineId || isLoadingFiles ? (
         'Loading...'
     ) : (
         <Stack>
             <Typography>Files in Vector Database:</Typography>
+            <Dropzone
+                handleNewFiles={(files) =>
+                    console.log('New files added', files)
+                }
+            />
             {files.map((file) => (
                 <Stack
                     direction="row"
