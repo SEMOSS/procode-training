@@ -1,4 +1,4 @@
-import { VectorFiles } from '@/components';
+import { VectorFiles, VectorQuerySection } from '@/components';
 import { useAppContext } from '@/contexts';
 import { useLoadingPixel, useLoadingState } from '@/hooks';
 import { Autocomplete, Button, Stack, TextField } from '@mui/material';
@@ -35,6 +35,7 @@ export const HomePage = () => {
      */
     const [newVectorName, setNewVectorName] = useState<string>('');
     const [selectedVector, setSelectedVector] = useState<Engine | null>(null);
+    const [selectedModel, setSelectedModel] = useState<Engine | null>(null);
 
     /**
      * Functions
@@ -87,6 +88,11 @@ export const HomePage = () => {
                 )}
                 getOptionKey={(option) => option.app_id}
                 loading={isLoadingEngines}
+                value={selectedModel}
+                onChange={(_, newValue) => setSelectedModel(newValue)}
+                isOptionEqualToValue={(option, value) =>
+                    option.app_id === value.app_id
+                }
             />
 
             <Autocomplete
@@ -122,7 +128,11 @@ export const HomePage = () => {
                     Create Vector
                 </Button>
             </Stack>
-            <VectorFiles engineId={selectedVector?.app_id} />
+            <VectorFiles vectorDbId={selectedVector?.app_id} />
+            <VectorQuerySection
+                vectorDbId={selectedVector?.app_id}
+                modelId={selectedModel?.app_id}
+            />
         </Stack>
     );
 };

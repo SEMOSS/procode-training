@@ -4,7 +4,7 @@ import { Dropzone } from './library';
 import { useInsight } from '@semoss/sdk-react';
 
 export interface VectorFilesProps {
-    engineId?: string;
+    vectorDbId?: string;
 }
 
 interface SemossFile {
@@ -18,13 +18,13 @@ interface SemossFile {
  *
  * @component
  */
-export const VectorFiles = ({ engineId }: VectorFilesProps) => {
+export const VectorFiles = ({ vectorDbId }: VectorFilesProps) => {
     /**
      * Library hooks
      */
     const [files, isLoadingFiles, loadFiles] = useLoadingPixel<SemossFile[]>(
-        engineId
-            ? `ListDocumentsInVectorDatabase(engine=${JSON.stringify(engineId)})`
+        vectorDbId
+            ? `ListDocumentsInVectorDatabase(engine=${JSON.stringify(vectorDbId)})`
             : undefined,
         [],
     );
@@ -47,7 +47,7 @@ export const VectorFiles = ({ engineId }: VectorFilesProps) => {
                 file.fileLocation.slice(1),
             ); // Remove leading '/'
             runAddDocsPixel(
-                `CreateEmbeddingsFromDocuments (engine = ${JSON.stringify(engineId)}, filePaths = ${JSON.stringify(filePaths)});`,
+                `CreateEmbeddingsFromDocuments (engine = ${JSON.stringify(vectorDbId)}, filePaths = ${JSON.stringify(filePaths)});`,
                 afterUpload,
                 afterUpload,
             );
@@ -56,7 +56,7 @@ export const VectorFiles = ({ engineId }: VectorFilesProps) => {
         }
     };
 
-    return !engineId || isLoadingFiles ? (
+    return !vectorDbId || isLoadingFiles ? (
         'Loading...'
     ) : (
         <Stack>
