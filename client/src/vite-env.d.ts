@@ -3,6 +3,7 @@ interface ImportMetaEnv {
     readonly CLIENT_ACCESS_KEY: string;
     readonly CLIENT_SECRET_KEY: string;
     readonly CLIENT_APP: string;
+    readonly CLIENT_EMBEDDER_ENGINE: string;
     // more env variables...
 }
 
