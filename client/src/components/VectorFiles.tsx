@@ -1,18 +1,19 @@
 import { useLoadingState, useSettingPixel } from '@/hooks';
-import { Stack, Typography } from '@mui/material';
+import { Stack, styled, Typography } from '@mui/material';
 import { Dropzone } from './library';
 import { useInsight } from '@semoss/sdk-react';
 import { useCallback, useEffect, useState } from 'react';
 import { useAppContext } from '@/contexts';
+import { FileRow } from './FileRow';
+import { SemossFile } from '@/types';
+
+const GrayStack = styled(Stack)(({ theme }) => ({
+    backgroundColor: theme.palette.grey[100],
+    padding: theme.spacing(2),
+}));
 
 export interface VectorFilesProps {
     vectorDbId?: string;
-}
-
-interface SemossFile {
-    fileName: string;
-    fileSize: number; // in KB
-    lastModified: string; // "YYYY-MM-DD HH:mm:ss"
 }
 
 /**
@@ -29,6 +30,7 @@ export const VectorFiles = ({ vectorDbId }: VectorFilesProps) => {
     const { runPixel } = useAppContext();
     const [isUploadingDocuments, setIsUploadingDocuments] = useLoadingState();
     const [isLoadingFiles, setIsLoadingFiles] = useLoadingState(false);
+    const [isDeletingFile, setIsDeletingFile] = useLoadingState(false);
     const [files, setFiles] = useState<SemossFile[]>([]);
 
     /**
@@ -72,6 +74,20 @@ export const VectorFiles = ({ vectorDbId }: VectorFilesProps) => {
         }
     };
 
+    const deleteFile = async (file: SemossFile) => {
+        const loadingKey = setIsDeletingFile(true);
+        try {
+            await runPixel(
+                `RemoveDocumentFromVectorDatabase(engine=${JSON.stringify(
+                    vectorDbId,
+                )}, fileNames=${JSON.stringify([file.fileName])});`,
+            );
+            setIsDeletingFile(false, loadingKey, loadFiles);
+        } catch {
+            setIsDeletingFile(false, loadingKey, loadFiles);
+        }
+    };
+
     /**
      * Effects
      */
@@ -80,26 +96,28 @@ export const VectorFiles = ({ vectorDbId }: VectorFilesProps) => {
     }, [loadFiles]);
 
     return (
-        <Stack>
+        <GrayStack spacing={1}>
             <Dropzone
                 handleNewFiles={handleNewFiles}
-                disabled={isUploadingDocuments}
+                disabled={
+                    !vectorDbId ||
+                    isUploadingDocuments ||
+                    isLoadingFiles ||
+                    isDeletingFile
+                }
             />
-            {vectorDbId && isLoadingFiles ? (
+            {vectorDbId &&
+            (isLoadingFiles || isDeletingFile || isUploadingDocuments) ? (
                 <Typography>Loading...</Typography>
             ) : (
                 files.map((file) => (
-                    <Stack
-                        direction="row"
+                    <FileRow
                         key={file.fileName}
-                        spacing={2}
-                        justifyContent="space-between"
-                    >
-                        <Typography>{file.fileName}</Typography>
-                        <Typography>{file.fileSize.toFixed(2)} KB</Typography>
-                    </Stack>
+                        file={file}
+                        onDelete={() => deleteFile(file)}
+                    />
                 ))
             )}
-        </Stack>
+        </GrayStack>
     );
 };
