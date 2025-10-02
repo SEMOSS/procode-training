@@ -74,7 +74,7 @@ export const MainNavigation = () => {
                         fontWeight="bold"
                         whiteSpace="nowrap"
                     >
-                        Meeting Minutes
+                        Document Summarizer
                     </Typography>
                 </CursorStack>
 

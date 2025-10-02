@@ -1,7 +1,13 @@
 import { VectorFiles, VectorQuerySection } from '@/components';
 import { useAppContext } from '@/contexts';
 import { useLoadingPixel, useLoadingState } from '@/hooks';
-import { Autocomplete, Button, Stack, TextField } from '@mui/material';
+import {
+    Autocomplete,
+    Button,
+    Stack,
+    TextField,
+    Typography,
+} from '@mui/material';
 import { useState } from 'react';
 
 interface Engine {
@@ -80,60 +86,69 @@ export const HomePage = () => {
 
     return (
         <Stack width="100%" alignItems="center" padding={4}>
-            <Stack spacing={2} maxWidth="md" width="100%">
-                <Autocomplete
-                    options={engines || []}
-                    getOptionLabel={(option) => option.app_name}
-                    renderInput={(params) => (
-                        <TextField {...params} label="Model" />
-                    )}
-                    getOptionKey={(option) => option.app_id}
-                    loading={isLoadingEngines}
-                    value={selectedModel}
-                    onChange={(_, newValue) => setSelectedModel(newValue)}
-                    isOptionEqualToValue={(option, value) =>
-                        option.app_id === value.app_id
-                    }
-                />
-
-                <Autocomplete
-                    isOptionEqualToValue={(option, value) =>
-                        option.app_id === value.app_id
-                    }
-                    value={selectedVector}
-                    onChange={(_, newValue) => setSelectedVector(newValue)}
-                    options={vectors || []}
-                    getOptionLabel={(option) => option.app_name}
-                    renderInput={(params) => (
-                        <TextField {...params} label="Vector" />
-                    )}
-                    getOptionKey={(option) => option.app_id}
-                    loading={isLoadingVectors || isCreatingVector}
-                />
-
-                <Stack direction="row" spacing={2} alignItems="center">
-                    <TextField
-                        label="New Vector"
-                        fullWidth
-                        size="small"
-                        value={newVectorName}
-                        onChange={(e) => setNewVectorName(e.target.value)}
+            <Stack spacing={4} maxWidth="md" width="100%">
+                <Stack spacing={2}>
+                    <Typography variant="h6">Settings</Typography>
+                    <Autocomplete
+                        options={engines || []}
+                        getOptionLabel={(option) => option.app_name}
+                        renderInput={(params) => (
+                            <TextField {...params} label="Model" />
+                        )}
+                        getOptionKey={(option) => option.app_id}
+                        loading={isLoadingEngines}
+                        value={selectedModel}
+                        onChange={(_, newValue) => setSelectedModel(newValue)}
+                        isOptionEqualToValue={(option, value) =>
+                            option.app_id === value.app_id
+                        }
                     />
-                    <Button
-                        onClick={createVector}
-                        variant="contained"
-                        style={{ whiteSpace: 'nowrap' }}
-                        disabled={!newVectorName}
-                        loading={isCreatingVector}
-                    >
-                        Create Vector
-                    </Button>
+
+                    <Autocomplete
+                        isOptionEqualToValue={(option, value) =>
+                            option.app_id === value.app_id
+                        }
+                        value={selectedVector}
+                        onChange={(_, newValue) => setSelectedVector(newValue)}
+                        options={vectors || []}
+                        getOptionLabel={(option) => option.app_name}
+                        renderInput={(params) => (
+                            <TextField {...params} label="Vector" />
+                        )}
+                        getOptionKey={(option) => option.app_id}
+                        loading={isLoadingVectors || isCreatingVector}
+                    />
+
+                    <Stack direction="row" spacing={2} alignItems="center">
+                        <TextField
+                            label="New Vector"
+                            fullWidth
+                            size="small"
+                            value={newVectorName}
+                            onChange={(e) => setNewVectorName(e.target.value)}
+                        />
+                        <Button
+                            onClick={createVector}
+                            variant="contained"
+                            style={{ whiteSpace: 'nowrap' }}
+                            disabled={!newVectorName}
+                            loading={isCreatingVector}
+                        >
+                            Create Vector
+                        </Button>
+                    </Stack>
                 </Stack>
-                <VectorFiles vectorDbId={selectedVector?.app_id} />
-                <VectorQuerySection
-                    vectorDbId={selectedVector?.app_id}
-                    modelId={selectedModel?.app_id}
-                />
+                <Stack spacing={2}>
+                    <Typography variant="h6">Documents</Typography>
+                    <VectorFiles vectorDbId={selectedVector?.app_id} />
+                </Stack>
+                <Stack spacing={2}>
+                    <Typography variant="h6">Summary</Typography>
+                    <VectorQuerySection
+                        vectorDbId={selectedVector?.app_id}
+                        modelId={selectedModel?.app_id}
+                    />
+                </Stack>
             </Stack>
         </Stack>
     );

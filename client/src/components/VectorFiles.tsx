@@ -60,7 +60,6 @@ export const VectorFiles = ({ vectorDbId }: VectorFilesProps) => {
         'Loading...'
     ) : (
         <Stack>
-            <Typography>Files in Vector Database:</Typography>
             <Dropzone
                 handleNewFiles={handleNewFiles}
                 disabled={isUploadingDocuments}
