@@ -56,25 +56,27 @@ export const VectorFiles = ({ vectorDbId }: VectorFilesProps) => {
         }
     };
 
-    return !vectorDbId || isLoadingFiles ? (
-        'Loading...'
-    ) : (
+    return (
         <Stack>
             <Dropzone
                 handleNewFiles={handleNewFiles}
                 disabled={isUploadingDocuments}
             />
-            {files.map((file) => (
-                <Stack
-                    direction="row"
-                    key={file.fileName}
-                    spacing={2}
-                    justifyContent="space-between"
-                >
-                    <Typography>{file.fileName}</Typography>
-                    <Typography>{file.fileSize.toFixed(2)} KB</Typography>
-                </Stack>
-            ))}
+            {vectorDbId && isLoadingFiles ? (
+                <Typography>Loading...</Typography>
+            ) : (
+                files.map((file) => (
+                    <Stack
+                        direction="row"
+                        key={file.fileName}
+                        spacing={2}
+                        justifyContent="space-between"
+                    >
+                        <Typography>{file.fileName}</Typography>
+                        <Typography>{file.fileSize.toFixed(2)} KB</Typography>
+                    </Stack>
+                ))
+            )}
         </Stack>
     );
 };
