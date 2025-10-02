@@ -1,6 +1,7 @@
 import { VectorFiles, VectorQuerySection } from '@/components';
 import { useAppContext } from '@/contexts';
 import { useLoadingPixel, useLoadingState } from '@/hooks';
+import { Engine } from '@/types';
 import {
     Autocomplete,
     Button,
@@ -8,12 +9,7 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { useState } from 'react';
-
-interface Engine {
-    app_id: string;
-    app_name: string;
-}
+import { useEffect, useState } from 'react';
 
 const embedderEngine = import.meta.env.CLIENT_EMBEDDER_ENGINE;
 const trainingTag = 'pro-code-training';
@@ -28,10 +24,10 @@ export const HomePage = () => {
      * Library hooks
      */
     const [engines, isLoadingEngines] = useLoadingPixel<Engine[]>(
-        `MyEngines( engineTypes=["MODEL"] )`,
+        `MyEngines( engineTypes=["MODEL"], metaFilters = [${JSON.stringify({ tag: 'text-generation' })}] )`,
     );
     const [vectors, isLoadingVectors, loadVectors] = useLoadingPixel<Engine[]>(
-        `MyEngines( engineTypes=["VECTOR"], metaFilters = [{ "tag" : "${trainingTag}" }] )`,
+        `MyEngines( engineTypes=["VECTOR"], metaFilters = [${JSON.stringify({ tag: trainingTag })}] )`,
     );
     const [isCreatingVector, setIsCreatingVector] = useLoadingState();
     const { runPixel } = useAppContext();
@@ -83,6 +79,16 @@ export const HomePage = () => {
             console.error(e);
         }
     };
+
+    /**
+     * Effects
+     */
+    useEffect(() => {
+        // Auto-select the first model when loaded
+        if (engines?.length > 0 && !selectedModel) {
+            setSelectedModel(engines[0]);
+        }
+    }, [engines]);
 
     return (
         <Stack width="100%" alignItems="center" padding={4}>

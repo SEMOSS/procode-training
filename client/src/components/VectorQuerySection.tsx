@@ -45,7 +45,7 @@ export const VectorQuerySection = ({
 
             const responseObject = await runPixel<{ response: string }>(
                 `LLM2(engine="${modelId}", command=${JSON.stringify(
-                    `You are a note-taker in a meeting. You will be given chunks of text from the meeting and your job is to create a summary of the key points discussed in the meeting. Return your summary in simple text, not markdown. The chunks are:\n\n${contentToSummarize}`,
+                    `You are an assistant tasked with summarizing a document. Given the following chunks of text from the document, provide a detailed summary:\n\n${contentToSummarize}`,
                 )});`,
             );
 
