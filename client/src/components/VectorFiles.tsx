@@ -1,7 +1,9 @@
-import { useLoadingPixel, useLoadingState, useSettingPixel } from '@/hooks';
+import { useLoadingState, useSettingPixel } from '@/hooks';
 import { Stack, Typography } from '@mui/material';
 import { Dropzone } from './library';
 import { useInsight } from '@semoss/sdk-react';
+import { useCallback, useEffect, useState } from 'react';
+import { useAppContext } from '@/contexts';
 
 export interface VectorFilesProps {
     vectorDbId?: string;
@@ -22,19 +24,33 @@ export const VectorFiles = ({ vectorDbId }: VectorFilesProps) => {
     /**
      * Library hooks
      */
-    const [files, isLoadingFiles, loadFiles] = useLoadingPixel<SemossFile[]>(
-        vectorDbId
-            ? `ListDocumentsInVectorDatabase(engine=${JSON.stringify(vectorDbId)})`
-            : undefined,
-        [],
-    );
     const [runAddDocsPixel] = useSettingPixel();
     const { actions } = useInsight();
+    const { runPixel } = useAppContext();
     const [isUploadingDocuments, setIsUploadingDocuments] = useLoadingState();
+    const [isLoadingFiles, setIsLoadingFiles] = useLoadingState(false);
+    const [files, setFiles] = useState<SemossFile[]>([]);
 
     /**
      * Functions
      */
+    const loadFiles = useCallback(async () => {
+        if (!vectorDbId) {
+            setFiles([]);
+            return;
+        }
+
+        const loadingKey = setIsLoadingFiles(true);
+        try {
+            const newFiles = await runPixel<SemossFile[]>(
+                `ListDocumentsInVectorDatabase(engine=${JSON.stringify(vectorDbId)})`,
+            );
+            setIsLoadingFiles(false, loadingKey, () => setFiles(newFiles));
+        } catch {
+            setIsLoadingFiles(false, loadingKey, () => setFiles([]));
+        }
+    }, [vectorDbId]);
+
     const handleNewFiles = async (newFiles: File[]) => {
         const loadingKey = setIsUploadingDocuments(true);
         const afterUpload = () => {
@@ -55,6 +71,13 @@ export const VectorFiles = ({ vectorDbId }: VectorFilesProps) => {
             afterUpload();
         }
     };
+
+    /**
+     * Effects
+     */
+    useEffect(() => {
+        loadFiles();
+    }, [loadFiles]);
 
     return (
         <Stack>
