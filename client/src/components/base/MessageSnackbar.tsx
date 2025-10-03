@@ -1,5 +1,5 @@
-import { useAppContext } from "@/contexts";
 import { Alert, Snackbar, type SnackbarCloseReason } from "@mui/material";
+import { useAppContext } from "@/contexts";
 
 export interface MessageSnackbarProps {
 	message: string;

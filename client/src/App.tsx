@@ -1,11 +1,11 @@
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Env } from "@semoss/sdk";
 import { InsightProvider } from "@semoss/sdk-react";
 import { AppContextProvider } from "./contexts";
 import { Router } from "./pages";
-import { CssBaseline, ThemeProvider } from "@mui/material";
 import { THEME } from "./theme";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 Env.update({
 	MODULE: import.meta.env.MODULE || "",

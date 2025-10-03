@@ -1,9 +1,9 @@
-import { useAppContext } from "@/contexts";
-import { useLoadingState } from "@/hooks";
 import { Button, Stack, TextField } from "@mui/material";
 import { useInsight } from "@semoss/sdk-react";
 import { type ChangeEvent, useRef, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
+import { useAppContext } from "@/contexts";
+import { useLoadingState } from "@/hooks";
 
 /**
  * Renders a the login page if the user is not already logged in, otherwise sends them to the home page.
@@ -78,7 +78,9 @@ export const LoginPage = () => {
 				onChange={(event) => updateState("password", event)}
 				error={showError}
 				required
-				helperText={showError ? "Username and password do not match" : " "}
+				helperText={
+					showError ? "Username and password do not match" : " "
+				}
 				disabled={isLoginLoading}
 				type="password"
 				onKeyDown={(event) => {

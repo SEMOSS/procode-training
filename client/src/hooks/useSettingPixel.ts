@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { useLoadingState } from "./useLoadingState";
 import { useAppContext } from "@/contexts";
+import { useLoadingState } from "./useLoadingState";
 
 /**
  * Custom hook to call a reactor, typically used for calling a pixel on a click

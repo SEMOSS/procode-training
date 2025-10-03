@@ -1,7 +1,7 @@
-import { LoadingScreen, MainNavigation } from "@/components";
 import { Stack } from "@mui/material";
 import { useInsight } from "@semoss/sdk-react";
 import { Outlet } from "react-router-dom";
+import { LoadingScreen, MainNavigation } from "@/components";
 
 /**
  * Renders a loading wheel if SEMOSS is not initialized.

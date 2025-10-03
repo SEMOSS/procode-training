@@ -1,3 +1,4 @@
+import { AccountCircle } from "@mui/icons-material";
 import {
 	Button,
 	IconButton,
@@ -6,11 +7,10 @@ import {
 	Typography,
 	useTheme,
 } from "@mui/material";
-import { SemossBlueLogo } from "@/assets";
-import { useNavigate } from "react-router-dom";
-import { AccountCircle } from "@mui/icons-material";
 import { useInsight } from "@semoss/sdk-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { SemossBlueLogo } from "@/assets";
 import { UserProfileMenu } from "./UserProfileMenu";
 
 // A Stack with a different-colored background
@@ -74,7 +74,11 @@ export const MainNavigation = () => {
 						alt="Semoss Blue Logo"
 						height={spacing(6)}
 					/>
-					<Typography variant="h4" fontWeight="bold" whiteSpace="nowrap">
+					<Typography
+						variant="h4"
+						fontWeight="bold"
+						whiteSpace="nowrap"
+					>
 						SEMOSS Template
 					</Typography>
 				</CursorStack>

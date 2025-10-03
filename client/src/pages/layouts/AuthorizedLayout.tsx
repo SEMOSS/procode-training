@@ -1,8 +1,8 @@
 import { useInsight } from "@semoss/sdk-react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { ROUTE_PATH_LOGIN_PAGE } from "../routes.constants";
-import { useAppContext } from "@/contexts";
 import { LoadingScreen } from "@/components";
+import { useAppContext } from "@/contexts";
+import { ROUTE_PATH_LOGIN_PAGE } from "../routes.constants";
 
 /**
  * Sends users to the login page if they are not authorized, shows a loading screen while app data is loading, otherwise renders the child components.
@@ -17,7 +17,9 @@ export const AuthorizedLayout = () => {
 
 	// If the user is not authorized, take them to the login page, and pass their intended route
 	if (!isAuthorized)
-		return <Navigate to={ROUTE_PATH_LOGIN_PAGE} state={{ target: pathname }} />;
+		return (
+			<Navigate to={ROUTE_PATH_LOGIN_PAGE} state={{ target: pathname }} />
+		);
 
 	// If the app data is still loading, show a loading screen
 	if (isAppDataLoading) return <LoadingScreen />;

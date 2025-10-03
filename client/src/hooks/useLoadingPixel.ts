@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { useLoadingState } from "./useLoadingState";
 import { useAppContext } from "@/contexts";
+import { useLoadingState } from "./useLoadingState";
 
 /**
  * Custom hook to call a reactor, typically for fetching data on page load.

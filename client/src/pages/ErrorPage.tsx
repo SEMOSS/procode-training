@@ -16,8 +16,8 @@ export const ErrorPage = () => {
 		>
 			<ErrorOutline color="error" fontSize="large" />
 			<Typography variant="body1">
-				An error has occurred. Please try again or contact support if the
-				problem persists.
+				An error has occurred. Please try again or contact support if
+				the problem persists.
 			</Typography>
 		</Stack>
 	);

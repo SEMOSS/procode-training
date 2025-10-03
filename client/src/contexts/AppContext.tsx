@@ -1,5 +1,3 @@
-import { MessageSnackbar, type MessageSnackbarProps } from "@/components";
-import { useLoadingState } from "@/hooks";
 import { getSystemConfig, runPixel as runPixelSemossSdk } from "@semoss/sdk";
 import { useInsight } from "@semoss/sdk-react";
 import {
@@ -12,6 +10,8 @@ import {
 	useEffect,
 	useState,
 } from "react";
+import { MessageSnackbar, type MessageSnackbarProps } from "@/components";
+import { useLoadingState } from "@/hooks";
 
 export interface AppContextType {
 	runPixel: <T = unknown>(pixelString: string) => Promise<T>;
@@ -33,7 +33,9 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export const useAppContext = (): AppContextType => {
 	const context = useContext(AppContext);
 	if (!context) {
-		throw new Error("useAppContext must be used within an AppContextProvider");
+		throw new Error(
+			"useAppContext must be used within an AppContextProvider",
+		);
 	}
 
 	return context;
@@ -71,13 +73,25 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
 	const runPixel = useCallback(
 		async <T,>(pixelString: string) => {
 			try {
-				const response = await runPixelSemossSdk<T[]>(pixelString, insightId);
+				const response = await runPixelSemossSdk<T[]>(
+					pixelString,
+					insightId,
+				);
 				if (response.errors.length > 0)
 					throw new Error(
 						response.errors
 							.map(
-								(error: string | { message: string } | undefined) =>
-									(typeof error === "string" ? error : error?.message) ??
+								(
+									error:
+										| string
+										| {
+												message: string;
+										  }
+										| undefined,
+								) =>
+									(typeof error === "string"
+										? error
+										: error?.message) ??
 									"Error during operation",
 							)
 							.join(", "),
@@ -107,7 +121,8 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
 				// Run a new config call, to get the name of the user
 				const response = await getSystemConfig();
 				setUserLoginName(
-					Object.values(response?.logins ?? {})?.[0]?.toString() || null,
+					Object.values(response?.logins ?? {})?.[0]?.toString() ||
+						null,
 				);
 				return true;
 			} catch {
@@ -178,7 +193,8 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
 	// On start up, grab the name of the user from the config call if they are already logged in
 	useEffect(() => {
 		setUserLoginName(
-			Object.values(system?.config?.logins ?? {})?.[0]?.toString() || null,
+			Object.values(system?.config?.logins ?? {})?.[0]?.toString() ||
+				null,
 		);
 	}, [system]);
 

@@ -1,7 +1,7 @@
-import { useAppContext } from "@/contexts";
-import { useLoadingState } from "@/hooks";
 import { AccountCircle, Logout } from "@mui/icons-material";
 import { Button, Menu, Stack, Typography } from "@mui/material";
+import { useAppContext } from "@/contexts";
+import { useLoadingState } from "@/hooks";
 
 export interface UserProfileMenuProps {
 	open: boolean;

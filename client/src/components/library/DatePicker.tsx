@@ -47,7 +47,9 @@ export const DatePicker = (props: DatePickerProps) => {
 		<MuiDatePicker
 			{...muiProps}
 			value={getValidDayjs(value)}
-			onChange={(date) => onChange?.(date ? date.format("YYYY-MM-DD") : null)}
+			onChange={(date) =>
+				onChange?.(date ? date.format("YYYY-MM-DD") : null)
+			}
 			minDate={getValidDayjs(minDate)}
 			maxDate={getValidDayjs(maxDate)}
 			defaultValue={getValidDayjs(defaultValue)}
