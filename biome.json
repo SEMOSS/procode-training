@@ -1,0 +1,16 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.2.5/schema.json",
+	"formatter": {
+		"enabled": true,
+		"lineEnding": "lf"
+	},
+	"linter": {
+		"enabled": true
+	},
+	"assist": {
+		"enabled": false
+	},
+	"files": {
+		"includes": ["client/**/*", "!node_modules/**/*"]
+	}
+}
