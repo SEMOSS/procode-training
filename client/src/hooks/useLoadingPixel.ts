@@ -8,11 +8,13 @@ import { useAppContext } from '@/contexts';
  * @template T The expected type of the pixel response.
  * @param {string} [pixelString] The pixel to call.
  * @param {T} [initialValue] The initial value of the state, before being overwritten by the pixel return.
+ * @param {boolean} [waitToLoad] A flag that prevents the pixel from running until ready.
  * @returns {[T, boolean, () => void]} The pixel return, whether the call is loading, and a function to re-fetch.
  */
 export const useLoadingPixel = <T>(
     pixelString: string,
     initialValue?: T,
+    waitToLoad = false,
 ): [T, boolean, () => void] => {
     const { runPixel } = useAppContext();
 
@@ -26,6 +28,7 @@ export const useLoadingPixel = <T>(
      * Functions
      */
     const fetchPixel = useCallback(() => {
+        if (waitToLoad) return;
         (async () => {
             const loadingKey = setIsLoading(true);
             try {
@@ -35,7 +38,7 @@ export const useLoadingPixel = <T>(
                 setIsLoading(false, loadingKey);
             }
         })();
-    }, [pixelString, setIsLoading, runPixel]);
+    }, [pixelString, setIsLoading, runPixel, waitToLoad]);
 
     /**
      * Effects
