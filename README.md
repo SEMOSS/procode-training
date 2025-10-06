@@ -29,12 +29,12 @@ Before using this repository, ensure you have the following:
    Go to [http://localhost:9090/SemossWeb/packages/client/dist/#/](http://localhost:9090/SemossWeb/packages/client/dist/#/) (referred to as "the SEMOSS UI").
 
 2. **Create a new app:**
-    - Navigate to the "App" page (usually on the left sidebar).
-    - Click "Create New App".
-    - Choose to develop your app in code (not Drag & Drop).
-    - Enter a name and description (e.g., `YourAppName`).
-    - Submit to create the app. You'll be taken to the editor page.
-    - Note the long string in the URL—this is your app's ID (`your-app-id`), e.g., `1337e31c-2131-4ef4-b942-94bdffa65c3f`.
+   - Navigate to the "App" page (usually on the left sidebar).
+   - Click "Create New App".
+   - Choose to develop your app in code (not Drag & Drop).
+   - Enter a name and description (e.g., `YourAppName`).
+   - Submit to create the app. You'll be taken to the editor page.
+   - Note the long string in the URL—this is your app's ID (`your-app-id`), e.g., `1337e31c-2131-4ef4-b942-94bdffa65c3f`.
 
 ---
 
@@ -99,13 +99,13 @@ This repository includes several tools to help maintain code quality:
 - [ESLint](https://eslint.org/docs/latest/use/core-concepts/): Checks your front-end code for quality and common errors.
 - [pre-commit](https://pre-commit.com/): Ensures code formatting and quality checks are run before committing (primarily for back-end code).
 - [lint-staged](https://github.com/okonet/lint-staged): Runs Prettier and ESLint on staged files before each commit to prevent bad code from being pushed.
-    - Note: if you are a Mac user, and your commits are erroring out with the message `" not foundECURSIVE_EXEC_FIRST_FAIL  Command "lint-staged`, then you likely need to change your line-endings in `./husky/pre-commit` and `./husky/commit-msg` from CRLF to LF.
+  - Note: if you are a Mac user, and your commits are erroring out with the message `" not foundECURSIVE_EXEC_FIRST_FAIL  Command "lint-staged`, then you likely need to change your line-endings in `./husky/pre-commit` and `./husky/commit-msg` from CRLF to LF.
 - [commitizen](https://www.conventionalcommits.org/en/v1.0.0/): This pre-commit hook uses conventional commit syntax. Check this link out to understand how to format your commit messages. Here are some common examples:
-    - `feat: Major feature added`
-    - `docs: Documentation changed/updated`
-    - `fix: Bug fixed and code restored to working state`
-    - `refactor(style): Changed some code around to adhere to better style`
-    - `chore: Some update/chore that you've been needing to do`
+  - `feat: Major feature added`
+  - `docs: Documentation changed/updated`
+  - `fix: Bug fixed and code restored to working state`
+  - `refactor(style): Changed some code around to adhere to better style`
+  - `chore: Some update/chore that you've been needing to do`
 
 ---
 
