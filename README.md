@@ -21,6 +21,9 @@ Before using this repository, ensure you have the following:
 - **Basic Git knowledge:**  
   [Using SSH keys with GitHub](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) is recommended for authentication.
 
+- **Install Python as part of the SEMOSS installation**
+  You'll need this for parts of the linting pipeline and just generally is a good thing to have. Refer to [Mac Install](https://workshop.cfg.deloitte.com/docs/Advanced%20Installation/Mac%20Developer%20Install#install-python) or [Windows Install](https://workshop.cfg.deloitte.com/docs/windows-developer-install#install-python)
+
 ---
 
 ## Creating a SEMOSS Pro-Code App
