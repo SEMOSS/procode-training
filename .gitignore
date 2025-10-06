@@ -16,3 +16,6 @@ java/project.properties
 
 # cache
 py/__pycache__/
+.classpath
+.project
+.settings/
