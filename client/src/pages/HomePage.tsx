@@ -1,4 +1,5 @@
-import { Stack, Typography } from "@mui/material";
+import { Stack, TextField, Typography } from "@mui/material";
+import { useState } from "react";
 import { useLoadingPixel } from "@/hooks";
 
 /**
@@ -8,12 +9,20 @@ import { useLoadingPixel } from "@/hooks";
  */
 export const HomePage = () => {
 	/**
+	 * State
+	 */
+	const [numValue, setNumValue] = useState<number | "">("");
+
+	/**
 	 * Library hooks
 	 */
 	const [helloUserResponse, isLoadingHelloUser] =
 		useLoadingPixel<string>("HelloUser()");
-	const [callPythonResponse, isLoadingCallPython] =
-		useLoadingPixel<string>("CallPython()");
+	const [callPythonResponse, isLoadingCallPython] = useLoadingPixel<string>(
+		`CallPython(${numValue})`,
+		"",
+		numValue === "",
+	);
 
 	return (
 		<Stack spacing={2}>
@@ -39,9 +48,21 @@ export const HomePage = () => {
 					</ul>
 				</li>
 				<li>
-					<Typography variant="body1" fontWeight="bold">
-						CallPython()
-					</Typography>
+					<Stack direction="row" spacing={1} alignItems="center">
+						<Typography variant="body1" fontWeight="bold">
+							{"CallPython( numValue ="}
+						</Typography>
+						<TextField
+							value={numValue}
+							onChange={(e) =>
+								setNumValue(Number(e.target.value) || "")
+							}
+							size="small"
+						/>
+						<Typography variant="body1" fontWeight="bold">
+							{")"}
+						</Typography>
+					</Stack>
 					<ul>
 						<li>
 							<Typography fontStyle="italic">

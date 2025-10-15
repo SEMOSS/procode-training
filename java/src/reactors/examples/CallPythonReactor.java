@@ -31,7 +31,7 @@ public class CallPythonReactor extends AbstractProjectReactor {
     String inputNum = this.keyValue.get(ReactorKeysEnum.NUMERIC_VALUE.getKey());
 
     // define the file to grab the helper function from
-    String sourceFile = "py/nthFibonacci.py";
+    String sourceFile = "nthFibonacci.py";
 
     PyTranslator pt = this.insight.getPyTranslator();
 
