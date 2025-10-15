@@ -31,7 +31,7 @@ export const HomePage = () => {
 				Welcome to the SEMOSS Template application! This repository is
 				meant to be a starting point for your own SEMOSS application.
 			</Typography>
-			<Typography variant="h6">Example pixel call:</Typography>
+			<Typography variant="h6">Example pixel calls:</Typography>
 			<ul>
 				<li>
 					<Typography variant="body1" fontWeight="bold">
