@@ -1,0 +1,21 @@
+name: Pre-commit
+
+on:
+  pull_request:
+    branches: [ dev ]
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    # Official pre-commit action handles caching automatically
+    - uses: pre-commit/action@v3.0.1
+      with:
+        extra_args: --all-files --show-diff-on-failure
