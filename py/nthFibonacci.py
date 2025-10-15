@@ -1,6 +1,5 @@
 # sample python function that finds the nth fibonacci number
 def nthFibonacci(n: int) -> int:
-    n = int(n)  # ensure n is an integer
     if n <= 1:
         return n
 

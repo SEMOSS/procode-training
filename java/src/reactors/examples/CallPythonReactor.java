@@ -49,8 +49,7 @@ public class CallPythonReactor extends AbstractProjectReactor {
     argsList.add(inputNum);
 
     Object pyResponse =
-        pt.runFunctionFromLoadedModule(
-            this.insight, fibonacciModule, functionName, List.of(inputNum));
+        pt.runFunctionFromLoadedModule(this.insight, fibonacciModule, functionName, argsList);
 
     return new NounMetadata(pyResponse, PixelDataType.CONST_STRING);
   }
