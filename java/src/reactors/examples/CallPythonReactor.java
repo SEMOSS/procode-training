@@ -40,15 +40,16 @@ public class CallPythonReactor extends AbstractProjectReactor {
       projectId = this.insight.getProjectId();
     }
 
-    String fibonacciModule = pt.loadPythonModuleFromFile(sourceFile, projectId);
+    String fibonacciModule = pt.loadPythonModuleFromFile(this.insight, sourceFile, projectId);
 
     String functionName = "nthFibonacci";
 
     // define the arguments to be passed to the function
-    List<String> argsList = new ArrayList<>();
+    List<Object> argsList = new ArrayList<>();
     argsList.add(inputNum);
 
-    Object pyResponse = pt.runFunctionFromLoadedModule(fibonacciModule, functionName, argsList);
+    Object pyResponse =
+        pt.runFunctionFromLoadedModule(this.insight, fibonacciModule, functionName, argsList);
 
     return new NounMetadata(pyResponse, PixelDataType.CONST_STRING);
   }

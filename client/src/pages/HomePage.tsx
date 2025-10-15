@@ -8,9 +8,12 @@ import { useLoadingPixel } from "@/hooks";
  */
 export const HomePage = () => {
 	/**
-	 * State
+	 * Library hooks
 	 */
-	const [data, isLoading] = useLoadingPixel<string>("HelloUser()");
+	const [helloUserResponse, isLoadingHelloUser] =
+		useLoadingPixel<string>("HelloUser()");
+	const [callPythonResponse, isLoadingCallPython] =
+		useLoadingPixel<string>("CallPython()");
 
 	return (
 		<Stack spacing={2}>
@@ -28,7 +31,23 @@ export const HomePage = () => {
 					<ul>
 						<li>
 							<Typography fontStyle="italic">
-								{isLoading ? "Loading..." : data}
+								{isLoadingHelloUser
+									? "Loading..."
+									: helloUserResponse}
+							</Typography>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<Typography variant="body1" fontWeight="bold">
+						CallPython()
+					</Typography>
+					<ul>
+						<li>
+							<Typography fontStyle="italic">
+								{isLoadingCallPython
+									? "Loading..."
+									: callPythonResponse}
 							</Typography>
 						</li>
 					</ul>
