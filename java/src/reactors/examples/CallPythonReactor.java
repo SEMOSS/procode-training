@@ -28,7 +28,7 @@ public class CallPythonReactor extends AbstractProjectReactor {
   @Override
   protected NounMetadata doExecute() {
     // grab the input number
-    String inputNum = this.keyValue.get(ReactorKeysEnum.NUMERIC_VALUE.getKey());
+    int inputNum = Integer.parseInt(this.keyValue.get(ReactorKeysEnum.NUMERIC_VALUE.getKey()));
 
     // define the file to grab the helper function from
     String sourceFile = "nthFibonacci.py";
@@ -49,7 +49,8 @@ public class CallPythonReactor extends AbstractProjectReactor {
     argsList.add(inputNum);
 
     Object pyResponse =
-        pt.runFunctionFromLoadedModule(this.insight, fibonacciModule, functionName, argsList);
+        pt.runFunctionFromLoadedModule(
+            this.insight, fibonacciModule, functionName, List.of(inputNum));
 
     return new NounMetadata(pyResponse, PixelDataType.CONST_STRING);
   }
