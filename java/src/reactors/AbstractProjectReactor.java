@@ -43,7 +43,8 @@ public abstract class AbstractProjectReactor extends AbstractReactor {
   /** Project-specific properties and configuration settings. */
   protected ProjectProperties projectProperties;
 
-  // TODO: Initialize additional protected variables (engines, external services, etc.)
+  // TODO: Initialize additional protected variables (engines, external services,
+  // etc.)
 
   /** The result of the reactor execution, containing the output data and metadata. */
   protected NounMetadata result = null;

@@ -12,7 +12,9 @@ import prerna.util.Utility;
  * Singleton utility class responsible for loading and exposing project-specific configuration
  * properties. Properties are sourced from the project asset file located at:
  *
- * <pre>[projectId]/app_root/version/assets/java/project.properties</pre>
+ * <pre>
+ * [projectId]/app_root/version/assets/java/project.properties
+ * </pre>
  *
  * <p>Invocation pattern:
  *
@@ -27,7 +29,9 @@ import prerna.util.Utility;
  * supported separators (whitespace, '=' or ':'). Custom project keys (e.g., <code>engineId</code>)
  * can be defined following that pattern:
  *
- * <pre>engineId=fc6a3fab-2425-4987-be93-58ad2efeee24</pre>
+ * <pre>
+ * engineId=fc6a3fab-2425-4987-be93-58ad2efeee24
+ * </pre>
  *
  * <p>Error handling uses {@link ProjectException} wrapping {@link domain.base.ErrorCode} values to
  * provide consistent structured failure semantics when initialization or file IO fails.
@@ -98,7 +102,9 @@ public class ProjectProperties {
    *
    * <p>Location pattern:
    *
-   * <pre>[projectId]/app_root/version/assets/java/project.properties</pre>
+   * <pre>
+   * [projectId]/app_root/version/assets/java/project.properties
+   * </pre>
    *
    * <p>Lifecycle notes:
    *
@@ -123,7 +129,8 @@ public class ProjectProperties {
       Properties projectProperties = new Properties();
       projectProperties.load(fileIn);
 
-      // TODO Add any properties to be read by the properties file and add the corresponding getter.
+      // TODO Add any properties to be read by the properties file and add the
+      // corresponding getter.
 
       INSTANCE = newInstance;
     } catch (IOException e) {
@@ -133,6 +140,7 @@ public class ProjectProperties {
     }
   }
 
-  // TODO: Add getters for properties with appropriate JavaDoc linking to individual property keys.
+  // TODO: Add getters for properties with appropriate JavaDoc linking to
+  // individual property keys.
 
 }
