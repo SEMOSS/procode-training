@@ -12,7 +12,6 @@ target/
 java/project.properties
 .admin/
 .DS_Store
-.vscode/
 
 # cache
 py/__pycache__/
