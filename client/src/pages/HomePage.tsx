@@ -11,7 +11,7 @@ export const HomePage = () => {
 	/**
 	 * State
 	 */
-	const [numValue, setNumValue] = useState<number | "">("");
+	const [textValue, setTextValue] = useState<string>("");
 
 	/**
 	 * Library hooks
@@ -19,9 +19,9 @@ export const HomePage = () => {
 	const [helloUserResponse, isLoadingHelloUser] =
 		useLoadingPixel<string>("HelloUser()");
 	const [callPythonResponse, isLoadingCallPython] = useLoadingPixel<string>(
-		`CallPython(${numValue})`,
+		`CallPython(${Number(textValue)})`,
 		"",
-		numValue === "",
+		!Number(textValue) && textValue !== "0",
 	);
 
 	return (
@@ -53,9 +53,9 @@ export const HomePage = () => {
 							{"CallPython( numValue ="}
 						</Typography>
 						<TextField
-							value={numValue}
+							value={textValue}
 							onChange={(e) =>
-								setNumValue(Number(e.target.value) || "")
+								setTextValue(e.target.value?.replace(/\D/g, ""))
 							}
 							size="small"
 						/>
