@@ -12,6 +12,8 @@ target/
 java/project.properties
 .admin/
 .DS_Store
+**/.env
+!client/.env
 
 # cache
 py/__pycache__/

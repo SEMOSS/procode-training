@@ -9,6 +9,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '24'
+        
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 10
+        
+    - name: Install dependencies and run frontend pre-commit hooks
+      run: |
+        if [ -d "client" ]; then
+          pnpm install
+          pnpm exec lint-staged
+        else
+          echo "No client directory found, skipping frontend pre-commit hooks"
+        fi
     
     - name: Set up Python
       uses: actions/setup-python@v4
