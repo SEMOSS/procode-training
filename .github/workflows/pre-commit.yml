@@ -20,13 +20,13 @@ jobs:
       with:
         version: 10
         
-    - name: Install dependencies and run frontend pre-commit hooks
+    - name: Install dependencies and run frontend linting
       run: |
         if [ -d "client" ]; then
           pnpm install
-          pnpm exec lint-staged
+          pnpm run lint
         else
-          echo "No client directory found, skipping frontend pre-commit hooks"
+          echo "No client directory found, skipping frontend linting"
         fi
     
     - name: Set up Python
