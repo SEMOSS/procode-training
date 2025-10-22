@@ -52,7 +52,7 @@ repos:
                 "--disable-error-code=name-defined",
                 "--disable-error-code=attr-defined"
             ]
-            additional_dependencies: [
+            additional_dependencies: [ # Continue to add dependencies here that have mypy extensions, such as pydantic
                 "types-requests",
                 "types-toml",
                 "pandas-stubs",
