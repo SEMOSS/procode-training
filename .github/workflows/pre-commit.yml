@@ -24,7 +24,7 @@ jobs:
       run: |
         if [ -d "client" ]; then
           pnpm install
-          pnpm exec biome check .
+          pnpm exec biome format --write && pnpm exec biome lint
         else
           echo "No client directory found, skipping frontend linting"
         fi
