@@ -76,6 +76,7 @@ export const HomePage = () => {
 			});
 		} catch (e) {
 			setIsCreatingVector(false, loadingKey);
+			// biome-ignore lint/suspicious/noConsole: valid to print error on console
 			console.error(e);
 		}
 	};
