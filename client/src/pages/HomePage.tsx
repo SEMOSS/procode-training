@@ -5,10 +5,10 @@ import {
 	TextField,
 	Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { VectorFiles, VectorQuerySection } from "@/components";
 import { useAppContext } from "@/contexts";
-import { useLoadingPixel, useLoadingState } from "@/hooks";
+import { useLoadingState } from "@/hooks";
 import type { Engine } from "@/types";
 
 const embedderEngine = import.meta.env.CLIENT_EMBEDDER_ENGINE;
@@ -23,18 +23,16 @@ export const HomePage = () => {
 	/**
 	 * Library hooks
 	 */
-	const [engines, isLoadingEngines] = useLoadingPixel<Engine[]>(
-		`MyEngines( engineTypes=["MODEL"], metaFilters = [${JSON.stringify({ tag: "text-generation" })}] )`,
-	);
-	const [vectors, isLoadingVectors, loadVectors] = useLoadingPixel<Engine[]>(
-		`MyEngines( engineTypes=["VECTOR"], metaFilters = [${JSON.stringify({ tag: trainingTag })}] )`,
-	);
+	const [isLoadingEngines, setIsLoadingEngines] = useLoadingState(false);
+	const [isLoadingVectors, setIsLoadingVectors] = useLoadingState();
 	const [isCreatingVector, setIsCreatingVector] = useLoadingState();
 	const { runPixel } = useAppContext();
 
 	/**
 	 * State
 	 */
+	const [engines, setEngines] = useState<Engine[]>([]);
+	const [vectors, setVectors] = useState<Engine[]>([]);
 	const [newVectorName, setNewVectorName] = useState<string>("");
 	const [selectedVector, setSelectedVector] = useState<Engine | null>(null);
 	const [selectedModel, setSelectedModel] = useState<Engine | null>(null);
@@ -76,19 +74,56 @@ export const HomePage = () => {
 			});
 		} catch (e) {
 			setIsCreatingVector(false, loadingKey);
+			// Handle error
 			console.error(e);
 		}
 	};
+
+	const loadEngines = useCallback(async () => {
+		const loadingKey = setIsLoadingEngines(true);
+		try {
+			const engines = await runPixel<Engine[]>(
+				`MyEngines( engineTypes=["MODEL"], metaFilters = [${JSON.stringify({ tag: "text-generation" })}] )`,
+			);
+			setIsLoadingEngines(false, loadingKey, () => {
+				setEngines(engines);
+				if (engines?.length > 0) {
+					setSelectedModel(engines[0]);
+				}
+			});
+		} catch {
+			setIsLoadingEngines(false, loadingKey, () => setEngines([]));
+		}
+	}, [runPixel, setIsLoadingEngines]);
+
+	const loadVectors = useCallback(async () => {
+		const loadingKey = setIsLoadingVectors(true);
+		try {
+			const vectors = await runPixel<Engine[]>(
+				`MyEngines( engineTypes=["VECTOR"], metaFilters = [${JSON.stringify(
+					{
+						tag: trainingTag,
+					},
+				)}] )`,
+			);
+			setIsLoadingVectors(false, loadingKey, () => setVectors(vectors));
+		} catch {
+			setIsLoadingVectors(false, loadingKey, () => setVectors([]));
+		}
+	}, [runPixel, setIsLoadingVectors]);
 
 	/**
 	 * Effects
 	 */
 	useEffect(() => {
-		// Auto-select the first model when loaded
-		if (engines?.length > 0 && !selectedModel) {
-			setSelectedModel(engines[0]);
-		}
-	}, [engines, selectedModel]);
+		// Load available models on page load
+		loadEngines();
+	}, [loadEngines]);
+
+	useEffect(() => {
+		// Load available vectors on page load
+		loadVectors();
+	}, [loadVectors]);
 
 	return (
 		<Stack width="100%" alignItems="center" padding={4}>
