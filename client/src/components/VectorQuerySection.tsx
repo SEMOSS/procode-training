@@ -44,6 +44,11 @@ export const VectorQuerySection = ({
 			*/
 			const chunks = []; // PLACEHOLDER - DELETE THIS LINE
 
+			// Uncomment to test - delete prior to training
+			// const chunks = await runPixel<{ Content: string }[]>(
+			// 	`VectorDatabaseQuery(engine="${vectorDbId}", command="What are the key points of this document?", limit=3)`,
+			// );
+
 			const contentToSummarize = chunks
 				.map((c) => c.Content)
 				.join("\n\n");
@@ -55,6 +60,14 @@ export const VectorQuerySection = ({
 			 * 	- Replace the placeholder line to prompt LLM to generate an exectutive summary based on chunks from the document
 			 */
 			const responseObject = { response: `Retrieved ${chunks.length} chunks.`}; // PLACEHOLDER - DELETE THIS LINE
+
+			// Uncomment to test - delete prior to training
+			// const responseObject = await runPixel<{ response: string }>(
+			// 		`LLM(engine="${modelId}", command=${JSON.stringify(
+			// 			`You are an assistant tasked with summarizing a document. Given the following chunks of text from the document, provide a detailed summary:\n\n${contentToSummarize}`,
+			// 		)});`,
+			// 	);
+
 			setIsLoading(false, loadingKey, () => {
 				setResult(responseObject.response);
 				setError(false);
