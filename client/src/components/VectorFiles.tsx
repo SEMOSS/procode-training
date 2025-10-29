@@ -2,7 +2,7 @@ import { Stack, styled, Typography } from "@mui/material";
 import { useInsight } from "@semoss/sdk-react";
 import { useCallback, useEffect, useState } from "react";
 import { useAppContext } from "@/contexts";
-import { useLoadingState, useSettingPixel } from "@/hooks";
+import { useLoadingState } from "@/hooks";
 import type { SemossFile } from "@/types";
 import { FileRow } from "./FileRow";
 import { Dropzone } from "./library";
@@ -25,7 +25,6 @@ export const VectorFiles = ({ vectorDbId }: VectorFilesProps) => {
 	/**
 	 * Library hooks
 	 */
-	const [runAddDocsPixel] = useSettingPixel();
 	const { actions } = useInsight();
 	const { runPixel } = useAppContext();
 	const [isUploadingDocuments, setIsUploadingDocuments] = useLoadingState();
@@ -55,22 +54,18 @@ export const VectorFiles = ({ vectorDbId }: VectorFilesProps) => {
 
 	const handleNewFiles = async (newFiles: File[]) => {
 		const loadingKey = setIsUploadingDocuments(true);
-		const afterUpload = () => {
-			setIsUploadingDocuments(false, loadingKey, loadFiles);
-		};
 
 		try {
 			const uploadedFiles = await actions.upload(newFiles, "");
 			const filePaths = uploadedFiles.map((file) =>
 				file.fileLocation.slice(1),
 			); // Remove leading '/'
-			runAddDocsPixel(
+			await runPixel(
 				`CreateEmbeddingsFromDocuments (engine = ${JSON.stringify(vectorDbId)}, filePaths = ${JSON.stringify(filePaths)});`,
-				afterUpload,
-				afterUpload,
 			);
+			setIsUploadingDocuments(false, loadingKey, loadFiles);
 		} catch {
-			afterUpload();
+			setIsUploadingDocuments(false, loadingKey, loadFiles);
 		}
 	};
 
