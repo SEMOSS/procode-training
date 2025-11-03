@@ -13,72 +13,51 @@ This repository provides a starting point for SEMOSS React applications. It incl
 ## Prerequisites
 
 Before using this repository, ensure you have the following:
-
-- **SEMOSS installed locally:**  
-  [SEMOSS Installation Guide](https://amedeloitte.sharepoint.com/:p:/r/sites/SEMOSS/_layouts/15/Doc.aspx?sourcedoc=%7B4234D7E0-E161-4168-B889-29B4BBE07C67%7D&file=SEMOSS%20DEV%20Install_2024-07-24%20Working%20Version.pptx&action=edit&mobileredirect=true)  
-  To verify installation, go to [http://localhost:9090/SemossWeb/packages/client/dist/#/](http://localhost:9090/SemossWeb/packages/client/dist/#/). The SEMOSS UI should load.
-
+- **Node.js**
+  - Install Node.js from the Node.js website.
+  - Version v20.19.0 is recommended for this training.
+- **Code Editor**
+  - Use a code editor of your choice.
+  - Visual Studio Code is suggested for this training.
+- **pnpm Package Manager**
+  - This project uses pnpm for managing frontend dependencies.
+  - Install pnpm globally by running: `npm install -g pnpm`
 - **Basic Git knowledge:**  
   [Using SSH keys with GitHub](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) is recommended for authentication.
-
----
-
-## Creating a SEMOSS Pro-Code App
-
-1. **Open the SEMOSS UI:**  
-   Go to [http://localhost:9090/SemossWeb/packages/client/dist/#/](http://localhost:9090/SemossWeb/packages/client/dist/#/) (referred to as "the SEMOSS UI").
-
-2. **Create a new app:**
-   - Navigate to the "App" page (usually on the left sidebar).
-   - Click "Create New App".
-   - Choose to develop your app in code (not Drag & Drop).
-   - Enter a name and description (e.g., `YourAppName`).
-   - Submit to create the app. You'll be taken to the editor page.
-   - Note the long string in the URL—this is your app's ID (`your-app-id`), e.g., `1337e31c-2131-4ef4-b942-94bdffa65c3f`.
-
----
-
-## Understanding the App File Structure
-
-- In the SEMOSS UI editor, you'll see a file explorer showing a `portals` folder.
-- The explorer is displaying the contents of the `assets` folder; `portals` is inside `assets`.
-- `assets` is the main folder for your app's code.
-
-**On your computer:**
-
-- Go to `workspace/Semoss/project/[YourAppName]_[your-app-id]/app_root/version/`
-- Inside `version`, you'll find the `assets` folder, which contains `portals` and `portals/index.html`.
-- The `assets` folder in your file system and the one in the SEMOSS UI are the same.
-
----
-
-## Publishing Your App
-
-To make changes visible to users:
-
-1. In the SEMOSS UI, open and edit `portals/index.html`.
-2. Click "Save".
-3. Changes are not public until you click "Publish files".
-4. After publishing, refresh the App tab to see updates.
-
-> **Note:**  
-> The published snapshot is stored at  
-> `workspace/apache-tomcat-9.0.102/webapps/Monolith/public_home/your-app-id`.
 
 ---
 
 ## Creating a React App Using This Repository
 
 ### Clone the Template
+1. Create and Navigate to a Local Project Folder
+2. Clone the Repository Locally
+   - In your project terminal, run: `git clone https://github.com/SEMOSS/procode-training.git` or `git@github.com:SEMOSS/procode-training.git`, if using SSH keys
 
-1. In your file explorer, go to  
-   `workspace/Semoss/project/[YourAppName]_[YourAppID]/app_root/version/`
-2. Rename `assets` to `old-assets`.
-3. Open a terminal at this location.
-4. Clone this repository:
-   `git clone git@github.com:SEMOSS/Template.git`, if using SSH keys
-5. Rename the cloned `Template` folder to `assets`.
-6. Open `assets` in your code editor (VS Code recommended).
+### Running the Application
+1. Open the project in your code editor (VS Code recommended)
+   - Launch Visual Studio Code.
+   - Open the procode-training folder.
+   - Open a new terminal in VS Code.
+2. Navigate to the Client Folder
+   - In the terminal, move into the client directory: `cd client`
+3. Install Frontend Dependencies
+   - Still in the client directory, run: `pnpm install`
+
+### Connecting to AI Core
+1. Create a .env.local file in the client folder.
+2. If you do not already have a access keys, generate them within the platform following these [instructions](https://workshop.cfg.deloitte.com/docs/platform-navigation/Settings/MyProfile#access-tokens).
+3. Add your client-specific keys to the .env.local file as follows:
+   - CLIENT_ACCESS_KEY="YOUR_CLIENT_ACCESS_KEY"
+   - CLIENT_SECRET_KEY="YOUR_CLIENT_SECRET_KEY"
+
+### Starting the Local Frontend Server
+- Ensure Terminal Is in the Client Folder
+- Run the following to launch the local dev server: `pnpm dev`
+- Connect to AI Core and Verify Application
+  - Wait for the server to fully start.
+  - The local frontend (http://localhost:5173) should automatically connect to AI Core.
+  - Once loaded, the application interface will be available for use.
 
 ---
 
@@ -112,7 +91,6 @@ This repository includes several tools to help maintain code quality:
 ## Next Steps
 
 - See `client/README.md` for front-end development instructions.
-- See `java/README.md` for back-end/reactor development.
 
 ---
 
