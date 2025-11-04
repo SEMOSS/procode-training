@@ -57,7 +57,6 @@ export const VectorFiles = ({ vectorDbId }: VectorFilesProps) => {
 	* INSTRUCTIONS:
 	* 	- Replace the placeholder code below to create embeddings from uploaded documents
 	*/
-
 	const handleNewFiles = async (newFiles: File[]) => {
 		const loadingKey = setIsUploadingDocuments(true);
 
