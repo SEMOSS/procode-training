@@ -37,7 +37,7 @@ export const VectorFiles = ({ vectorDbId }: VectorFilesProps) => {
 	 */
 
 	/**
-	* TODO #3: list documents in selected vector database
+	* ACTIVITY #3: list documents in selected vector database
 	* 
 	* INSTRUCTIONS: 
 	* 	- Replace placeholder with implementation to list documents in selected vector database
@@ -50,33 +50,13 @@ export const VectorFiles = ({ vectorDbId }: VectorFilesProps) => {
 	}, [vectorDbId, runPixel, setIsLoadingFiles]);
 	// END PLACEHOLDER
 	
-	// Uncomment to test -- Remove prior to training
-	// const loadFiles = useCallback(async () => {
-	// 		if (!vectorDbId) {
-	// 			setFiles([]);
-	// 			return;
-	// 		}
-
-	// 		const loadingKey = setIsLoadingFiles(true);
-	// 		try {
-	// 			const newFiles = await runPixel<SemossFile[]>(
-	// 				`ListDocumentsInVectorDatabase(engine=${JSON.stringify(vectorDbId)})`,
-	// 			);
-	// 			setIsLoadingFiles(false, loadingKey, () => setFiles(newFiles));
-	// 		} catch {
-	// 			setIsLoadingFiles(false, loadingKey, () => setFiles([]));
-	// 		}
-	// 	}, [vectorDbId, runPixel, setIsLoadingFiles]);
-
-	
 
 	/**
-	* TODO #4: create embeddings from uploaded documents
+	* ACTIVITY #4: create embeddings from uploaded documents
 	* 
 	* INSTRUCTIONS:
 	* 	- Replace the placeholder code below to create embeddings from uploaded documents
 	*/
-
 	const handleNewFiles = async (newFiles: File[]) => {
 		const loadingKey = setIsUploadingDocuments(true);
 
@@ -94,37 +74,26 @@ export const VectorFiles = ({ vectorDbId }: VectorFilesProps) => {
 			}, 500);
 			// END PLACEHOLDER
 
-			// Uncomment to test -- Remove prior to training
-			// await runPixel(
-			// `CreateEmbeddingsFromDocuments (engine = ${JSON.stringify(vectorDbId)}, filePaths = ${JSON.stringify(filePaths)});`,
-			// );
-
 			setIsUploadingDocuments(false, loadingKey, loadFiles);
 		} catch {
 			setIsUploadingDocuments(false, loadingKey, loadFiles);
 		}
 	};
 
+	/**
+	* ACTIVITY #5: remove document from vector database
+	* 
+	* INSTRUCTIONS:
+	* 	- Replace the placeholder below to remove the document from selected vector database
+	*/
 	const deleteFile = async (file: SemossFile) => {
 		const loadingKey = setIsDeletingFile(true);
 		try {
-			/**
-			* TODO #5: remove document from vector database
-			* 
-			* INSTRUCTIONS:
-			* 	- Replace the placeholder below to remove the document from selected vector database
-			*/
 			// PLACEHOLDER - DELETE
 			console.log("Would delete file:", file.fileName);
 			alert("Complete TODO #5 using RemoveDocumentFromVectorDatabase pixel to enable document deletion.")
 			// END PLACEHOLDER
 
-			// Uncomment to test -- Remove prior to training
-			// await runPixel(
-			// 	`RemoveDocumentFromVectorDatabase(engine=${JSON.stringify(
-			// 		vectorDbId,
-			// 	)}, fileNames=${JSON.stringify([file.fileName])});`,
-			// );
 			setIsDeletingFile(false, loadingKey, loadFiles);
 		} catch {
 			setIsDeletingFile(false, loadingKey, loadFiles);

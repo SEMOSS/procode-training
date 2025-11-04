@@ -42,61 +42,25 @@ export const HomePage = () => {
 	 */
 
 	/**
-	 * TODO #1: Fetch models
+	 * ACTIVITY #1: Fetch models
 	 * 
 	 * Instructions: 
 	 *  - Replace the placeholder line below to fetch all models tagged "text-generation"
 	 */
-
 	const loadEngines = useCallback(async () => {}, [runPixel, setIsLoadingEngines]); // PLACEHOLDER - DELETE
-
-	// Uncomment to test -- Remove prior to training
-	// const loadEngines = useCallback(async () => {
-	// 	const loadingKey = setIsLoadingEngines(true);
-	// 	try {
-	// 		const engines = await runPixel<Engine[]>(
-	// 			`MyEngines( engineTypes=["MODEL"], metaFilters = [${JSON.stringify({ tag: "text-generation" })}] )`,
-	// 		);
-	// 		setIsLoadingEngines(false, loadingKey, () => {
-	// 			setEngines(engines);
-	// 			if (engines?.length > 0) {
-	// 				setSelectedModel(engines[0]);
-	// 			}
-	// 		});
-	// 	} catch {
-	// 		setIsLoadingEngines(false, loadingKey, () => setEngines([]));
-	// 	}
-	// }, [runPixel, setIsLoadingEngines]);
 
 
 	/**
-	 * TODO #2: Fetch vectors
+	 * ACTIVITY #2: Fetch vectors
 	 * 
 	 * Instructions: 
 	 *  - Replace placeholder line below to fetch vectors tagged for training (trainingTag)
 	 */
 	const loadVectors = useCallback(async () => {}, [runPixel, setIsLoadingVectors]); // PLACEHOLDER - DELETE THIS LINE
 
-	// Uncomment to test -- Remove prior to training
-	// const loadVectors = useCallback(async () => {
-	// 	const loadingKey = setIsLoadingVectors(true);
-	// 	try {
-	// 		const vectors = await runPixel<Engine[]>(
-	// 			`MyEngines( engineTypes=["VECTOR"], metaFilters = [${JSON.stringify(
-	// 				{
-	// 					tag: trainingTag,
-	// 				},
-	// 			)}] )`,
-	// 		);
-	// 		setIsLoadingVectors(false, loadingKey, () => setVectors(vectors));
-	// 	} catch {
-	// 		setIsLoadingVectors(false, loadingKey, () => setVectors([]));
-	// 	}
-	// }, [runPixel, setIsLoadingVectors]);
-
 
 	/**
-	 * ACTIVITY CHECK-IN POINT #1: Create Vector
+	 * TRAINING CHECK-IN POINT: Create Vector
 	*/
 	const createVector = async () => {
 		const loadingKey = setIsCreatingVector(true);

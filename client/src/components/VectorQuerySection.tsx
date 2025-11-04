@@ -37,36 +37,24 @@ export const VectorQuerySection = ({
 
 		try {
 			/**
-			 * TODO #6: query vector DB for main points from document
+			 * ACTIVITY #6: query vector DB for main points from document
 			 * 
 			 * INSTRUCTIONS: 
 			 * 	- Replace the placeholder with vector DB query to get chunks with the key points from the document
 			*/
 			const chunks = []; // PLACEHOLDER - DELETE THIS LINE
 
-			// Uncomment to test - delete prior to training
-			// const chunks = await runPixel<{ Content: string }[]>(
-			// 	`VectorDatabaseQuery(engine="${vectorDbId}", command="What are the key points of this document?", limit=3)`,
-			// );
-
 			const contentToSummarize = chunks
 				.map((c) => c.Content)
 				.join("\n\n");
 
 			/**
-			 * TODO #7: prompt LLM with context from vector DB
+			 * ACTIVITY #7: prompt LLM with context from vector DB
 			 * 
 			 * INSTRUCTIONS: 
 			 * 	- Replace the placeholder line to prompt LLM to generate an exectutive summary based on chunks from the document
 			 */
-			const responseObject = { response: `Retrieved ${chunks.length} chunks.`}; // PLACEHOLDER - DELETE THIS LINE
-
-			// Uncomment to test - delete prior to training
-			// const responseObject = await runPixel<{ response: string }>(
-			// 		`LLM(engine="${modelId}", command=${JSON.stringify(
-			// 			`You are an assistant tasked with summarizing a document. Given the following chunks of text from the document, provide a detailed summary:\n\n${contentToSummarize}`,
-			// 		)});`,
-			// 	);
+			const responseObject = { response: `Retrieved ${chunks.length} chunks. Content to summarize: ${contentToSummarize} `}; // PLACEHOLDER - DELETE THIS LINE
 
 			setIsLoading(false, loadingKey, () => {
 				setResult(responseObject.response);
