@@ -47,7 +47,6 @@ export const HomePage = () => {
 	 * Instructions: 
 	 *  - Replace the placeholder line below to fetch all models tagged "text-generation"
 	 */
-
 	const loadEngines = useCallback(async () => {}, [runPixel, setIsLoadingEngines]); // PLACEHOLDER - DELETE
 
 
