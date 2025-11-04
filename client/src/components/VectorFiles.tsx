@@ -81,26 +81,20 @@ export const VectorFiles = ({ vectorDbId }: VectorFilesProps) => {
 		}
 	};
 
+	/**
+	* ACTIVITY #5: remove document from vector database
+	* 
+	* INSTRUCTIONS:
+	* 	- Replace the placeholder below to remove the document from selected vector database
+	*/
 	const deleteFile = async (file: SemossFile) => {
 		const loadingKey = setIsDeletingFile(true);
 		try {
-			/**
-			* TODO #5: remove document from vector database
-			* 
-			* INSTRUCTIONS:
-			* 	- Replace the placeholder below to remove the document from selected vector database
-			*/
 			// PLACEHOLDER - DELETE
-			// console.log("Would delete file:", file.fileName);
-			// alert("Complete TODO #5 using RemoveDocumentFromVectorDatabase pixel to enable document deletion.")
+			console.log("Would delete file:", file.fileName);
+			alert("Complete TODO #5 using RemoveDocumentFromVectorDatabase pixel to enable document deletion.")
 			// END PLACEHOLDER
 
-			// Uncomment to test -- Remove prior to training
-			await runPixel(
-				`RemoveDocumentFromVectorDatabase(engine=${JSON.stringify(
-					vectorDbId,
-				)}, fileNames=${JSON.stringify([file.fileName])});`,
-			);
 			setIsDeletingFile(false, loadingKey, loadFiles);
 		} catch {
 			setIsDeletingFile(false, loadingKey, loadFiles);
